@@ -6,7 +6,7 @@ layout: default
 
 <img class="profile-picture" src="profile.png">
 
-Hi! I am Fakhri. I work as a Security Engineer at [NetbyteSEC](https://netbytesecurity.blogspot.com/).
+Hi! I am Fakhri. I work as a Security Engineer.
 
 ## Research Interest
 
