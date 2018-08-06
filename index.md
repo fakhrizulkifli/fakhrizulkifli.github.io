@@ -24,6 +24,7 @@ CVE-2018-12453 | [Redis 5.0 Denial of Service](CVE-2018-12453.md)
 CVE-2018-13441 | [Nagios Core qh_help Denial of Service](CVE-2018-13441.md)
 CVE-2018-13457 | [Nagios Core qh_echo Denial of Service](CVE-2018-13457.md)
 CVE-2018-13458 | [Nagios Core qh_core Denial of Service](CVE-2018-13458.md)
+               | [ASUS DSL-N12E_C1 1.1.2.3_345 - Authenticated Remote Command Execution](dsl_n12e.md)
 
 
 ## Contact
