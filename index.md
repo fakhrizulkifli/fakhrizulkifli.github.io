@@ -16,7 +16,7 @@ I enjoy doing reverse engineering and vulnerability research.
 
 Date | MD5
 ---- | ----
-18 Jul 2018 | [4ec4f1ec6a030c4969bd336258f6699e](4ec4f1ec6a030c4969bd336258f6699e.md)
+18 Jul 2018 | [A tale of a coin miner and honeypot](4ec4f1ec6a030c4969bd336258f6699e.md)
 
 ## Vulnerability Research
 
