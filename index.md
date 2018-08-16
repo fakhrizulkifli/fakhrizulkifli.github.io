@@ -12,6 +12,11 @@ Hi! I am Fakhri. I work as a Security Engineer.
 
 I enjoy doing reverse engineering and vulnerability research.
 
+## Malware Research
+
+Date | MD5
+---- | ----
+18 Jul 2018 | [4ec4f1ec6a030c4969bd336258f6699e](4ec4f1ec6a030c4969bd336258f6699e.md)
 
 ## Vulnerability Research
 
