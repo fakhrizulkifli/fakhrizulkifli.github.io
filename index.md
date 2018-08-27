@@ -18,6 +18,7 @@ Date | MD5
 ---- | ----
 18 Jul 2018 | [4ec4f1ec6a030c4969bd336258f6699e](4ec4f1ec6a030c4969bd336258f6699e.md)
 14 Aug 2018 | [08c6ac693d5d43fb8dec0451fe413e34](08c6ac693d5d43fb8dec0451fe413e34.md)
+26 Aug 2018 | [03cc8d5deeb63e30f5a5d945abf99b00](03cc8d5deeb63e30f5a5d945abf99b00.md)
 
 ## Vulnerability Research
 
