@@ -32,7 +32,9 @@ CVE-2018-13441 | [Nagios Core qh_help Denial of Service](CVE-2018-13441.md)
 CVE-2018-13457 | [Nagios Core qh_echo Denial of Service](CVE-2018-13457.md)
 CVE-2018-13458 | [Nagios Core qh_core Denial of Service](CVE-2018-13458.md)
 CVE-2018-15887 | [ASUS DSL-N12E_C1 Auth Remote Command Execution](CVE-2018-15887.md)
-NA               | [SIPp 3.6 Local Buffer Overflow](sipp_3.6.md)
+NA             | [SIPp 3.6 Local Buffer Overflow](sipp_3.6.md)
+               | [NASM 2-14rc5 Denial of Service](nasm_null_deref.md)
+
 
 
 ## Contact
