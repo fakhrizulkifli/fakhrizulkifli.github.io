@@ -26,3 +26,4 @@ $ ./sipp -log_file `python -c ‘print “A” * 300'`<br>
 #1 0x66912f in main /home/user/sipp/src/sipp.cpp:1706:17<br>
 #2 0x7f6ca663782f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291<br>
 #3 0x41f1a8 in _start (/home/user/sipp/sipp+0x41f1a8)<br>
+<br>
