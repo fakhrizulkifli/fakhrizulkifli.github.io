@@ -1,7 +1,6 @@
 # Site settings
 title_left    : "Fakhri Zulkifli"
-title_right   : "" # default: ""
-description   : ""
+description   : "Blog"
 keywords      : "CTF, capture-the-flag, infosec, vulnerability research, cyber security, security engineering"
 url           : https://fakhrizulkifli.github.io # site url
 baseurl       : "" # apply repo name like "/myproject" if used under gh-pages branch, else (under master branch) just leave empty/blank

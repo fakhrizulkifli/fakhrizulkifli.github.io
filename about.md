@@ -4,4 +4,4 @@ title: About
 permalink: /about/
 ---
 
-Introduce yourself here... so people will know who you are and what you do.. blah..blah..blah..
+Hi! My name is [Fakhri](https://twitter.com/d0lph1n98). I work as a Security Engineer.
