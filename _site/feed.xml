@@ -5,19 +5,19 @@
     <description></description>
     <link>https://fakhrizulkifli.github.io/</link>
     <atom:link href="https://fakhrizulkifli.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 03 Dec 2018 00:09:06 +0800</pubDate>
-    <lastBuildDate>Mon, 03 Dec 2018 00:09:06 +0800</lastBuildDate>
+    <pubDate>Mon, 03 Dec 2018 00:12:22 +0800</pubDate>
+    <lastBuildDate>Mon, 03 Dec 2018 00:12:22 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
         <title>SIPp 3.6 - Local Buffer Overflow (PoC)</title>
-        <description>&lt;p&gt;Exploit Title: SIPp 3.6 - Local Buffer Overflow (PoC)
-Date: 2018-06-30
-Exploit Author: Fakhri Zulkifli
-Vendor Homepage: http://sipp.sourceforge.net/
-Software Link: https://github.com/SIPp/sipp/releases
-Version: 3.6-dev and earlier
-Tested on: 3.6-dev&lt;/p&gt;
+        <description>&lt;p&gt;Exploit Title: SIPp 3.6 - Local Buffer Overflow (PoC)&lt;br /&gt;
+Date: 2018-06-30&lt;br /&gt;
+Exploit Author: Fakhri Zulkifli&lt;br /&gt;
+Vendor Homepage: http://sipp.sourceforge.net/&lt;br /&gt;
+Software Link: https://github.com/SIPp/sipp/releases&lt;br /&gt;
+Version: 3.6-dev and earlier&lt;br /&gt;
+Tested on: 3.6-dev&lt;br /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./sipp -3pcc `python -c ‘print “A” * 300'`
 
