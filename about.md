@@ -1,7 +1,8 @@
 ---
 layout: page
-title: About
+title:  About
 permalink: /about/
+categories: misc
 ---
 
-Hi! My name is [Fakhri](https://twitter.com/d0lph1n98). I work as a Security Engineer.
+Hi! My name is Fakhri. I work as Security Engineer and this is my personal blog.
