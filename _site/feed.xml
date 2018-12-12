@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-12-12T01:53:01+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Fakhri Zulkifli</title><subtitle>Personal blog.</subtitle><entry><title type="html">3945ac76b591cdbd50515b9f65821a64</title><link href="http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64/" rel="alternate" type="text/html" title="3945ac76b591cdbd50515b9f65821a64" /><published>2018-09-21T00:00:00+08:00</published><updated>2018-09-21T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64</id><content type="html" xml:base="http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64/">&lt;p&gt;Upon decompiling, there is a subroutine called as &lt;code class=&quot;highlighter-rouge&quot;&gt;encrypt_code&lt;/code&gt;. This subroutine is using XOR to “encrypt” the string with the predefined key. The string can be “decrypt” using a simple Python script found here (https://gist.github.com/moonbingbing/3432989).&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-12-12T16:47:41+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Fakhri Zulkifli</title><subtitle>Personal blog.</subtitle><entry><title type="html">3945ac76b591cdbd50515b9f65821a64</title><link href="http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64/" rel="alternate" type="text/html" title="3945ac76b591cdbd50515b9f65821a64" /><published>2018-09-21T00:00:00+08:00</published><updated>2018-09-21T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64</id><content type="html" xml:base="http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64/">&lt;p&gt;Upon decompiling, there is a subroutine called as &lt;code class=&quot;highlighter-rouge&quot;&gt;encrypt_code&lt;/code&gt;. This subroutine is using XOR to “encrypt” the string with the predefined key. The string can be “decrypt” using a simple Python script found here (https://gist.github.com/moonbingbing/3432989).&lt;/p&gt;
 
 &lt;p&gt;key = BB2FA36AAA9541F0&lt;/p&gt;
 
@@ -174,6 +174,9 @@ support
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;p&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_file&lt;/code&gt; function, there is an object (output_ins) to a structure (struct insn) which contains the informations regarding the opcode being parsed.
+Inside the &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_file&lt;/code&gt;, a function &lt;code class=&quot;highlighter-rouge&quot;&gt;parse_line&lt;/code&gt; is called in order initialize the object.&lt;/p&gt;
+
 &lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;assemble_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StrList&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;depend_ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -206,8 +209,7 @@ support
     &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_file&lt;/code&gt; function, there is an object (output_ins) to a structure (struct insn) which contains the informations regarding the opcode being parsed.
-Inside the &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_file&lt;/code&gt;, a function &lt;code class=&quot;highlighter-rouge&quot;&gt;parse_line&lt;/code&gt; is called in order initialize the object.&lt;/p&gt;
+&lt;p&gt;Here the structure’s member label which should be containing the definition of the label is clearly being assigned to NULL.&lt;/p&gt;
 
 &lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;parse_line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -238,7 +240,8 @@ Inside the &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_file&lt;/cod
     &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;evex_brerop&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;cm&quot;&gt;/* Reset EVEX broadcasting/ER op position */&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Here the structure’s member label which should be containing the definition of the label is clearly being assigned to NULL.&lt;/p&gt;
+&lt;p&gt;However, down to a few lines of code, there is a check before the it gets initialized with a valid value which is then skipped because the boolean &lt;code class=&quot;highlighter-rouge&quot;&gt;insn_is_label&lt;/code&gt; is always FALSE.
+Therefore, the &lt;code class=&quot;highlighter-rouge&quot;&gt;result-&amp;gt;label&lt;/code&gt; remains NULL.&lt;/p&gt;
 
 &lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
 
@@ -267,8 +270,8 @@ Inside the &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_file&lt;/cod
     &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;However, down to a few lines of code, there is a check before the it gets initialized with a valid value which is then skipped because the boolean &lt;code class=&quot;highlighter-rouge&quot;&gt;insn_is_label&lt;/code&gt; is always FALSE.
-Therefore, the &lt;code class=&quot;highlighter-rouge&quot;&gt;result-&amp;gt;label&lt;/code&gt; remains NULL.&lt;/p&gt;
+&lt;p&gt;So back to the &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_line&lt;/code&gt;, there is a check if the opcode is EQU and surprisingly the nasm_error did not handle the error safely (marked as ERR_NONFATAL).
+The &lt;code class=&quot;highlighter-rouge&quot;&gt;output_ins.label&lt;/code&gt; is then being passed into 3 functions before it gets dereferenced (define_label -&amp;gt; find_label -&amp;gt; islocal).&lt;/p&gt;
 
 &lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
 
@@ -287,8 +290,7 @@ Therefore, the &lt;code class=&quot;highlighter-rouge&quot;&gt;result-&amp;gt;la
     &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;So back to the &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_line&lt;/code&gt;, there is a check if the opcode is EQU and surprisingly the nasm_error did not handle the error safely (marked as ERR_NONFATAL).
-The &lt;code class=&quot;highlighter-rouge&quot;&gt;output_ins.label&lt;/code&gt; is then being passed into 3 functions before it gets dereferenced (define_label -&amp;gt; find_label -&amp;gt; islocal).&lt;/p&gt;
+&lt;p&gt;Triggered.&lt;/p&gt;
 
 &lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;islocal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
