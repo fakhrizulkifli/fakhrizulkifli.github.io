@@ -1,20 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2019-01-04T22:56:08+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Fakhri Zulkifli</title><subtitle>Personal blog.</subtitle><entry><title type="html">[CVE-2019-5008] QEMU sun4u Denial of Service</title><link href="http://localhost:4000/posts/2019/01/03/CVE-2019-5008/" rel="alternate" type="text/html" title="[CVE-2019-5008] QEMU sun4u Denial of Service" /><published>2019-01-03T00:00:00+08:00</published><updated>2019-01-03T00:00:00+08:00</updated><id>http://localhost:4000/posts/2019/01/03/CVE-2019-5008</id><content type="html" xml:base="http://localhost:4000/posts/2019/01/03/CVE-2019-5008/">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
-index f76b19e4e9..cbdb2bb411 100644
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2019-01-04T23:02:39+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Fakhri Zulkifli</title><subtitle>Personal blog.</subtitle><entry><title type="html">[CVE-2019-5008] QEMU sun4u Denial of Service</title><link href="http://localhost:4000/posts/2019/01/03/CVE-2019-5008/" rel="alternate" type="text/html" title="[CVE-2019-5008] QEMU sun4u Denial of Service" /><published>2019-01-03T00:00:00+08:00</published><updated>2019-01-03T00:00:00+08:00</updated><id>http://localhost:4000/posts/2019/01/03/CVE-2019-5008</id><content type="html" xml:base="http://localhost:4000/posts/2019/01/03/CVE-2019-5008/">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index f76b19e4e9..5772da02cb 100644
 &lt;/span&gt;&lt;span class=&quot;gd&quot;&gt;--- a/hw/sparc64/sun4u.c
 &lt;/span&gt;&lt;span class=&quot;gi&quot;&gt;+++ b/hw/sparc64/sun4u.c
-&lt;/span&gt;&lt;span class=&quot;gu&quot;&gt;@@ -214,6 +214,11 @@ typedef struct PowerDevice {
+&lt;/span&gt;&lt;span class=&quot;gu&quot;&gt;@@ -214,6 +214,11 @@  typedef struct PowerDevice {
 &lt;/span&gt; } PowerDevice;
  
  /* Power */
 &lt;span class=&quot;gi&quot;&gt;+static uint64_t power_mem_read(void *opaque, hwaddr addr, unsigned size)
 +{
-+    return 0xffffffff;
++    return 0;
 +}
 +
 &lt;/span&gt; static void power_mem_write(void *opaque, hwaddr addr,
                              uint64_t val, unsigned size)
  {
-&lt;span class=&quot;gu&quot;&gt;@@ -224,6 +229,7 @@ static void power_mem_write(void *opaque, hwaddr addr,
+&lt;span class=&quot;gu&quot;&gt;@@ -224,6 +229,7 @@  static void power_mem_write(void *opaque, hwaddr addr,
 &lt;/span&gt; }
  
  static const MemoryRegionOps power_mem_ops = {
@@ -28,7 +28,7 @@ index f76b19e4e9..cbdb2bb411 100644
 &lt;p&gt;References:&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;https://lists.gnu.org/archive/html/qemu-devel/2019-01/msg00186.html&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><summary type="html">diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c index f76b19e4e9..cbdb2bb411 100644 --- a/hw/sparc64/sun4u.c +++ b/hw/sparc64/sun4u.c @@ -214,6 +214,11 @@ typedef struct PowerDevice { } PowerDevice; /* Power */ +static uint64_t power_mem_read(void *opaque, hwaddr addr, unsigned size) +{ + return 0xffffffff; +} + static void power_mem_write(void *opaque, hwaddr addr, uint64_t val, unsigned size) { @@ -224,6 +229,7 @@ static void power_mem_write(void *opaque, hwaddr addr, } static const MemoryRegionOps power_mem_ops = { + .read = power_mem_read, .write = power_mem_write, .endianness = DEVICE_NATIVE_ENDIAN, .valid = {</summary></entry><entry><title type="html">3945ac76b591cdbd50515b9f65821a64</title><link href="http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64/" rel="alternate" type="text/html" title="3945ac76b591cdbd50515b9f65821a64" /><published>2018-09-21T00:00:00+08:00</published><updated>2018-09-21T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64</id><content type="html" xml:base="http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64/">&lt;p&gt;Upon decompiling, there is a subroutine called as &lt;code class=&quot;highlighter-rouge&quot;&gt;encrypt_code&lt;/code&gt;. This subroutine is using XOR to “encrypt” the string with the predefined key. The string can be “decrypt” using a simple Python script found here (https://gist.github.com/moonbingbing/3432989).&lt;/p&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c index f76b19e4e9..5772da02cb 100644 --- a/hw/sparc64/sun4u.c +++ b/hw/sparc64/sun4u.c @@ -214,6 +214,11 @@ typedef struct PowerDevice { } PowerDevice; /* Power */ +static uint64_t power_mem_read(void *opaque, hwaddr addr, unsigned size) +{ + return 0; +} + static void power_mem_write(void *opaque, hwaddr addr, uint64_t val, unsigned size) { @@ -224,6 +229,7 @@ static void power_mem_write(void *opaque, hwaddr addr, } static const MemoryRegionOps power_mem_ops = { + .read = power_mem_read, .write = power_mem_write, .endianness = DEVICE_NATIVE_ENDIAN, .valid = {</summary></entry><entry><title type="html">3945ac76b591cdbd50515b9f65821a64</title><link href="http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64/" rel="alternate" type="text/html" title="3945ac76b591cdbd50515b9f65821a64" /><published>2018-09-21T00:00:00+08:00</published><updated>2018-09-21T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64</id><content type="html" xml:base="http://localhost:4000/posts/2018/09/21/3945ac76b591cdbd50515b9f65821a64/">&lt;p&gt;Upon decompiling, there is a subroutine called as &lt;code class=&quot;highlighter-rouge&quot;&gt;encrypt_code&lt;/code&gt;. This subroutine is using XOR to “encrypt” the string with the predefined key. The string can be “decrypt” using a simple Python script found here (https://gist.github.com/moonbingbing/3432989).&lt;/p&gt;
 
 &lt;p&gt;key = BB2FA36AAA9541F0&lt;/p&gt;
 
