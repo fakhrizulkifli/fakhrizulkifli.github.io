@@ -12,6 +12,8 @@ tags:
 keywords: "bhyve, bsd, null deref, hypervisor"
 ---
 
+NOTE: This also works in [xhyve hypervisor](https://github.com/machyve/xhyve){:target="_blank"}.
+
 Affected code:
 ```
  0x00000000002317ec <+108>:	mov $0x206519,%edi
