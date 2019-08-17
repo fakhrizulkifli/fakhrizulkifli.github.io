@@ -1,18 +1,23 @@
 ---
-layout: default
+layout: page
 ---
 
-<div class="clearfix">
-    <div class="col col-6">
-        <h2>{{ page.title }}</h2>
-    </div>
-    <div class="col col-6">
-        <p class="right-align">{{ page.date | date: '%B %-d, %Y' }}</p>
-    </div>
-</div>
+<div class="post">
 
-<div class="clearfix">
-    <div class="col col-12">
-        {{ content }}
-    </div>
+  <header class="post-header">
+    <p class="meta">
+        {{ page.date | date: "%b %-d, %Y" }}
+        {% if page.author %} • {{ page.author }}{% endif %}
+        {% if page.meta %} • {{ page.meta }}{% endif %}
+        •
+        {% for category in page.tags %}<span><a href="/category/#{{ category }}" class="reserved">{{ category }}</a>{% if forloop.last != true %},{% endif %}</span>{% endfor %}
+    </p>
+  </header>
+
+  <article class="post-content">
+  {{ content }}
+  </article>
+
+  {% include disqus.html %}
+
 </div>

