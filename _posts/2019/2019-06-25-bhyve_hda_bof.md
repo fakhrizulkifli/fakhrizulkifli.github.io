@@ -4,12 +4,6 @@ title: "BSD Hypervisor - Theoretical Stack-based Buffer Overflow"
 date: 2019-06-25
 categories:
     - blog
-tags:
-    - proof-of-concept
-    - stack overflow
-    - buffer overflow
-    - hypervisor
-    - pci device
 keywords: "bhyve, stack-based, buffer overflow, hypervisor"
 ---
 

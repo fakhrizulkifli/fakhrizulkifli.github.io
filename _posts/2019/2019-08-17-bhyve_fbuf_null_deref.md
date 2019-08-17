@@ -4,11 +4,6 @@ title: "BSD Hypervisor - pci_fbuf NULL Pointer Dereference"
 date: 2019-08-17
 categories:
     - blog
-tags:
-    - bsd
-    - null pointer deref
-    - hypervisor
-    - proof-of-concept
 keywords: "bhyve, bsd, null deref, hypervisor"
 ---
 

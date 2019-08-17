@@ -13,8 +13,7 @@ source_code:
 
 # Build settings
 markdown: kramdown
-permalink: /:categories/:title/
+permalink: /:title/
 plugins:
-  - jekyll-feed
   - jekyll-seo-tag
   - jekyll-paginate
