@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Aug 2019 16:36:24 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Aug 2019 16:36:24 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Aug 2019 19:13:53 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Aug 2019 19:13:53 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -1751,7 +1751,7 @@ index f76b19e4e9..5772da02cb 100644
         <link>http://localhost:4000/blog/3945ac76b591cdbd50515b9f65821a64/</link>
         <guid isPermaLink="true">http://localhost:4000/blog/3945ac76b591cdbd50515b9f65821a64/</guid>
         
-        <category>malware research</category>
+        <category>malware analysis</category>
         
         <category>reverse engineering</category>
         
@@ -1859,7 +1859,7 @@ support
         <link>http://localhost:4000/blog/b08f9dc5784532be5b3f695f37c7781b/</link>
         <guid isPermaLink="true">http://localhost:4000/blog/b08f9dc5784532be5b3f695f37c7781b/</guid>
         
-        <category>malware research</category>
+        <category>malware analysis</category>
         
         <category>reverse engineering</category>
         
