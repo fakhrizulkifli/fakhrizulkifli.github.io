@@ -82,3 +82,7 @@ gs <unavailable>
 fs_base 0x800ac98d0 34371049680
 gs_base 0x0 0
 ```
+
+---
+References:
+1. https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=240272
