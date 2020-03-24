@@ -14,7 +14,7 @@ Proof-of-Crash:
 $ sctest -gS < <(echo "\xe8")
 ```
 
-The root cause is during the instructions callgraph creation. The callgraph will be created when it detects a branching opcode.
+The root cause is triggered during the instructions callgraph creation. The callgraph will be created when it detects a branching opcode.
 
 ```c
 File: src/emu_source.c
@@ -53,7 +53,7 @@ File: src/emu_source.c
 073:
 ```
 
-`emu_source_instruction_graph_create()` function stores the information about the instructions inside a hash table. At line 47, the hash table is created with a size of the instructions divide by 2. Then `datasize` is initialized to `eh->size`.
+`emu_source_instruction_graph_create()` function stores the information about the instructions inside a hash table. At line 47, the hash table is created with the size of the instructions divided by 2. Then `datasize` is initialized to `eh->size`.
 
 ```c
 File: src/emu_hashtable.c
@@ -66,4 +66,4 @@ File: src/emu_hashtable.c
 100: 		return NULL;
 ```
 
-Going down the rabbit hole until the data is insert into the hash table at line 70. `emu_hashtable_search()` is called to check whether the data is already inserted. At line 96, the address of the key inside the hash table is divided with `eh->size`.
+Going down the rabbit hole right before the data is insert into the hash table at line 70. `emu_hashtable_search()` is called to check whether the data is already inserted. At line 96, the address of the key inside the hash table is divided with `eh->size`.
