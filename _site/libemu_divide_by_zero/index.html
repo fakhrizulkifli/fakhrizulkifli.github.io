@@ -87,6 +87,10 @@
   <article class="post-content">
   <p>I found this bug some time ago when i was reading the code for GetPC heuristics mechanism. The bug can be triggered just only with one byte which can be translated to a <code class="highlighter-rouge">CALL</code> opcode. In normal cases, <code class="highlighter-rouge">CALL</code> opcode must be supplied with a relative offset to a new procedure but in this case if the offset is not supplied, it triggers the bug.</p>
 
+<p>Proof-of-Crash:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sctest -gS &lt; &lt;(echo "\xe8")
+</code></pre></div></div>
+
 <p>The root cause is during the instructions callgraph creation. The callgraph will be created when it detects a branching opcode.</p>
 
 <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">File:</span> <span class="n">src</span><span class="o">/</span><span class="n">emu_source</span><span class="p">.</span><span class="n">c</span>
