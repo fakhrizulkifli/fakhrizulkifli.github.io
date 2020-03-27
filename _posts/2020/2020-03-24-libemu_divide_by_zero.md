@@ -66,4 +66,4 @@ File: src/emu_hashtable.c
 100: 		return NULL;
 ```
 
-Going down the rabbit hole right before the data is insert into the hash table at line 70. `emu_hashtable_search()` is called to check whether the data is already inserted. At line 96, the address of the key inside the hash table is divided with `eh->size`.
+Going down the rabbit hole right before the data is insert into the hash table through emu_hashtable_insert() at line 70. `emu_hashtable_search()` is called to check whether the data is already inserted. At line 96, the address of the key inside the hash table is divided with `eh->size`.
