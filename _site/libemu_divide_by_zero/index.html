@@ -70,7 +70,7 @@
             <div class="post">
 
   <header class="post-header">
-    <h1>Libemu - Divide By Zero</h1>
+    <h1>Libemu - emu_shellcode_test Divide By Zero</h1>
   </header>
 
   <article class="post-content">
@@ -91,7 +91,7 @@
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sctest -gS &lt; &lt;(echo "\xe8")
 </code></pre></div></div>
 
-<p>The root cause is during the instructions callgraph creation. The callgraph will be created when it detects a branching opcode.</p>
+<p>The root cause is triggered during the instructions callgraph creation. The callgraph will be created when it detects a branching opcode.</p>
 
 <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">File:</span> <span class="n">src</span><span class="o">/</span><span class="n">emu_source</span><span class="p">.</span><span class="n">c</span>
 <span class="mo">041</span><span class="o">:</span> <span class="kt">uint32_t</span> <span class="nf">emu_source_instruction_graph_create</span><span class="p">(</span><span class="k">struct</span> <span class="n">emu</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span> <span class="k">struct</span> <span class="n">emu_track_and_source</span> <span class="o">*</span><span class="n">es</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">datastart</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">datasize</span><span class="p">)</span>
@@ -129,7 +129,7 @@
 <span class="mo">073</span><span class="o">:</span>
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">emu_source_instruction_graph_create()</code> function stores the information about the instructions inside a hash table. At line 47, the hash table is created with a size of the instructions divide by 2. Then <code class="highlighter-rouge">datasize</code> is initialized to <code class="highlighter-rouge">eh-&gt;size</code>.</p>
+<p><code class="highlighter-rouge">emu_source_instruction_graph_create()</code> function stores the information about the instructions inside a hash table. At line 47, the hash table is created with the size of the instructions divided by 2. Then <code class="highlighter-rouge">datasize</code> is initialized to <code class="highlighter-rouge">eh-&gt;size</code>.</p>
 
 <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">File:</span> <span class="n">src</span><span class="o">/</span><span class="n">emu_hashtable</span><span class="p">.</span><span class="n">c</span>
 <span class="mi">094</span><span class="o">:</span> <span class="k">struct</span> <span class="n">emu_hashtable_item</span> <span class="o">*</span><span class="n">emu_hashtable_search</span><span class="p">(</span><span class="k">struct</span> <span class="n">emu_hashtable</span> <span class="o">*</span><span class="n">eh</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">)</span>
@@ -141,7 +141,7 @@
 <span class="mi">100</span><span class="o">:</span> 		<span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>Going down the rabbit hole until the data is insert into the hash table at line 70. <code class="highlighter-rouge">emu_hashtable_search()</code> is called to check whether the data is already inserted. At line 96, the address of the key inside the hash table is divided with <code class="highlighter-rouge">eh-&gt;size</code>.</p>
+<p>Going down the rabbit hole right before the data is insert into the hash table through emu_hashtable_insert() at line 70. <code class="highlighter-rouge">emu_hashtable_search()</code> is called to check whether the data is already inserted. At line 96, the address of the key inside the hash table is divided with <code class="highlighter-rouge">eh-&gt;size</code>.</p>
 
   </article>
 

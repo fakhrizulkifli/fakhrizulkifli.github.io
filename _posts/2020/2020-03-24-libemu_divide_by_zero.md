@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Libemu - Divide By Zero"
+title: "Libemu - emu_shellcode_test Divide By Zero"
 date: 2020-03-24
 categories:
     - blog
