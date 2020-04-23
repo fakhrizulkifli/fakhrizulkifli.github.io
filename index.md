@@ -2,4 +2,4 @@
 layout: content
 ---
 
-"If debugging is the process of removing bugs. Then programming must be the process of putting them in." - Edsger Dijkstra
+A guy who spends most of his time reading codes looking for bugs
