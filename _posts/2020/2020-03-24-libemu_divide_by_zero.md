@@ -7,14 +7,14 @@ categories:
 keywords: "libemu, sctest, divide by zero, dos, denial of service, dionaea, scdbg"
 ---
 
-I found this bug some time ago when i was reading the code for GetPC heuristics mechanism. The bug can be triggered just only with one byte which can be translated to a `CALL` opcode. In normal cases, `CALL` opcode must be supplied with a relative offset to a new procedure but in this case if the offset is not supplied, it triggers the bug.
+I found this bug some time ago when i was reading the code for GetPC heuristics mechanism. The bug can be triggered with just only one byte which can be translated to a `CALL` opcode. In normal cases, `CALL` opcode must be supplied with a relative offset to a new procedure but in this case if the offset is not supplied, it triggers the bug.
 
 Proof-of-Crash:
 ```shell
 $ sctest -gS < <(echo "\xe8")
 ```
 
-The root cause is triggered during the instructions callgraph creation. The callgraph will be created when it detects a branching opcode.
+The root cause is when it detects a branching opcode it will attempt to create the instructions call graph by enumerating the relative offset for the next branch. However, there is no check whether the branching offset is supplied or not and thus leaving the `datasize` variable with value 0.
 
 ```c
 File: src/emu_source.c
@@ -53,7 +53,7 @@ File: src/emu_source.c
 073:
 ```
 
-`emu_source_instruction_graph_create()` function stores the information about the instructions inside a hash table. At line 47, the hash table is created with the size of the instructions divided by 2. Then `datasize` is initialized to `eh->size`.
+`emu_source_instruction_graph_create()` function is to stores the information about the instructions inside a hash table. At line 47, the hash table is created with the size of the instructions divided by 2. Then `datasize` is initialized to `eh->size`.
 
 ```c
 File: src/emu_hashtable.c
@@ -66,4 +66,4 @@ File: src/emu_hashtable.c
 100: 		return NULL;
 ```
 
-Going down the rabbit hole right before the data is insert into the hash table through emu_hashtable_insert() at line 70. `emu_hashtable_search()` is called to check whether the data is already inserted. At line 96, the address of the key inside the hash table is divided with `eh->size`.
+Going down the rabbit hole right before the data is insert into the hash table through `emu_hashtable_insert()` at line 70. `emu_hashtable_search()` is called to check whether the data is already inserted or not. At line 96, the address of the key inside the hash table will be divided with `eh->size` and triggers the bug.

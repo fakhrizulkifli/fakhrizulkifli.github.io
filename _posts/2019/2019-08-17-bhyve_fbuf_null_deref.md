@@ -7,6 +7,8 @@ categories:
 keywords: "bhyve, bsd, null deref, hypervisor"
 ---
 
+The bug is inside the fbuf PCI device. There is no check if the pointer softc structure is NULL. However, this bug requires root privilege to load the kernel driver and attach it to the device in order to crash the hypervisor.
+
 NOTE: This also works in [xhyve hypervisor](https://github.com/machyve/xhyve){:target="_blank"}.
 
 Affected code:

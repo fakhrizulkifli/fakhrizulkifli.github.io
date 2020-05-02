@@ -87,7 +87,9 @@
   </header>
 
   <article class="post-content">
-  <p>NOTE: This also works in <a href="https://github.com/machyve/xhyve" target="_blank">xhyve hypervisor</a>.</p>
+  <p>The bug is inside the fbuf PCI device. There is no check if the pointer softc structure is NULL. However, this bug requires root privilege to load the kernel driver and attach it to the device in order to crash the hypervisor.</p>
+
+<p>NOTE: This also works in <a href="https://github.com/machyve/xhyve" target="_blank">xhyve hypervisor</a>.</p>
 
 <p>Affected code:</p>
 <div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="mh">0x00000000002317ec</span> <span class="o">&lt;+</span><span class="mi">108</span><span class="o">&gt;:</span>	<span class="k">mov</span> <span class="err">$</span><span class="mh">0x206519</span><span class="p">,</span><span class="err">%</span><span class="n">edi</span>
