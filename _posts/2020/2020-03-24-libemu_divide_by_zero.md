@@ -10,7 +10,7 @@ keywords: "libemu, sctest, divide by zero, dos, denial of service, dionaea, scdb
 I found this bug some time ago when i was reading the code for GetPC heuristics mechanism. The bug can be triggered just only with one byte which can be translated to a `CALL` opcode. In normal cases, `CALL` opcode must be supplied with a relative offset to a new procedure but in this case if the offset is not supplied, it triggers the bug.
 
 Proof-of-Crash:
-```
+```shell
 $ sctest -gS < <(echo "\xe8")
 ```
 

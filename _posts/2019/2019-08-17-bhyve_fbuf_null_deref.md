@@ -10,7 +10,7 @@ keywords: "bhyve, bsd, null deref, hypervisor"
 NOTE: This also works in [xhyve hypervisor](https://github.com/machyve/xhyve){:target="_blank"}.
 
 Affected code:
-```
+```nasm
  0x00000000002317ec <+108>:	mov $0x206519,%edi
  0x00000000002317f1 <+113>:	xor %eax,%eax
  0x00000000002317f3 <+115>:	mov %r9d,%esi
@@ -26,7 +26,7 @@ Affected code:
 ```
 
 Proof-of-Crash:
-```
+```shell
 Thread 13 "vcpu 2" received signal SIGSEGV, Segmentation fault.
 [Switching to LWP 100571 of process 4094]
 0x0000000000231802 in pci_fbuf_write (ctx=<optimized out>, vcpu=<optimized out>, pi=<optimized out>, baridx=<optimized out>, offset=<optimized out>, size=<optimized out>,

