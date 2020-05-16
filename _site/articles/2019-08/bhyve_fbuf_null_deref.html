@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="A guest to host denial of service.">
+  <meta name="keywords" content="blog, jekyll, software vulnerabilities, software bugs, and mem corruptions">
+  <meta name="author" content="BSD Hypervisor - pci_fbuf NULL Pointer Dereference | Fakhri Zulkifli">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="BSD Hypervisor - pci_fbuf NULL Pointer Dereference | Fakhri Zulkifli">
+  <meta name="twitter:description" content="A guest to host denial of service.">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref">
+  <meta property="og:title" content="BSD Hypervisor - pci_fbuf NULL Pointer Dereference | Fakhri Zulkifli">
+  <meta property="og:description" content="A guest to host denial of service.">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>BSD Hypervisor - pci_fbuf NULL Pointer Dereference | Fakhri Zulkifli</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref">
+  <link rel="alternate" type="application/rss+xml" title="Fakhri Zulkifli" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/" class="author_name">Fakhri Zulkifli</a>
+  <span class="author_job">Looking for a job</span>
+  <span class="author_bio mbm">A fan of software bugs and vulnerabilities.</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+      <li>
+      <script>gen_mail_to_link('mohdfakhrizulkifli@gmail.com', 'Hello from website');</script>
+      </li>
+    
+    <li><a href="http://twitter.com/d0lph1n98" class="social-link-item" target="_blank"><i class="fa fa-fw fa-twitter"></i></a></li>
+    
+    
+    <li><a href="http://linkedin.com/in/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-linkedin"></i></a></li>
+    
+    
+    
+    
+    <li><a href="http://github.com/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-github"></i></a></li>
+    
+    <li><a href="http://stackoverflow.com/users/1334320/fakhri-zulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="BSD Hypervisor - pci_fbuf NULL Pointer Dereference">BSD Hypervisor - pci_fbuf NULL Pointer Dereference</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        17 AUG 2019
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    3 mins read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    
+<h1 id="overview">Overview</h1>
+<p>The bug is inside the <strong>fbuf</strong> PCI device. There is no check if the pointer to a softc structure is NULL. However, this bug requires root privilege to load the kernel driver and attach it to the device in order to crash the hypervisor. <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+
+<p>NOTE: This also works in <a href="https://github.com/machyve/xhyve">xhyve hypervisor</a>.</p>
+
+<h1 id="bug-analysis">Bug Analysis</h1>
+<p>Affected code:</p>
+
+<figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"> <span class="mh">0x00000000002317ec</span> <span class="o">&lt;+</span><span class="mi">108</span><span class="o">&gt;:</span>	<span class="k">mov</span> <span class="err">$</span><span class="mh">0x206519</span><span class="p">,</span><span class="err">%</span><span class="n">edi</span>
+ <span class="mh">0x00000000002317f1</span> <span class="o">&lt;+</span><span class="mi">113</span><span class="o">&gt;:</span>	<span class="k">xor</span> <span class="err">%</span><span class="n">eax</span><span class="p">,</span><span class="err">%</span><span class="n">eax</span>
+ <span class="mh">0x00000000002317f3</span> <span class="o">&lt;+</span><span class="mi">115</span><span class="o">&gt;:</span>	<span class="k">mov</span> <span class="err">%</span><span class="n">r9d</span><span class="p">,</span><span class="err">%</span><span class="n">esi</span>
+ <span class="mh">0x00000000002317f6</span> <span class="o">&lt;+</span><span class="mi">118</span><span class="o">&gt;:</span>	<span class="n">callq</span> <span class="mh">0x24aa00</span> <span class="o">&lt;</span><span class="n">printf</span><span class="err">@</span><span class="n">plt</span><span class="o">&gt;</span>
+ <span class="mh">0x00000000002317fb</span> <span class="o">&lt;+</span><span class="mi">123</span><span class="o">&gt;:</span>	<span class="k">mov</span> <span class="mh">0xc8</span><span class="p">(</span><span class="err">%</span><span class="n">rbx</span><span class="p">),</span><span class="err">%</span><span class="n">rax</span>
+<span class="o">=&gt;</span> <span class="mh">0x0000000000231802</span> <span class="o">&lt;+</span><span class="mi">130</span><span class="o">&gt;:</span>	<span class="n">cmpl</span> <span class="err">$</span><span class="mh">0x0</span><span class="p">,(</span><span class="err">%</span><span class="n">rax</span><span class="p">)</span>
+ <span class="mh">0x0000000000231805</span> <span class="o">&lt;+</span><span class="mi">133</span><span class="o">&gt;:</span>	<span class="n">movzwl</span> <span class="mh">0xc</span><span class="p">(</span><span class="err">%</span><span class="n">rbx</span><span class="p">),</span><span class="err">%</span><span class="n">eax</span>
+ <span class="mh">0x0000000000231809</span> <span class="o">&lt;+</span><span class="mi">137</span><span class="o">&gt;:</span>	<span class="k">je</span> <span class="mh">0x231830</span> <span class="o">&lt;</span><span class="n">pci_fbuf_write</span><span class="o">+</span><span class="mi">176</span><span class="o">&gt;</span>
+ <span class="mh">0x000000000023180b</span> <span class="o">&lt;+</span><span class="mi">139</span><span class="o">&gt;:</span>	<span class="k">test</span> <span class="err">%</span><span class="n">ax</span><span class="p">,</span><span class="err">%</span><span class="n">ax</span>
+ <span class="mh">0x000000000023180e</span> <span class="o">&lt;+</span><span class="mi">142</span><span class="o">&gt;:</span>	<span class="k">je</span> <span class="mh">0x23185d</span> <span class="o">&lt;</span><span class="n">pci_fbuf_write</span><span class="o">+</span><span class="mi">221</span><span class="o">&gt;</span>
+ <span class="mh">0x0000000000231810</span> <span class="o">&lt;+</span><span class="mi">144</span><span class="o">&gt;:</span>	<span class="n">cmpw</span> <span class="err">$</span><span class="mh">0x0</span><span class="p">,</span><span class="mh">0xe</span><span class="p">(</span><span class="err">%</span><span class="n">rbx</span><span class="p">)</span>
+ <span class="mh">0x0000000000231815</span> <span class="o">&lt;+</span><span class="mi">149</span><span class="o">&gt;:</span>	<span class="k">je</span> <span class="mh">0x23185d</span> <span class="o">&lt;</span><span class="n">pci_fbuf_write</span><span class="o">+</span><span class="mi">221</span><span class="o">&gt;</span></code></pre></figure>
+
+<h1 id="crash-analysis">Crash Analysis</h1>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Thread 13 <span class="s2">"vcpu 2"</span> received signal SIGSEGV, Segmentation fault.
+<span class="o">[</span>Switching to LWP 100571 of process 4094]
+0x0000000000231802 <span class="k">in </span>pci_fbuf_write <span class="o">(</span><span class="nv">ctx</span><span class="o">=</span>&lt;optimized out&gt;, <span class="nv">vcpu</span><span class="o">=</span>&lt;optimized out&gt;, <span class="nv">pi</span><span class="o">=</span>&lt;optimized out&gt;, <span class="nv">baridx</span><span class="o">=</span>&lt;optimized out&gt;, <span class="nv">offset</span><span class="o">=</span>&lt;optimized out&gt;, <span class="nv">size</span><span class="o">=</span>&lt;optimized out&gt;,
+ <span class="nv">value</span><span class="o">=</span>1953719668<span class="o">)</span> at /usr/src/usr.sbin/bhyve/pci_fbuf.c:166
+166	<span class="k">if</span> <span class="o">(!</span>sc-&gt;gc_image-&gt;vgamode <span class="o">&amp;&amp;</span> sc-&gt;memregs.width <span class="o">==</span> 0 <span class="o">&amp;&amp;</span>
+<span class="o">(</span>gdb<span class="o">)</span> p sc-&gt;gc_image
+<span class="nv">$1</span> <span class="o">=</span> <span class="o">(</span>struct bhyvegc_image <span class="k">*</span><span class="o">)</span> 0x0
+<span class="o">(</span>gdb<span class="o">)</span> bt
+<span class="c">#0 0x0000000000231802 in pci_fbuf_write (ctx=&lt;optimized out&gt;, vcpu=&lt;optimized out&gt;, pi=&lt;optimized out&gt;, baridx=&lt;optimized out&gt;, offset=&lt;optimized out&gt;, size=&lt;optimized out&gt;,</span>
+ <span class="nv">value</span><span class="o">=</span>1953719668<span class="o">)</span> at /usr/src/usr.sbin/bhyve/pci_fbuf.c:166
+<span class="c">#1 0x0000000000230522 in pci_emul_mem_handler (ctx=0x80028e080, vcpu=2, dir=&lt;optimized out&gt;, addr=&lt;optimized out&gt;, size=4, val=0x7fffde9f2d40, arg1=0x800a9aa00, arg2=0)</span>
+ at /usr/src/usr.sbin/bhyve/pci_emul.c:415
+<span class="c">#2 0x0000000000224ae4 in mem_write (ctx=0x80028e080, vcpu=2, gpa=3, wval=1953719668, size=0, arg=0x0) at /usr/src/usr.sbin/bhyve/mem.c:162</span>
+<span class="c">#3 0x00000000002486ae in emulate_mov (vm=&lt;optimized out&gt;, vcpuid=&lt;optimized out&gt;, gpa=&lt;optimized out&gt;, vie=&lt;optimized out&gt;, memread=&lt;optimized out&gt;,</span>
+ <span class="nv">memwrite</span><span class="o">=</span>&lt;optimized out&gt;, <span class="nv">arg</span><span class="o">=</span>&lt;optimized out&gt;<span class="o">)</span> at /usr/src/sys/amd64/vmm/vmm_instruction_emul.c:517
+<span class="c">#4 vmm_emulate_instruction (vm=&lt;optimized out&gt;, vcpuid=&lt;optimized out&gt;, gpa=&lt;optimized out&gt;, vie=&lt;optimized out&gt;, paging=&lt;optimized out&gt;, memread=&lt;optimized out&gt;,</span>
+ <span class="nv">memwrite</span><span class="o">=</span>0x224ab0 &lt;mem_write&gt;, <span class="nv">memarg</span><span class="o">=</span>0x800aad100<span class="o">)</span> at /usr/src/sys/amd64/vmm/vmm_instruction_emul.c:1510
+<span class="c">#5 0x000000000022448f in emulate_mem_cb (ctx=0x80028e080, vcpu=2, paddr=34370857472, mr=0x0, arg=&lt;optimized out&gt;) at /usr/src/usr.sbin/bhyve/mem.c:238</span>
+<span class="c">#6 0x00000000002243da in access_memory (ctx=0x80028e080, vcpu=2, paddr=3221241856, cb=0x224470 &lt;emulate_mem_cb&gt;, arg=0x7fffde9f2ec8) at /usr/src/usr.sbin/bhyve/mem.c:215</span>
+<span class="c">#7 0x00000000002242b9 in emulate_mem (ctx=0x80028e080, vcpu=2, paddr=34370857472, vie=&lt;optimized out&gt;, paging=&lt;optimized out&gt;) at /usr/src/usr.sbin/bhyve/mem.c:251</span>
+<span class="c">#8 0x000000000021bc75 in vmexit_inst_emul (ctx=0x80028e080, vmexit=0x24f780 &lt;vmexit+272&gt;, pvcpu=&lt;optimized out&gt;) at /usr/src/usr.sbin/bhyve/bhyverun.c:630</span>
+<span class="c">#9 0x000000000021b6da in vm_loop (ctx=0x80028e080, vcpu=2, startrip=&lt;optimized out&gt;) at /usr/src/usr.sbin/bhyve/bhyverun.c:748</span>
+<span class="c">#10 0x000000000021a969 in fbsdrun_start_thread (param=0x24e050 &lt;mt_vmm_info+48&gt;) at /usr/src/usr.sbin/bhyve/bhyverun.c:353</span>
+<span class="c">#11 0x000000080061b776 in ?? () from /lib/libthr.so.3</span>
+<span class="c">#12 0x0000000000000000 in ?? ()</span>
+Backtrace stopped: Cannot access memory at address 0x7fffde9f3000
+
+<span class="o">(</span>gdb<span class="o">)</span> i registers
+rax 0x0 0
+rbx 0x800aec000 34371190784
+rcx 0x3 3
+rdx 0x800a9aa00 34370857472
+rsi 0x2 2
+rdi 0x80028e080 34362417280
+rbp 0x7fffde9f2cd0 0x7fffde9f2cd0
+rsp 0x7fffde9f2cc0 0x7fffde9f2cc0
+r8 0x0 0
+r9 0x4 4
+r10 0x231780 2299776
+r11 0x7fffde9f2d40 140736928361792
+r12 0x0 0
+r13 0x80028e080 34362417280
+r14 0x800a9aa00 34370857472
+r15 0x24b430 2405424
+rip 0x231802 0x231802 &lt;pci_fbuf_write+130&gt;
+eflags 0x10297 <span class="o">[</span> CF PF AF SF IF RF <span class="o">]</span>
+cs 0x43 67
+ss 0x3b 59
+ds &lt;unavailable&gt;
+es &lt;unavailable&gt;
+fs &lt;unavailable&gt;
+gs &lt;unavailable&gt;
+fs_base 0x800ac98d0 34371049680
+gs_base 0x0 0</code></pre></figure>
+
+<h1 id="references">References</h1>
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p><a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=240272">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=240272</a> <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+
+        <footer>
+  &copy; 2020 Fakhri Zulkifli. Made with <a href="http://github.com/renyuanz/leonids/"><i class="fa fa-heart heart-icon"></i></a>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>

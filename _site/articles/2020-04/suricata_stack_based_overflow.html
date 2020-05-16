@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="A trivial local stack-based overflow.">
+  <meta name="keywords" content="blog, jekyll, software vulnerabilities, software bugs, and mem corruptions">
+  <meta name="author" content="Suricata - ReadErfFile Stack-based Buffer Overflow | Fakhri Zulkifli">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Suricata - ReadErfFile Stack-based Buffer Overflow | Fakhri Zulkifli">
+  <meta name="twitter:description" content="A trivial local stack-based overflow.">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2020-04/suricata_stack_based_overflow">
+  <meta property="og:title" content="Suricata - ReadErfFile Stack-based Buffer Overflow | Fakhri Zulkifli">
+  <meta property="og:description" content="A trivial local stack-based overflow.">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>Suricata - ReadErfFile Stack-based Buffer Overflow | Fakhri Zulkifli</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2020-04/suricata_stack_based_overflow">
+  <link rel="alternate" type="application/rss+xml" title="Fakhri Zulkifli" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/" class="author_name">Fakhri Zulkifli</a>
+  <span class="author_job">Looking for a job</span>
+  <span class="author_bio mbm">A fan of software bugs and vulnerabilities.</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+      <li>
+      <script>gen_mail_to_link('mohdfakhrizulkifli@gmail.com', 'Hello from website');</script>
+      </li>
+    
+    <li><a href="http://twitter.com/d0lph1n98" class="social-link-item" target="_blank"><i class="fa fa-fw fa-twitter"></i></a></li>
+    
+    
+    <li><a href="http://linkedin.com/in/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-linkedin"></i></a></li>
+    
+    
+    
+    
+    <li><a href="http://github.com/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-github"></i></a></li>
+    
+    <li><a href="http://stackoverflow.com/users/1334320/fakhri-zulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="Suricata - ReadErfFile Stack-based Buffer Overflow">Suricata - ReadErfFile Stack-based Buffer Overflow</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        3 APR 2020
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    1 min read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    
+<p>Another day another bug. The bug can be triggered by a specially crafted ERF file. The Extensible Record Format (ERF) is a trace file produced by the Endace DAG cards and can be consumed by Suricata and Wireshark. In this case, the bug is in the Suricata’s <strong>ReadErfFile</strong> function. <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+
+<p>The payload can be crafted based on their packet format documentation <a href="https://www.endace.com/erf-extensible-record-format-types.pdf">here</a> and <a href="https://wiki.wireshark.org/ERF">here</a></p>
+
+<h1 id="crash-analysis">Crash Analysis</h1>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#0  __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:51</span>
+<span class="c">#1  0x00007ffff5783801 in __GI_abort () at abort.c:79</span>
+<span class="c">#2  0x00007ffff57cc5e5 in __libc_message (action=(do_abort | do_backtrace), fmt=0x7ffff58f9796 "%s", fmt=0x7ffff58f9796 "%s", </span>
+    <span class="nv">action</span><span class="o">=(</span>do_abort | do_backtrace<span class="o">))</span> at ../sysdeps/posix/libc_fatal.c:181
+<span class="c">#3  0x00007ffff57cc92a in __GI___libc_fatal (</span>
+    <span class="nv">message</span><span class="o">=</span>message@entry<span class="o">=</span>0x7ffff58fb3b8 <span class="s2">"Fatal error: glibc detected an invalid stdio handle</span><span class="se">\n</span><span class="s2">"</span><span class="o">)</span>
+    at ../sysdeps/posix/libc_fatal.c:191
+<span class="c">#4  0x00007ffff57cd1d7 in _IO_vtable_check () at vtables.c:72</span>
+<span class="c">#5  0x00007ffff57ce76a in IO_validate_vtable (vtable=0x4141414141414141) at libioP.h:876</span>
+<span class="c">#6  __GI__IO_file_xsgetn (fp=0x7fffec268b20, data=&lt;optimized out&gt;, n=18446744073709551614) at fileops.c:1364</span>
+<span class="c">#7  0x00007ffff57c23c1 in __GI__IO_fread (buf=&lt;optimized out&gt;, size=18446744073709551614, count=count@entry=1, fp=0x7fffec268b20)</span>
+    at iofread.c:38
+<span class="c">#8  0x000055555570adc0 in fread (__stream=&lt;optimized out&gt;, __n=1, __size=&lt;optimized out&gt;, __ptr=&lt;optimized out&gt;)</span>
+    at /usr/include/x86_64-linux-gnu/bits/stdio2.h:294
+<span class="c">#9  ReadErfRecord (p=p@entry=0x7fffec268180, data=data@entry=0x7fffec268d50, tv=&lt;optimized out&gt;) at source-erf-file.c:170</span>
+<span class="c">#10 0x000055555570b346 in ReceiveErfFileLoop (tv=&lt;optimized out&gt;, data=0x7fffec268d50, slot=&lt;optimized out&gt;) at source-erf-file.c:137</span>
+<span class="c">#11 0x0000555555731aa4 in TmThreadsSlotPktAcqLoop (td=0x555556c09b10) at tm-threads.c:300</span>
+<span class="c">#12 0x00007ffff69816db in start_thread (arg=0x7ffff38b0700) at pthread_create.c:463</span>
+<span class="c">#13 0x00007ffff586488f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95</span></code></pre></figure>
+
+<h1 id="references">References</h1>
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p><a href="https://redmine.openinfosecfoundation.org/issues/3593">https://redmine.openinfosecfoundation.org/issues/3593</a> <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2020-04/suricata_stack_based_overflow" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2020-04/suricata_stack_based_overflow" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2020-04/suricata_stack_based_overflow" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2020-04/suricata_stack_based_overflow" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2020-04/suricata_stack_based_overflow" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+
+        <footer>
+  &copy; 2020 Fakhri Zulkifli. Made with <a href="http://github.com/renyuanz/leonids/"><i class="fa fa-heart heart-icon"></i></a>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>

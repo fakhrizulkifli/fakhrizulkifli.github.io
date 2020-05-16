@@ -1,22 +1,71 @@
-# Site settings
-title: "Fakhri Zulkifli"
-baseurl: ""
-url: "https://fakhrizulkifli.github.io"
-disqus:
+#
+###################################
+# Site wide configuration
+####################################
+#
+title: Fakhri Zulkifli
+email: mohdfakhrizulkifli@gmail.com
+description: A fan of sofware bugs and vulnerabilities.
+url: fakhrizulkifli.github.io # the base hostname & protocol for your site
+keywords: ["blog", "jekyll", "software vulnerabilities", "software bugs", "mem corruptions"]
 
-work_media:
-  domain: "linkedin.com/in"
-  nick: "fakhrizulkifli"
-social_media:
-  domain: "twitter.com"
-  nick: "d0lph1n98"
-source_code:
-  server: "github.com"
-  nick: "fakhrizulkifli"
+#
+###################################
+# Jekyll configuration
+####################################
+#
+timezone:          Asia/Kuala Lumpur
+markdown:          kramdown
+highlighter:       rouge
+excerpt_separator: <!--more-->
+permalink:         /articles/:year-:month/:title
 
-# Build settings
-markdown: kramdown
-permalink: /:title/
-plugins:
-  - jekyll-seo-tag
-  - jekyll-paginate
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  enable_coderay: false
+
+#
+###################################
+# Site Owner configuration
+####################################
+#
+owner:
+  name: Fakhri Zulkifli
+  avatar: #leonids-logo.png
+  job: "Looking for a job"
+  bio: "A fan of software bugs and vulnerabilities."
+  email: mohdfakhrizulkifli@gmail.com
+  disqus-shortname:
+  twitter: d0lph1n98 #username
+  facebook: #username
+  google:
+    plus: #username
+    analytics:
+    verify:
+    ad-client:
+    ad-slot:
+  bing-verify:
+  github: fakhrizulkifli #username
+  gitlab: # fakhrizulkifli #username
+  stackoverflow: 1334320/fakhri-zulkifli #123456/username   from a "http://stackoverflow.com/users/123456/username" link
+  linkedin: fakhrizulkifli #username
+  skype: #username
+  xing: #username
+  instagram: #username
+  lastfm: #username
+  tumblr: #username
+  pinterest: #username
+  foursquare: #username
+  steam: #username
+  dribbble: #username
+  youtube: #username
+  soundcloud: #username
+  weibo: #username
+  flickr: #username
+  500px: #username
+  codepen: #username
+  reddit: #username
+  telegram: #username

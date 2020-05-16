@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="A coincidence.">
+  <meta name="keywords" content="blog, jekyll, software vulnerabilities, software bugs, and mem corruptions">
+  <meta name="author" content="IPv6 Local Neighbor Discovery Using Router Advertisement | Fakhri Zulkifli">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="IPv6 Local Neighbor Discovery Using Router Advertisement | Fakhri Zulkifli">
+  <meta name="twitter:description" content="A coincidence.">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement">
+  <meta property="og:title" content="IPv6 Local Neighbor Discovery Using Router Advertisement | Fakhri Zulkifli">
+  <meta property="og:description" content="A coincidence.">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>IPv6 Local Neighbor Discovery Using Router Advertisement | Fakhri Zulkifli</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement">
+  <link rel="alternate" type="application/rss+xml" title="Fakhri Zulkifli" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/" class="author_name">Fakhri Zulkifli</a>
+  <span class="author_job">Looking for a job</span>
+  <span class="author_bio mbm">A fan of software bugs and vulnerabilities.</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+      <li>
+      <script>gen_mail_to_link('mohdfakhrizulkifli@gmail.com', 'Hello from website');</script>
+      </li>
+    
+    <li><a href="http://twitter.com/d0lph1n98" class="social-link-item" target="_blank"><i class="fa fa-fw fa-twitter"></i></a></li>
+    
+    
+    <li><a href="http://linkedin.com/in/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-linkedin"></i></a></li>
+    
+    
+    
+    
+    <li><a href="http://github.com/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-github"></i></a></li>
+    
+    <li><a href="http://stackoverflow.com/users/1334320/fakhri-zulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="IPv6 Local Neighbor Discovery Using Router Advertisement">IPv6 Local Neighbor Discovery Using Router Advertisement</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        18 AUG 2019
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    4 mins read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    
+<p>Back in March 2016, i had decided to learn more about IPv6 and to do so I came out with an idea to build a network scanner specifically for IPv6 network which can be found <a href="https://github.com/fakhrizulkifli/6Map">here</a> and of course, it is unfinished!. During the development, I relied heavily on rfc4861 specification to utilize the Neighbor Solicitation to discover hosts on link-local. <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+
+<p>So the idea was to send a Router Advertisement message to the multicast address for all available IPv6 devices within the same network segment. Further reading and googling left me a mailing list thread which discussed some issues in a Metasploit’s auxiliary <a href="https://www.rapid7.com/db/modules/auxiliary/scanner/discovery/ipv6_neighbor_router_advertisement">scanner</a>. Every time the scanner scans the entire network, it leaves the hosts in a denial-of-service state to the IPv6 network due to the misconfigured routing table <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>. Turned out the scanner was sending the RA message with a lifetime of 1800 seconds. So within this timeframe, the hosts will not be able to have proper IPv6 connection until the entry of router advertised is flushed away from the routing table. So i created a patch for the scanner and set the RA lifetime to 0 indicating it is not a default router and thus not going to be appeared in the host’s routing table.<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup></p>
+
+<h1 id="patch-analysis">Patch Analysis</h1>
+<p>Patch diff:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">From</span> <span class="n">b1e9f44ca26072ba9594ef7d034e47283f220b2f</span> <span class="no">Mon</span> <span class="no">Sep</span> <span class="mi">17</span> <span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span> <span class="mi">2001</span>
+<span class="no">From</span><span class="p">:</span> <span class="no">Fakhri</span> <span class="no">Zulkifli</span> <span class="o">&lt;</span><span class="n">d0lph1n98</span><span class="vi">@yahoo</span><span class="p">.</span><span class="nf">com</span><span class="o">&gt;</span>
+<span class="no">Date</span><span class="p">:</span> <span class="no">Sun</span><span class="p">,</span> <span class="mi">6</span> <span class="no">Mar</span> <span class="mi">2016</span> <span class="mo">03</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">37</span> <span class="o">+</span><span class="mi">0800</span>
+<span class="no">Subject</span><span class="p">:</span> <span class="p">[</span><span class="no">PATCH</span><span class="p">]</span> <span class="no">IPv6</span> <span class="no">Neighbor</span> <span class="no">Advertisement</span> <span class="no">Enhancement</span>
+
+<span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="n">seclists</span><span class="p">.</span><span class="nf">org</span><span class="o">/</span><span class="n">nmap</span><span class="o">-</span><span class="n">dev</span><span class="o">/</span><span class="mi">2011</span><span class="o">/</span><span class="n">q2</span><span class="o">/</span><span class="mi">79</span>
+
+<span class="mi">1</span><span class="o">.</span> <span class="no">Shorten</span> <span class="n">router</span> <span class="n">advertisement</span> <span class="n">payload</span> <span class="n">lifetime</span><span class="o">.</span>
+<span class="mi">2</span><span class="o">.</span> <span class="no">Randomize</span> <span class="n">address</span> <span class="n">prefix</span><span class="o">.</span>
+<span class="mi">3</span><span class="o">.</span> <span class="no">Prevent</span> <span class="n">from</span> <span class="n">getting</span> <span class="n">into</span> <span class="n">default</span> <span class="n">router</span> <span class="n">list</span><span class="p">.</span>
+<span class="nf">-</span><span class="o">--</span>
+ <span class="o">...</span><span class="sr">/ipv6_neighbor_router_advertisement.rb     | 25 +++++++++++--------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
+
+diff --git a/mo</span><span class="n">dules</span><span class="o">/</span><span class="n">auxiliary</span><span class="o">/</span><span class="n">scanner</span><span class="o">/</span><span class="n">discovery</span><span class="o">/</span><span class="n">ipv6_neighbor_router_advertisement</span><span class="p">.</span><span class="nf">rb</span> <span class="n">b</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">auxiliary</span><span class="o">/</span><span class="n">scanner</span><span class="o">/</span><span class="n">discovery</span><span class="o">/</span><span class="n">ipv6_neighbor_router_advertisement</span><span class="p">.</span><span class="nf">rb</span>
+<span class="n">index</span> <span class="mi">08</span><span class="n">e6967dfe1</span><span class="o">..</span><span class="mi">4</span><span class="n">b1d988dce2</span> <span class="mi">100644</span>
+<span class="o">---</span> <span class="n">a</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">auxiliary</span><span class="o">/</span><span class="n">scanner</span><span class="o">/</span><span class="n">discovery</span><span class="o">/</span><span class="n">ipv6_neighbor_router_advertisement</span><span class="p">.</span><span class="nf">rb</span>
+<span class="o">+++</span> <span class="n">b</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">auxiliary</span><span class="o">/</span><span class="n">scanner</span><span class="o">/</span><span class="n">discovery</span><span class="o">/</span><span class="n">ipv6_neighbor_router_advertisement</span><span class="p">.</span><span class="nf">rb</span>
+<span class="err">@@</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">7</span> <span class="o">+</span><span class="mi">20</span><span class="p">,</span><span class="mi">7</span> <span class="err">@@</span> <span class="k">def</span> <span class="nf">initialize</span>
+         <span class="n">the</span> <span class="n">host</span> <span class="n">portion</span> <span class="n">of</span> <span class="n">the</span> <span class="no">IPv6</span> <span class="n">address</span><span class="o">.</span>  <span class="no">Use</span> <span class="no">NDP</span> <span class="n">host</span> <span class="n">solicitation</span> <span class="n">to</span>
+         <span class="n">determine</span> <span class="k">if</span> <span class="n">the</span> <span class="no">IP</span> <span class="n">address</span> <span class="n">is</span> <span class="n">valid</span><span class="s1">'
+     },
+-    '</span><span class="no">Author</span><span class="s1">'      =&gt; '</span><span class="n">wuntee</span><span class="s1">',
++    '</span><span class="no">Author</span><span class="s1">'      =&gt; '</span><span class="n">wuntee</span><span class="p">,</span> <span class="n">d0lph1n98</span><span class="s1">',
+     '</span><span class="no">License</span><span class="s1">'     =&gt; MSF_LICENSE,
+     '</span><span class="no">References</span><span class="s1">'    =&gt;
+     [
+@@ -33,20 +33,22 @@ def initialize
+       OptInt.new('</span><span class="no">TIMEOUT_NEIGHBOR</span><span class="s1">', [true, "Time (seconds) to listen for a solicitation response.", 1])
+     ], self.class)
+ 
+-    register_advanced_options(
+-      [
+-        OptString.new('</span><span class="no">PREFIX</span><span class="s1">', [true, "Prefix that each host should get an IPv6 address from",
+-          "2001:1234:DEAD:BEEF::"]
+-        )
+-      ], self.class)
+-
+     deregister_options('</span><span class="no">SNAPLEN</span><span class="s1">', '</span><span class="no">FILTER</span><span class="s1">', '</span><span class="no">RHOST</span><span class="s1">', '</span><span class="no">PCAPFILE</span><span class="s1">')
+   end
+ 
++  def generate_prefix()
++    max = 16 ** 4
++    prefix = "2001::"
++    (0..2).each do
++        prefix &lt;&lt; "%x::" % Random.rand(0..max)
++    end
++    return prefix
++  end
++
+   def listen_for_neighbor_solicitation(opts = {})
+     hosts = []
+     timeout = opts['</span><span class="no">TIMEOUT</span><span class="s1">'] || datastore['</span><span class="no">TIMEOUT</span><span class="s1">']
+-    prefix = opts['</span><span class="no">PREFIX</span><span class="s1">'] || datastore['</span><span class="no">PREFIX</span><span class="s1">']
++    prefix = @prefix
+ 
+     max_epoch = ::Time.now.to_i + timeout
+     autoconf_prefix = IPAddr.new(prefix).to_string().slice(0..19)
+@@ -94,7 +96,7 @@ def create_router_advertisment(opts={})
+     smac = @smac
+     shost = opts['</span><span class="no">SHOST</span><span class="s1">'] || datastore['</span><span class="no">SHOST</span><span class="s1">'] || ipv6_link_address
+     lifetime = opts['</span><span class="no">LIFETIME</span><span class="s1">'] || datastore['</span><span class="no">TIMEOUT</span><span class="s1">']
+-    prefix = opts['</span><span class="no">PREFIX</span><span class="s1">'] || datastore['</span><span class="no">PREFIX</span><span class="s1">']
++    prefix = @prefix
+     plen = 64
+     dmac = "33:33:00:00:00:01"
+ 
+@@ -141,7 +143,7 @@ def router_advertisement_payload
+     checksum = 0
+     hop_limit = 0
+     flags = 0x08
+-    lifetime = 1800
++    lifetime = 0
+     reachable = 0
+     retrans = 0
+     [type, code, checksum, hop_limit, flags,
+@@ -152,6 +154,7 @@ def run
+     # Start capture
+     open_pcap({'</span><span class="no">FILTER</span><span class="err">'</span> <span class="o">=&gt;</span> <span class="s2">"icmp6"</span><span class="p">})</span>
+ 
+<span class="o">+</span>    <span class="vi">@prefix</span> <span class="o">=</span> <span class="n">generate_prefix</span><span class="p">()</span>
+     <span class="vi">@netifaces</span> <span class="o">=</span> <span class="kp">true</span>
+     <span class="k">if</span> <span class="n">not</span> <span class="n">netifaces_implemented?</span>
+       <span class="n">print_error</span><span class="p">(</span><span class="s2">"WARNING : Pcaprub is not uptodate, some functionality will not be available"</span><span class="p">)</span></code></pre></figure>
+
+<h1 id="references">References</h1>
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p><a href="http://www.rfcreader.com/#rfc4861">http://www.rfcreader.com/#rfc4861</a> <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p><a href="https://seclists.org/nmap-dev/2011/q2/79">https://seclists.org/nmap-dev/2011/q2/79</a> <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p><a href="http://www.rfcreader.com/#rfc6104">http://www.rfcreader.com/#rfc6104</a> <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+
+        <footer>
+  &copy; 2020 Fakhri Zulkifli. Made with <a href="http://github.com/renyuanz/leonids/"><i class="fa fa-heart heart-icon"></i></a>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>

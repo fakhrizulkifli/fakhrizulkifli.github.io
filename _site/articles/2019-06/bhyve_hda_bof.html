@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="A trivial unchecked command line length.">
+  <meta name="keywords" content="blog, jekyll, software vulnerabilities, software bugs, and mem corruptions">
+  <meta name="author" content="BSD Hypervisor - Theoretical Stack-based Buffer Overflow | Fakhri Zulkifli">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="BSD Hypervisor - Theoretical Stack-based Buffer Overflow | Fakhri Zulkifli">
+  <meta name="twitter:description" content="A trivial unchecked command line length.">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2019-06/bhyve_hda_bof">
+  <meta property="og:title" content="BSD Hypervisor - Theoretical Stack-based Buffer Overflow | Fakhri Zulkifli">
+  <meta property="og:description" content="A trivial unchecked command line length.">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>BSD Hypervisor - Theoretical Stack-based Buffer Overflow | Fakhri Zulkifli</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2019-06/bhyve_hda_bof">
+  <link rel="alternate" type="application/rss+xml" title="Fakhri Zulkifli" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/" class="author_name">Fakhri Zulkifli</a>
+  <span class="author_job">Looking for a job</span>
+  <span class="author_bio mbm">A fan of software bugs and vulnerabilities.</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+      <li>
+      <script>gen_mail_to_link('mohdfakhrizulkifli@gmail.com', 'Hello from website');</script>
+      </li>
+    
+    <li><a href="http://twitter.com/d0lph1n98" class="social-link-item" target="_blank"><i class="fa fa-fw fa-twitter"></i></a></li>
+    
+    
+    <li><a href="http://linkedin.com/in/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-linkedin"></i></a></li>
+    
+    
+    
+    
+    <li><a href="http://github.com/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-github"></i></a></li>
+    
+    <li><a href="http://stackoverflow.com/users/1334320/fakhri-zulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="BSD Hypervisor - Theoretical Stack-based Buffer Overflow">BSD Hypervisor - Theoretical Stack-based Buffer Overflow</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        25 JUN 2019
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    53 mins read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    
+<p>On Jun 24, a new PCI HDAudio device model from the Google Summer of Code 2016 project was added into the BSD Hypervisor (bhyve) as part of its sound card emulation. I took a chance to look at the source code and found a trivial stack-based buffer overflow but unfortunately it is not exploitable in practice due to the limitation of bhyve’s arguments length. However, the code is patched just in case it is still going to be an issue in the future.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup><sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup><sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup></p>
+
+<h1 id="patch-analysis">Patch Analysis</h1>
+<p>Patch diff:</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="nl">Index:</span> <span class="n">head</span><span class="o">/</span><span class="n">usr</span><span class="p">.</span><span class="n">sbin</span><span class="o">/</span><span class="n">bhyve</span><span class="o">/</span><span class="n">pci_hda</span><span class="p">.</span><span class="n">c</span>
+<span class="o">===================================================================</span>
+<span class="o">---</span> <span class="n">head</span><span class="o">/</span><span class="n">usr</span><span class="p">.</span><span class="n">sbin</span><span class="o">/</span><span class="n">bhyve</span><span class="o">/</span><span class="n">pci_hda</span><span class="p">.</span><span class="n">c</span>	<span class="p">(</span><span class="n">revision</span> <span class="mi">349384</span><span class="p">)</span>
+<span class="o">+++</span> <span class="n">head</span><span class="o">/</span><span class="n">usr</span><span class="p">.</span><span class="n">sbin</span><span class="o">/</span><span class="n">bhyve</span><span class="o">/</span><span class="n">pci_hda</span><span class="p">.</span><span class="n">c</span>	<span class="p">(</span><span class="n">revision</span> <span class="mi">349385</span><span class="p">)</span>
+<span class="err">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1332</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1331</span> <span class="err">@@</span>
+ <span class="cm">/*-
+  * SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+  *
+  * Copyright (c) 2016 Alex Teaca &lt;iateaca@FreeBSD.org&gt;
+  * All rights reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+  * modification, are permitted provided that the following conditions
+  * are met:
+  * 1. Redistributions of source code must retain the above copyright
+  *    notice, this list of conditions and the following disclaimer.
+  * 2. Redistributions in binary form must reproduce the above copyright
+  *    notice, this list of conditions and the following disclaimer in the
+  *    documentation and/or other materials provided with the distribution.
+  *
+  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND
+  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  * SUCH DAMAGE.
+  *
+  */</span>
+ 
+ <span class="cp">#include &lt;sys/cdefs.h&gt;
+</span> <span class="n">__FBSDID</span><span class="p">(</span><span class="s">"$FreeBSD$"</span><span class="p">);</span>
+ 
+ <span class="cp">#include &lt;time.h&gt;
+</span> 
+ <span class="cp">#include "pci_hda.h"
+</span> <span class="cp">#include "bhyverun.h"
+</span> <span class="cp">#include "pci_emul.h"
+</span> <span class="cp">#include "hdac_reg.h"
+</span> 
+ <span class="cm">/*
+  * HDA defines
+  */</span>
+ <span class="cp">#define PCIR_HDCTL		0x40
+</span> <span class="cp">#define INTEL_VENDORID		0x8086
+</span> <span class="cp">#define HDA_INTEL_82801G	0x27d8
+</span> 
+ <span class="cp">#define HDA_IOSS_NO		0x08
+</span> <span class="cp">#define HDA_OSS_NO		0x04
+</span> <span class="cp">#define HDA_ISS_NO		0x04
+</span> <span class="cp">#define HDA_CODEC_MAX		0x0f
+</span> <span class="cp">#define HDA_LAST_OFFSET						\
+ 	(0x2084 + ((HDA_ISS_NO) * 0x20) + ((HDA_OSS_NO) * 0x20))
+</span> <span class="cp">#define HDA_SET_REG_TABLE_SZ					\
+ 	(0x80 + ((HDA_ISS_NO) * 0x20) + ((HDA_OSS_NO) * 0x20))
+</span> <span class="cp">#define HDA_CORB_ENTRY_LEN	0x04
+</span> <span class="cp">#define HDA_RIRB_ENTRY_LEN	0x08
+</span> <span class="cp">#define HDA_BDL_ENTRY_LEN	0x10
+</span> <span class="cp">#define HDA_DMA_PIB_ENTRY_LEN	0x08
+</span> <span class="cp">#define HDA_STREAM_TAGS_CNT	0x10
+</span> <span class="cp">#define HDA_STREAM_REGS_BASE	0x80
+</span> <span class="cp">#define HDA_STREAM_REGS_LEN	0x20
+</span> 
+ <span class="cp">#define HDA_DMA_ACCESS_LEN	(sizeof(uint32_t))
+</span> <span class="cp">#define HDA_BDL_MAX_LEN		0x0100
+</span> 
+ <span class="cp">#define HDAC_SDSTS_FIFORDY	(1 &lt;&lt; 5)
+</span> 
+ <span class="cp">#define HDA_RIRBSTS_IRQ_MASK	(HDAC_RIRBSTS_RINTFL | HDAC_RIRBSTS_RIRBOIS)
+</span> <span class="cp">#define HDA_STATESTS_IRQ_MASK	((1 &lt;&lt; HDA_CODEC_MAX) - 1)
+</span> <span class="cp">#define HDA_SDSTS_IRQ_MASK					\
+ 	(HDAC_SDSTS_DESE | HDAC_SDSTS_FIFOE | HDAC_SDSTS_BCIS)
+</span> 
+ <span class="cm">/*
+  * HDA data structures
+  */</span>
+ 
+ <span class="k">struct</span> <span class="n">hda_softc</span><span class="p">;</span>
+ 
+ <span class="k">typedef</span> <span class="nf">void</span> <span class="p">(</span><span class="o">*</span><span class="n">hda_set_reg_handler</span><span class="p">)(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span>
+ 		<span class="kt">uint32_t</span> <span class="n">old</span><span class="p">);</span>
+ 
+ <span class="k">struct</span> <span class="n">hda_bdle</span> <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">addrh</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">addrl</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">ioc</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">len</span><span class="p">;</span>
+ <span class="p">}</span> <span class="n">__packed</span><span class="p">;</span>
+ 
+ <span class="k">struct</span> <span class="n">hda_bdle_desc</span> <span class="p">{</span>
+ 	<span class="kt">void</span> <span class="o">*</span><span class="n">addr</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">ioc</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">len</span><span class="p">;</span>
+ <span class="p">};</span>
+ 
+ <span class="k">struct</span> <span class="n">hda_codec_cmd_ctl</span> <span class="p">{</span>
+ 	<span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+ 	<span class="kt">void</span> <span class="o">*</span><span class="n">dma_vaddr</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">run</span><span class="p">;</span>
+ 	<span class="kt">uint16_t</span> <span class="n">rp</span><span class="p">;</span>
+ 	<span class="kt">uint16_t</span> <span class="n">size</span><span class="p">;</span>
+ 	<span class="kt">uint16_t</span> <span class="n">wp</span><span class="p">;</span>
+ <span class="p">};</span>
+ 
+ <span class="k">struct</span> <span class="n">hda_stream_desc</span> <span class="p">{</span>
+ 	<span class="kt">uint8_t</span> <span class="n">dir</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">run</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">stream</span><span class="p">;</span>
+ 
+ 	<span class="cm">/* bp is the no. of bytes transferred in the current bdle */</span>
+ 	<span class="kt">uint32_t</span> <span class="n">bp</span><span class="p">;</span>
+ 	<span class="cm">/* be is the no. of bdles transferred in the bdl */</span>
+ 	<span class="kt">uint32_t</span> <span class="n">be</span><span class="p">;</span>
+ 
+ 	<span class="kt">uint32_t</span> <span class="n">bdl_cnt</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_bdle_desc</span> <span class="n">bdl</span><span class="p">[</span><span class="n">HDA_BDL_MAX_LEN</span><span class="p">];</span>
+ <span class="p">};</span>
+ 
+ <span class="k">struct</span> <span class="n">hda_softc</span> <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">pci_devinst</span> <span class="o">*</span><span class="n">pci_dev</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">regs</span><span class="p">[</span><span class="n">HDA_LAST_OFFSET</span><span class="p">];</span>
+ 
+ 	<span class="kt">uint8_t</span> <span class="n">lintr</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">rirb_cnt</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">wall_clock_start</span><span class="p">;</span>
+ 
+ 	<span class="k">struct</span> <span class="n">hda_codec_cmd_ctl</span> <span class="n">corb</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_cmd_ctl</span> <span class="n">rirb</span><span class="p">;</span>
+ 
+ 	<span class="kt">uint8_t</span> <span class="n">codecs_no</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_inst</span> <span class="o">*</span><span class="n">codecs</span><span class="p">[</span><span class="n">HDA_CODEC_MAX</span><span class="p">];</span>
+ 
+ 	<span class="cm">/* Base Address of the DMA Position Buffer */</span>
+ 	<span class="kt">void</span> <span class="o">*</span><span class="n">dma_pib_vaddr</span><span class="p">;</span>
+ 
+ 	<span class="k">struct</span> <span class="n">hda_stream_desc</span> <span class="n">streams</span><span class="p">[</span><span class="n">HDA_IOSS_NO</span><span class="p">];</span>
+ 	<span class="cm">/* 2 tables for output and input */</span>
+ 	<span class="kt">uint8_t</span> <span class="n">stream_map</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">HDA_STREAM_TAGS_CNT</span><span class="p">];</span>
+ <span class="p">};</span>
+ 
+ <span class="cm">/*
+  * HDA module function declarations
+  */</span>
+ <span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">hda_set_reg_by_offset</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span>
+     <span class="kt">uint32_t</span> <span class="n">value</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kr">inline</span> <span class="kt">uint32_t</span> <span class="nf">hda_get_reg_by_offset</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span>
+     <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">hda_set_field_by_offset</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span>
+     <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">mask</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">value</span><span class="p">);</span>
+ 
+ <span class="k">static</span> <span class="kt">uint8_t</span> <span class="nf">hda_parse_config</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">opts</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">val</span><span class="p">);</span>
+ <span class="k">static</span> <span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="nf">hda_init</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">opts</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_update_intr</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_response_interrupt</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">hda_codec_constructor</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span>
+     <span class="k">struct</span> <span class="n">hda_codec_class</span> <span class="o">*</span><span class="n">codec</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">play</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">rec</span><span class="p">,</span>
+     <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">opts</span><span class="p">);</span>
+ <span class="k">static</span> <span class="k">struct</span> <span class="n">hda_codec_class</span> <span class="o">*</span><span class="nf">hda_find_codec_class</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">);</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">hda_send_command</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">verb</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">hda_notify_codecs</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">run</span><span class="p">,</span>
+     <span class="kt">uint8_t</span> <span class="n">stream</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">dir</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_reset</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_reset_regs</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_stream_reset</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">stream_ind</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">hda_stream_start</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">stream_ind</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">hda_stream_stop</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">stream_ind</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">uint32_t</span> <span class="nf">hda_read</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">hda_write</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">size</span><span class="p">,</span>
+     <span class="kt">uint32_t</span> <span class="n">value</span><span class="p">);</span>
+ 
+ <span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">hda_print_cmd_ctl_data</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_codec_cmd_ctl</span> <span class="o">*</span><span class="n">p</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">hda_corb_start</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">hda_corb_run</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">hda_rirb_start</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">);</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span> <span class="o">*</span><span class="nf">hda_dma_get_vaddr</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint64_t</span> <span class="n">dma_paddr</span><span class="p">,</span>
+     <span class="kt">size_t</span> <span class="n">len</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_dma_st_dword</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">dma_vaddr</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">data</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">uint32_t</span> <span class="nf">hda_dma_ld_dword</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">dma_vaddr</span><span class="p">);</span>
+ 
+ <span class="k">static</span> <span class="kr">inline</span> <span class="kt">uint8_t</span> <span class="nf">hda_get_stream_by_offsets</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span>
+     <span class="kt">uint8_t</span> <span class="n">reg_offset</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kr">inline</span> <span class="kt">uint32_t</span> <span class="nf">hda_get_offset_stream</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">stream_ind</span><span class="p">);</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_set_gctl</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_set_statests</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span>
+     <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_set_corbwp</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_set_corbctl</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span>
+     <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_set_rirbctl</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span>
+     <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_set_rirbsts</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span>
+     <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_set_dpiblbase</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span>
+     <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_set_sdctl</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_set_sdctl2</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_set_sdsts</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">);</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">hda_signal_state_change</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_codec_inst</span> <span class="o">*</span><span class="n">hci</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">hda_response</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_codec_inst</span> <span class="o">*</span><span class="n">hci</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">response</span><span class="p">,</span>
+     <span class="kt">uint8_t</span> <span class="n">unsol</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">hda_transfer</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_codec_inst</span> <span class="o">*</span><span class="n">hci</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">stream</span><span class="p">,</span>
+     <span class="kt">uint8_t</span> <span class="n">dir</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">);</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">hda_set_pib</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">stream_ind</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">pib</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">uint64_t</span> <span class="nf">hda_get_clock_ns</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+ 
+ <span class="cm">/*
+  * PCI HDA function declarations
+  */</span>
+ <span class="k">static</span> <span class="kt">int</span> <span class="nf">pci_hda_init</span><span class="p">(</span><span class="k">struct</span> <span class="n">vmctx</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="k">struct</span> <span class="n">pci_devinst</span> <span class="o">*</span><span class="n">pi</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">opts</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">void</span> <span class="nf">pci_hda_write</span><span class="p">(</span><span class="k">struct</span> <span class="n">vmctx</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">vcpu</span><span class="p">,</span> <span class="k">struct</span> <span class="n">pci_devinst</span> <span class="o">*</span><span class="n">pi</span><span class="p">,</span>
+     <span class="kt">int</span> <span class="n">baridx</span><span class="p">,</span> <span class="kt">uint64_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint64_t</span> <span class="n">value</span><span class="p">);</span>
+ <span class="k">static</span> <span class="kt">uint64_t</span> <span class="nf">pci_hda_read</span><span class="p">(</span><span class="k">struct</span> <span class="n">vmctx</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">vcpu</span><span class="p">,</span> <span class="k">struct</span> <span class="n">pci_devinst</span> <span class="o">*</span><span class="n">pi</span><span class="p">,</span>
+     <span class="kt">int</span> <span class="n">baridx</span><span class="p">,</span> <span class="kt">uint64_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+ <span class="cm">/*
+  * HDA global data
+  */</span>
+ 
+ <span class="k">static</span> <span class="k">const</span> <span class="n">hda_set_reg_handler</span> <span class="n">hda_set_reg_table</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+ 	<span class="p">[</span><span class="n">HDAC_GCTL</span><span class="p">]</span> <span class="o">=</span> <span class="n">hda_set_gctl</span><span class="p">,</span>
+ 	<span class="p">[</span><span class="n">HDAC_STATESTS</span><span class="p">]</span> <span class="o">=</span> <span class="n">hda_set_statests</span><span class="p">,</span>
+ 	<span class="p">[</span><span class="n">HDAC_CORBWP</span><span class="p">]</span> <span class="o">=</span> <span class="n">hda_set_corbwp</span><span class="p">,</span>
+ 	<span class="p">[</span><span class="n">HDAC_CORBCTL</span><span class="p">]</span> <span class="o">=</span> <span class="n">hda_set_corbctl</span><span class="p">,</span>
+ 	<span class="p">[</span><span class="n">HDAC_RIRBCTL</span><span class="p">]</span> <span class="o">=</span> <span class="n">hda_set_rirbctl</span><span class="p">,</span>
+ 	<span class="p">[</span><span class="n">HDAC_RIRBSTS</span><span class="p">]</span> <span class="o">=</span> <span class="n">hda_set_rirbsts</span><span class="p">,</span>
+ 	<span class="p">[</span><span class="n">HDAC_DPIBLBASE</span><span class="p">]</span> <span class="o">=</span> <span class="n">hda_set_dpiblbase</span><span class="p">,</span>
+ 
+ <span class="cp">#define HDAC_ISTREAM(n, iss, oss)				\
+ 	[_HDAC_ISDCTL(n, iss, oss)] = hda_set_sdctl,		\
+ 	[_HDAC_ISDCTL(n, iss, oss) + 2] = hda_set_sdctl2,	\
+ 	[_HDAC_ISDSTS(n, iss, oss)] = hda_set_sdsts,		\
+ 
+</span> <span class="cp">#define HDAC_OSTREAM(n, iss, oss)				\
+ 	[_HDAC_OSDCTL(n, iss, oss)] = hda_set_sdctl,		\
+ 	[_HDAC_OSDCTL(n, iss, oss) + 2] = hda_set_sdctl2,	\
+ 	[_HDAC_OSDSTS(n, iss, oss)] = hda_set_sdsts,		\
+ 
+</span> 	<span class="n">HDAC_ISTREAM</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">HDA_ISS_NO</span><span class="p">,</span> <span class="n">HDA_OSS_NO</span><span class="p">)</span>
+ 	<span class="n">HDAC_ISTREAM</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">HDA_ISS_NO</span><span class="p">,</span> <span class="n">HDA_OSS_NO</span><span class="p">)</span>
+ 	<span class="n">HDAC_ISTREAM</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">HDA_ISS_NO</span><span class="p">,</span> <span class="n">HDA_OSS_NO</span><span class="p">)</span>
+ 	<span class="n">HDAC_ISTREAM</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">HDA_ISS_NO</span><span class="p">,</span> <span class="n">HDA_OSS_NO</span><span class="p">)</span>
+ 
+ 	<span class="n">HDAC_OSTREAM</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">HDA_ISS_NO</span><span class="p">,</span> <span class="n">HDA_OSS_NO</span><span class="p">)</span>
+ 	<span class="n">HDAC_OSTREAM</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">HDA_ISS_NO</span><span class="p">,</span> <span class="n">HDA_OSS_NO</span><span class="p">)</span>
+ 	<span class="n">HDAC_OSTREAM</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">HDA_ISS_NO</span><span class="p">,</span> <span class="n">HDA_OSS_NO</span><span class="p">)</span>
+ 	<span class="n">HDAC_OSTREAM</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">HDA_ISS_NO</span><span class="p">,</span> <span class="n">HDA_OSS_NO</span><span class="p">)</span>
+ 
+ 	<span class="p">[</span><span class="n">HDA_SET_REG_TABLE_SZ</span><span class="p">]</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">,</span>
+ <span class="p">};</span>
+ 
+ <span class="k">static</span> <span class="k">const</span> <span class="kt">uint16_t</span> <span class="n">hda_corb_sizes</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+ 	<span class="p">[</span><span class="n">HDAC_CORBSIZE_CORBSIZE_2</span><span class="p">]</span>	<span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+ 	<span class="p">[</span><span class="n">HDAC_CORBSIZE_CORBSIZE_16</span><span class="p">]</span>	<span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+ 	<span class="p">[</span><span class="n">HDAC_CORBSIZE_CORBSIZE_256</span><span class="p">]</span>	<span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
+ 	<span class="p">[</span><span class="n">HDAC_CORBSIZE_CORBSIZE_MASK</span><span class="p">]</span>	<span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="p">};</span>
+ 
+ <span class="k">static</span> <span class="k">const</span> <span class="kt">uint16_t</span> <span class="n">hda_rirb_sizes</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+ 	<span class="p">[</span><span class="n">HDAC_RIRBSIZE_RIRBSIZE_2</span><span class="p">]</span>	<span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+ 	<span class="p">[</span><span class="n">HDAC_RIRBSIZE_RIRBSIZE_16</span><span class="p">]</span>	<span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+ 	<span class="p">[</span><span class="n">HDAC_RIRBSIZE_RIRBSIZE_256</span><span class="p">]</span>	<span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
+ 	<span class="p">[</span><span class="n">HDAC_RIRBSIZE_RIRBSIZE_MASK</span><span class="p">]</span>	<span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="p">};</span>
+ 
+ <span class="k">static</span> <span class="k">struct</span> <span class="n">hda_ops</span> <span class="n">hops</span> <span class="o">=</span> <span class="p">{</span>
+ 	<span class="p">.</span><span class="n">signal</span>		<span class="o">=</span> <span class="n">hda_signal_state_change</span><span class="p">,</span>
+ 	<span class="p">.</span><span class="n">response</span>	<span class="o">=</span> <span class="n">hda_response</span><span class="p">,</span>
+ 	<span class="p">.</span><span class="n">transfer</span>	<span class="o">=</span> <span class="n">hda_transfer</span><span class="p">,</span>
+ <span class="p">};</span>
+ 
+ <span class="k">struct</span> <span class="n">pci_devemu</span> <span class="n">pci_de_hda</span> <span class="o">=</span> <span class="p">{</span>
+ 	<span class="p">.</span><span class="n">pe_emu</span>		<span class="o">=</span> <span class="s">"hda"</span><span class="p">,</span>
+ 	<span class="p">.</span><span class="n">pe_init</span>	<span class="o">=</span> <span class="n">pci_hda_init</span><span class="p">,</span>
+ 	<span class="p">.</span><span class="n">pe_barwrite</span>	<span class="o">=</span> <span class="n">pci_hda_write</span><span class="p">,</span>
+ 	<span class="p">.</span><span class="n">pe_barread</span>	<span class="o">=</span> <span class="n">pci_hda_read</span>
+ <span class="p">};</span>
+ 
+ <span class="n">PCI_EMUL_SET</span><span class="p">(</span><span class="n">pci_de_hda</span><span class="p">);</span>
+ 
+ <span class="n">SET_DECLARE</span><span class="p">(</span><span class="n">hda_codec_class_set</span><span class="p">,</span> <span class="k">struct</span> <span class="n">hda_codec_class</span><span class="p">);</span>
+ 
+ <span class="cp">#if DEBUG_HDA == 1
+</span> <span class="kt">FILE</span> <span class="o">*</span><span class="n">dbg</span><span class="p">;</span>
+ <span class="cp">#endif
+</span> 
+ <span class="cm">/*
+  * HDA module function definitions
+  */</span>
+ 
+ <span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span>
+ <span class="nf">hda_set_reg_by_offset</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">value</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">offset</span> <span class="o">&lt;</span> <span class="n">HDA_LAST_OFFSET</span><span class="p">);</span>
+ 	<span class="n">sc</span><span class="o">-&gt;</span><span class="n">regs</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kr">inline</span> <span class="kt">uint32_t</span>
+ <span class="nf">hda_get_reg_by_offset</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">offset</span> <span class="o">&lt;</span> <span class="n">HDA_LAST_OFFSET</span><span class="p">);</span>
+ 	<span class="k">return</span> <span class="n">sc</span><span class="o">-&gt;</span><span class="n">regs</span><span class="p">[</span><span class="n">offset</span><span class="p">];</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span>
+ <span class="nf">hda_set_field_by_offset</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span>
+     <span class="kt">uint32_t</span> <span class="n">mask</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">value</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">reg_value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 
+ 	<span class="n">reg_value</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+ 
+ 	<span class="n">reg_value</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">mask</span><span class="p">;</span>
+ 	<span class="n">reg_value</span> <span class="o">|=</span> <span class="p">(</span><span class="n">value</span> <span class="o">&amp;</span> <span class="n">mask</span><span class="p">);</span>
+ 
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">reg_value</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">uint8_t</span>
+ <span class="nf">hda_parse_config</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">opts</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">val</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+ 	<span class="kt">char</span> <span class="o">*</span><span class="n">s</span> <span class="o">=</span> <span class="n">buf</span><span class="p">;</span>
+ 	<span class="kt">char</span> <span class="o">*</span><span class="n">tmp</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="o">-</span>	<span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+<span class="o">+</span>	<span class="kt">size_t</span> <span class="n">len</span><span class="p">;</span>
+ 	<span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">opts</span><span class="p">)</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ 
+ 	<span class="n">len</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">opts</span><span class="p">);</span>
+<span class="o">-</span>
+<span class="o">-</span>	<span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;=</span> <span class="mi">64</span><span class="p">)</span> <span class="p">{</span>
+<span class="o">+</span>	<span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span> <span class="p">{</span>
+ 		<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"Opts too big</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"opts: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">opts</span><span class="p">);</span>
+ 
+ 	<span class="n">strcpy</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">opts</span><span class="p">);</span>
+ 
+ 	<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">len</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+ 		<span class="k">if</span> <span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">','</span><span class="p">)</span> <span class="p">{</span>
+ 			<span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 			<span class="n">tmp</span> <span class="o">=</span> <span class="n">buf</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+ 			<span class="k">break</span><span class="p">;</span>
+ 		<span class="p">}</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">memcmp</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">key</span><span class="p">)))</span> <span class="p">{</span>
+ 		<span class="n">strncpy</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">s</span> <span class="o">+</span> <span class="n">strlen</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mi">64</span><span class="p">);</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">tmp</span><span class="p">)</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ 
+ 	<span class="n">s</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">;</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">memcmp</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">key</span><span class="p">)))</span> <span class="p">{</span>
+ 		<span class="n">strncpy</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">s</span> <span class="o">+</span> <span class="n">strlen</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mi">64</span><span class="p">);</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span>
+ <span class="n">hda_init</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">opts</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_class</span> <span class="o">*</span><span class="n">codec</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="kt">char</span> <span class="n">play</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+ 	<span class="kt">char</span> <span class="n">rec</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+ 	<span class="kt">int</span> <span class="n">err</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">;</span>
+ 
+ <span class="cp">#if DEBUG_HDA == 1
+</span> 	<span class="n">dbg</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="s">"/tmp/bhyve_hda.log"</span><span class="p">,</span> <span class="s">"w+"</span><span class="p">);</span>
+ <span class="cp">#endif
+</span> 
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"opts: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">opts</span><span class="p">);</span>
+ 
+ 	<span class="n">sc</span> <span class="o">=</span> <span class="n">calloc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">sc</span><span class="p">));</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">sc</span><span class="p">)</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+ 
+ 	<span class="n">hda_reset_regs</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 
+ 	<span class="cm">/*
+ 	 * TODO search all the codecs declared in opts
+ 	 * For now we play with one single codec
+ 	 */</span>
+ 	<span class="n">codec</span> <span class="o">=</span> <span class="n">hda_find_codec_class</span><span class="p">(</span><span class="s">"hda_codec"</span><span class="p">);</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">codec</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">p</span> <span class="o">=</span> <span class="n">hda_parse_config</span><span class="p">(</span><span class="n">opts</span><span class="p">,</span> <span class="s">"play="</span><span class="p">,</span> <span class="n">play</span><span class="p">);</span>
+ 		<span class="n">r</span> <span class="o">=</span> <span class="n">hda_parse_config</span><span class="p">(</span><span class="n">opts</span><span class="p">,</span> <span class="s">"rec="</span><span class="p">,</span> <span class="n">rec</span><span class="p">);</span>
+ 		<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"play: %s rec: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">play</span><span class="p">,</span> <span class="n">rec</span><span class="p">);</span>
+ 		<span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">|</span> <span class="n">r</span><span class="p">)</span> <span class="p">{</span>
+ 			<span class="n">err</span> <span class="o">=</span> <span class="n">hda_codec_constructor</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">codec</span><span class="p">,</span> <span class="n">p</span> <span class="o">?</span>	\
+ 				<span class="n">play</span> <span class="o">:</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">r</span> <span class="o">?</span> <span class="n">rec</span> <span class="o">:</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+ 			<span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">err</span><span class="p">);</span>
+ 		<span class="p">}</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_update_intr</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">pci_devinst</span> <span class="o">*</span><span class="n">pi</span> <span class="o">=</span> <span class="n">sc</span><span class="o">-&gt;</span><span class="n">pci_dev</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">intctl</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_INTCTL</span><span class="p">);</span>
+ 	<span class="kt">uint32_t</span> <span class="n">intsts</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">sdsts</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">rirbsts</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">wakeen</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">statests</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">off</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+ 
+ 	<span class="cm">/* update the CIS bits */</span>
+ 	<span class="n">rirbsts</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_RIRBSTS</span><span class="p">);</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">rirbsts</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">HDAC_RIRBSTS_RINTFL</span> <span class="o">|</span> <span class="n">HDAC_RIRBSTS_RIRBOIS</span><span class="p">))</span>
+ 		<span class="n">intsts</span> <span class="o">|=</span> <span class="n">HDAC_INTSTS_CIS</span><span class="p">;</span>
+ 
+ 	<span class="n">wakeen</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_WAKEEN</span><span class="p">);</span>
+ 	<span class="n">statests</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_STATESTS</span><span class="p">);</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">statests</span> <span class="o">&amp;</span> <span class="n">wakeen</span><span class="p">)</span>
+ 		<span class="n">intsts</span> <span class="o">|=</span> <span class="n">HDAC_INTSTS_CIS</span><span class="p">;</span>
+ 
+ 	<span class="cm">/* update the SIS bits */</span>
+ 	<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">HDA_IOSS_NO</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">off</span> <span class="o">=</span> <span class="n">hda_get_offset_stream</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+ 		<span class="n">sdsts</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">off</span> <span class="o">+</span> <span class="n">HDAC_SDSTS</span><span class="p">);</span>
+ 		<span class="k">if</span> <span class="p">(</span><span class="n">sdsts</span> <span class="o">&amp;</span> <span class="n">HDAC_SDSTS_BCIS</span><span class="p">)</span>
+ 			<span class="n">intsts</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="cm">/* update the GIS bit */</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">intsts</span><span class="p">)</span>
+ 		<span class="n">intsts</span> <span class="o">|=</span> <span class="n">HDAC_INTSTS_GIS</span><span class="p">;</span>
+ 
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_INTSTS</span><span class="p">,</span> <span class="n">intsts</span><span class="p">);</span>
+ 
+ 	<span class="k">if</span> <span class="p">((</span><span class="n">intctl</span> <span class="o">&amp;</span> <span class="n">HDAC_INTCTL_GIE</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">intsts</span> <span class="o">&amp;</span>			\
+ 		<span class="o">~</span><span class="n">HDAC_INTSTS_GIS</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">intctl</span><span class="p">))</span> <span class="p">{</span>
+ 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">lintr</span><span class="p">)</span> <span class="p">{</span>
+ 			<span class="n">pci_lintr_assert</span><span class="p">(</span><span class="n">pi</span><span class="p">);</span>
+ 			<span class="n">sc</span><span class="o">-&gt;</span><span class="n">lintr</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+ 		<span class="p">}</span>
+ 	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+ 		<span class="k">if</span> <span class="p">(</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">lintr</span><span class="p">)</span> <span class="p">{</span>
+ 			<span class="n">pci_lintr_deassert</span><span class="p">(</span><span class="n">pi</span><span class="p">);</span>
+ 			<span class="n">sc</span><span class="o">-&gt;</span><span class="n">lintr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 		<span class="p">}</span>
+ 	<span class="p">}</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_response_interrupt</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint8_t</span> <span class="n">rirbctl</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_RIRBCTL</span><span class="p">);</span>
+ 
+ 	<span class="k">if</span> <span class="p">((</span><span class="n">rirbctl</span> <span class="o">&amp;</span> <span class="n">HDAC_RIRBCTL_RINTCTL</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">sc</span><span class="o">-&gt;</span><span class="n">rirb_cnt</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">sc</span><span class="o">-&gt;</span><span class="n">rirb_cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 		<span class="n">hda_set_field_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_RIRBSTS</span><span class="p">,</span> <span class="n">HDAC_RIRBSTS_RINTFL</span><span class="p">,</span>
+ 				<span class="n">HDAC_RIRBSTS_RINTFL</span><span class="p">);</span>
+ 		<span class="n">hda_update_intr</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">hda_codec_constructor</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="k">struct</span> <span class="n">hda_codec_class</span> <span class="o">*</span><span class="n">codec</span><span class="p">,</span>
+     <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">play</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">rec</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">opts</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_inst</span> <span class="o">*</span><span class="n">hci</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">codecs_no</span> <span class="o">&gt;=</span> <span class="n">HDA_CODEC_MAX</span><span class="p">)</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 
+ 	<span class="n">hci</span> <span class="o">=</span> <span class="n">calloc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_codec_inst</span><span class="p">));</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">hci</span><span class="p">)</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 
+ 	<span class="n">hci</span><span class="o">-&gt;</span><span class="n">hda</span> <span class="o">=</span> <span class="n">sc</span><span class="p">;</span>
+ 	<span class="n">hci</span><span class="o">-&gt;</span><span class="n">hops</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">hops</span><span class="p">;</span>
+ 	<span class="n">hci</span><span class="o">-&gt;</span><span class="n">cad</span> <span class="o">=</span> <span class="n">sc</span><span class="o">-&gt;</span><span class="n">codecs_no</span><span class="p">;</span>
+ 	<span class="n">hci</span><span class="o">-&gt;</span><span class="n">codec</span> <span class="o">=</span> <span class="n">codec</span><span class="p">;</span>
+ 
+ 	<span class="n">sc</span><span class="o">-&gt;</span><span class="n">codecs</span><span class="p">[</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">codecs_no</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">hci</span><span class="p">;</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">codec</span><span class="o">-&gt;</span><span class="n">init</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"This codec does not implement the init function</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="n">codec</span><span class="o">-&gt;</span><span class="n">init</span><span class="p">(</span><span class="n">hci</span><span class="p">,</span> <span class="n">play</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">opts</span><span class="p">));</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="k">struct</span> <span class="n">hda_codec_class</span> <span class="o">*</span>
+ <span class="n">hda_find_codec_class</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_class</span> <span class="o">**</span><span class="n">pdpp</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">*</span><span class="n">pdp</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 
+ 	<span class="n">SET_FOREACH</span><span class="p">(</span><span class="n">pdpp</span><span class="p">,</span> <span class="n">hda_codec_class_set</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">pdp</span> <span class="o">=</span> <span class="o">*</span><span class="n">pdpp</span><span class="p">;</span>
+ 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">pdp</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="p">{</span>
+ 			<span class="k">return</span> <span class="p">(</span><span class="n">pdp</span><span class="p">);</span>
+ 		<span class="p">}</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">hda_send_command</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">verb</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_inst</span> <span class="o">*</span><span class="n">hci</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_class</span> <span class="o">*</span><span class="n">codec</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">cad</span> <span class="o">=</span> <span class="p">(</span><span class="n">verb</span> <span class="o">&gt;&gt;</span> <span class="n">HDA_CMD_CAD_SHIFT</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x0f</span><span class="p">;</span>
+ 
+ 	<span class="n">hci</span> <span class="o">=</span> <span class="n">sc</span><span class="o">-&gt;</span><span class="n">codecs</span><span class="p">[</span><span class="n">cad</span><span class="p">];</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">hci</span><span class="p">)</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"cad: 0x%x verb: 0x%x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">cad</span><span class="p">,</span> <span class="n">verb</span><span class="p">);</span>
+ 
+ 	<span class="n">codec</span> <span class="o">=</span> <span class="n">hci</span><span class="o">-&gt;</span><span class="n">codec</span><span class="p">;</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">codec</span><span class="p">);</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">codec</span><span class="o">-&gt;</span><span class="n">command</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"This codec does not implement the command function</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="n">codec</span><span class="o">-&gt;</span><span class="n">command</span><span class="p">(</span><span class="n">hci</span><span class="p">,</span> <span class="n">verb</span><span class="p">));</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">hda_notify_codecs</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">run</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">stream</span><span class="p">,</span>
+     <span class="kt">uint8_t</span> <span class="n">dir</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_inst</span> <span class="o">*</span><span class="n">hci</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_class</span> <span class="o">*</span><span class="n">codec</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+ 	<span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+ 
+ 	<span class="cm">/* Notify each codec */</span>
+ 	<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sc</span><span class="o">-&gt;</span><span class="n">codecs_no</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">hci</span> <span class="o">=</span> <span class="n">sc</span><span class="o">-&gt;</span><span class="n">codecs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+ 		<span class="n">assert</span><span class="p">(</span><span class="n">hci</span><span class="p">);</span>
+ 
+ 		<span class="n">codec</span> <span class="o">=</span> <span class="n">hci</span><span class="o">-&gt;</span><span class="n">codec</span><span class="p">;</span>
+ 		<span class="n">assert</span><span class="p">(</span><span class="n">codec</span><span class="p">);</span>
+ 
+ 		<span class="k">if</span> <span class="p">(</span><span class="n">codec</span><span class="o">-&gt;</span><span class="n">notify</span><span class="p">)</span> <span class="p">{</span>
+ 			<span class="n">err</span> <span class="o">=</span> <span class="n">codec</span><span class="o">-&gt;</span><span class="n">notify</span><span class="p">(</span><span class="n">hci</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">dir</span><span class="p">);</span>
+ 			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">err</span><span class="p">)</span>
+ 				<span class="k">break</span><span class="p">;</span>
+ 		<span class="p">}</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">sc</span><span class="o">-&gt;</span><span class="n">codecs_no</span> <span class="o">?</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_reset</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_inst</span> <span class="o">*</span><span class="n">hci</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_class</span> <span class="o">*</span><span class="n">codec</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 
+ 	<span class="n">hda_reset_regs</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 
+ 	<span class="cm">/* Reset each codec */</span>
+ 	<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sc</span><span class="o">-&gt;</span><span class="n">codecs_no</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">hci</span> <span class="o">=</span> <span class="n">sc</span><span class="o">-&gt;</span><span class="n">codecs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+ 		<span class="n">assert</span><span class="p">(</span><span class="n">hci</span><span class="p">);</span>
+ 
+ 		<span class="n">codec</span> <span class="o">=</span> <span class="n">hci</span><span class="o">-&gt;</span><span class="n">codec</span><span class="p">;</span>
+ 		<span class="n">assert</span><span class="p">(</span><span class="n">codec</span><span class="p">);</span>
+ 
+ 		<span class="k">if</span> <span class="p">(</span><span class="n">codec</span><span class="o">-&gt;</span><span class="n">reset</span><span class="p">)</span>
+ 			<span class="n">codec</span><span class="o">-&gt;</span><span class="n">reset</span><span class="p">(</span><span class="n">hci</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">sc</span><span class="o">-&gt;</span><span class="n">wall_clock_start</span> <span class="o">=</span> <span class="n">hda_get_clock_ns</span><span class="p">();</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_reset_regs</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">off</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">i</span><span class="p">;</span>
+ 
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"Reset the HDA controller registers ...</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 
+ 	<span class="n">memset</span><span class="p">(</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">regs</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">regs</span><span class="p">));</span>
+ 
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_GCAP</span><span class="p">,</span>
+ 			<span class="n">HDAC_GCAP_64OK</span> <span class="o">|</span>
+ 			<span class="p">(</span><span class="n">HDA_ISS_NO</span> <span class="o">&lt;&lt;</span> <span class="n">HDAC_GCAP_ISS_SHIFT</span><span class="p">)</span> <span class="o">|</span>
+ 			<span class="p">(</span><span class="n">HDA_OSS_NO</span> <span class="o">&lt;&lt;</span> <span class="n">HDAC_GCAP_OSS_SHIFT</span><span class="p">));</span>
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_VMAJ</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">);</span>
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_OUTPAY</span><span class="p">,</span> <span class="mh">0x3c</span><span class="p">);</span>
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_INPAY</span><span class="p">,</span> <span class="mh">0x1d</span><span class="p">);</span>
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_CORBSIZE</span><span class="p">,</span>
+ 	    <span class="n">HDAC_CORBSIZE_CORBSZCAP_256</span> <span class="o">|</span> <span class="n">HDAC_CORBSIZE_CORBSIZE_256</span><span class="p">);</span>
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_RIRBSIZE</span><span class="p">,</span>
+ 	    <span class="n">HDAC_RIRBSIZE_RIRBSZCAP_256</span> <span class="o">|</span> <span class="n">HDAC_RIRBSIZE_RIRBSIZE_256</span><span class="p">);</span>
+ 
+ 	<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">HDA_IOSS_NO</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">off</span> <span class="o">=</span> <span class="n">hda_get_offset_stream</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+ 		<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">off</span> <span class="o">+</span> <span class="n">HDAC_SDFIFOS</span><span class="p">,</span> <span class="n">HDA_FIFO_SIZE</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_stream_reset</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">stream_ind</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_stream_desc</span> <span class="o">*</span><span class="n">st</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">streams</span><span class="p">[</span><span class="n">stream_ind</span><span class="p">];</span>
+ 	<span class="kt">uint32_t</span> <span class="n">off</span> <span class="o">=</span> <span class="n">hda_get_offset_stream</span><span class="p">(</span><span class="n">stream_ind</span><span class="p">);</span>
+ 
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"Reset the HDA stream: 0x%x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">stream_ind</span><span class="p">);</span>
+ 
+ 	<span class="cm">/* Reset the Stream Descriptor registers */</span>
+ 	<span class="n">memset</span><span class="p">(</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">regs</span> <span class="o">+</span> <span class="n">HDA_STREAM_REGS_BASE</span> <span class="o">+</span> <span class="n">off</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">HDA_STREAM_REGS_LEN</span><span class="p">);</span>
+ 
+ 	<span class="cm">/* Reset the Stream Descriptor */</span>
+ 	<span class="n">memset</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">st</span><span class="p">));</span>
+ 
+ 	<span class="n">hda_set_field_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">off</span> <span class="o">+</span> <span class="n">HDAC_SDSTS</span><span class="p">,</span>
+ 	    <span class="n">HDAC_SDSTS_FIFORDY</span><span class="p">,</span> <span class="n">HDAC_SDSTS_FIFORDY</span><span class="p">);</span>
+ 	<span class="n">hda_set_field_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">off</span> <span class="o">+</span> <span class="n">HDAC_SDCTL0</span><span class="p">,</span>
+ 	    <span class="n">HDAC_SDCTL_SRST</span><span class="p">,</span> <span class="n">HDAC_SDCTL_SRST</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">hda_stream_start</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">stream_ind</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_stream_desc</span> <span class="o">*</span><span class="n">st</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">streams</span><span class="p">[</span><span class="n">stream_ind</span><span class="p">];</span>
+ 	<span class="k">struct</span> <span class="n">hda_bdle_desc</span> <span class="o">*</span><span class="n">bdle_desc</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_bdle</span> <span class="o">*</span><span class="n">bdle</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">lvi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">bdl_cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">bdpl</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">bdpu</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">bdl_paddr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">void</span> <span class="o">*</span><span class="n">bdl_vaddr</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">bdle_sz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">bdle_addrl</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">bdle_addrh</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">bdle_paddr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">void</span> <span class="o">*</span><span class="n">bdle_vaddr</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">off</span> <span class="o">=</span> <span class="n">hda_get_offset_stream</span><span class="p">(</span><span class="n">stream_ind</span><span class="p">);</span>
+ 	<span class="kt">uint32_t</span> <span class="n">sdctl</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">strm</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">dir</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+ 
+ 	<span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">run</span><span class="p">);</span>
+ 
+ 	<span class="n">lvi</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">off</span> <span class="o">+</span> <span class="n">HDAC_SDLVI</span><span class="p">);</span>
+ 	<span class="n">bdpl</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">off</span> <span class="o">+</span> <span class="n">HDAC_SDBDPL</span><span class="p">);</span>
+ 	<span class="n">bdpu</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">off</span> <span class="o">+</span> <span class="n">HDAC_SDBDPU</span><span class="p">);</span>
+ 
+ 	<span class="n">bdl_cnt</span> <span class="o">=</span> <span class="n">lvi</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">bdl_cnt</span> <span class="o">&lt;=</span> <span class="n">HDA_BDL_MAX_LEN</span><span class="p">);</span>
+ 
+ 	<span class="n">bdl_paddr</span> <span class="o">=</span> <span class="n">bdpl</span> <span class="o">|</span> <span class="p">(</span><span class="n">bdpu</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">);</span>
+ 	<span class="n">bdl_vaddr</span> <span class="o">=</span> <span class="n">hda_dma_get_vaddr</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">bdl_paddr</span><span class="p">,</span>
+ 	    <span class="n">HDA_BDL_ENTRY_LEN</span> <span class="o">*</span> <span class="n">bdl_cnt</span><span class="p">);</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">bdl_vaddr</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"Fail to get the guest virtual address</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"stream: 0x%x bdl_cnt: 0x%x bdl_paddr: 0x%lx</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+ 	    <span class="n">stream_ind</span><span class="p">,</span> <span class="n">bdl_cnt</span><span class="p">,</span> <span class="n">bdl_paddr</span><span class="p">);</span>
+ 
+ 	<span class="n">st</span><span class="o">-&gt;</span><span class="n">bdl_cnt</span> <span class="o">=</span> <span class="n">bdl_cnt</span><span class="p">;</span>
+ 
+ 	<span class="n">bdle</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">hda_bdle</span> <span class="o">*</span><span class="p">)</span><span class="n">bdl_vaddr</span><span class="p">;</span>
+ 	<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">bdl_cnt</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">,</span> <span class="n">bdle</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">bdle_sz</span> <span class="o">=</span> <span class="n">bdle</span><span class="o">-&gt;</span><span class="n">len</span><span class="p">;</span>
+ 		<span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">bdle_sz</span> <span class="o">%</span> <span class="n">HDA_DMA_ACCESS_LEN</span><span class="p">));</span>
+ 
+ 		<span class="n">bdle_addrl</span> <span class="o">=</span> <span class="n">bdle</span><span class="o">-&gt;</span><span class="n">addrl</span><span class="p">;</span>
+ 		<span class="n">bdle_addrh</span> <span class="o">=</span> <span class="n">bdle</span><span class="o">-&gt;</span><span class="n">addrh</span><span class="p">;</span>
+ 
+ 		<span class="n">bdle_paddr</span> <span class="o">=</span> <span class="n">bdle_addrl</span> <span class="o">|</span> <span class="p">(</span><span class="n">bdle_addrh</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">);</span>
+ 		<span class="n">bdle_vaddr</span> <span class="o">=</span> <span class="n">hda_dma_get_vaddr</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">bdle_paddr</span><span class="p">,</span> <span class="n">bdle_sz</span><span class="p">);</span>
+ 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">bdle_vaddr</span><span class="p">)</span> <span class="p">{</span>
+ 			<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"Fail to get the guest virtual address</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 			<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 		<span class="p">}</span>
+ 
+ 		<span class="n">bdle_desc</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">bdl</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+ 		<span class="n">bdle_desc</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">=</span> <span class="n">bdle_vaddr</span><span class="p">;</span>
+ 		<span class="n">bdle_desc</span><span class="o">-&gt;</span><span class="n">len</span> <span class="o">=</span> <span class="n">bdle_sz</span><span class="p">;</span>
+ 		<span class="n">bdle_desc</span><span class="o">-&gt;</span><span class="n">ioc</span> <span class="o">=</span> <span class="n">bdle</span><span class="o">-&gt;</span><span class="n">ioc</span><span class="p">;</span>
+ 
+ 		<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"bdle: 0x%x bdle_sz: 0x%x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">bdle_sz</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">sdctl</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">off</span> <span class="o">+</span> <span class="n">HDAC_SDCTL0</span><span class="p">);</span>
+ 	<span class="n">strm</span> <span class="o">=</span> <span class="p">(</span><span class="n">sdctl</span> <span class="o">&gt;&gt;</span> <span class="mi">20</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x0f</span><span class="p">;</span>
+ 	<span class="n">dir</span> <span class="o">=</span> <span class="n">stream_ind</span> <span class="o">&gt;=</span> <span class="n">HDA_ISS_NO</span><span class="p">;</span>
+ 
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"strm: 0x%x, dir: 0x%x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">strm</span><span class="p">,</span> <span class="n">dir</span><span class="p">);</span>
+ 
+ 	<span class="n">sc</span><span class="o">-&gt;</span><span class="n">stream_map</span><span class="p">[</span><span class="n">dir</span><span class="p">][</span><span class="n">strm</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream_ind</span><span class="p">;</span>
+ 	<span class="n">st</span><span class="o">-&gt;</span><span class="n">stream</span> <span class="o">=</span> <span class="n">strm</span><span class="p">;</span>
+ 	<span class="n">st</span><span class="o">-&gt;</span><span class="n">dir</span> <span class="o">=</span> <span class="n">dir</span><span class="p">;</span>
+ 	<span class="n">st</span><span class="o">-&gt;</span><span class="n">bp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="n">st</span><span class="o">-&gt;</span><span class="n">be</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 
+ 	<span class="n">hda_set_pib</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">stream_ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+ 
+ 	<span class="n">st</span><span class="o">-&gt;</span><span class="n">run</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+ 
+ 	<span class="n">hda_notify_codecs</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">strm</span><span class="p">,</span> <span class="n">dir</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">hda_stream_stop</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">stream_ind</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_stream_desc</span> <span class="o">*</span><span class="n">st</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">streams</span><span class="p">[</span><span class="n">stream_ind</span><span class="p">];</span>
+ 	<span class="kt">uint8_t</span> <span class="n">strm</span> <span class="o">=</span> <span class="n">st</span><span class="o">-&gt;</span><span class="n">stream</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">dir</span> <span class="o">=</span> <span class="n">st</span><span class="o">-&gt;</span><span class="n">dir</span><span class="p">;</span>
+ 
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"stream: 0x%x, strm: 0x%x, dir: 0x%x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">stream_ind</span><span class="p">,</span> <span class="n">strm</span><span class="p">,</span> <span class="n">dir</span><span class="p">);</span>
+ 
+ 	<span class="n">st</span><span class="o">-&gt;</span><span class="n">run</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 
+ 	<span class="n">hda_notify_codecs</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">strm</span><span class="p">,</span> <span class="n">dir</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">uint32_t</span>
+ <span class="n">hda_read</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">offset</span> <span class="o">==</span> <span class="n">HDAC_WALCLK</span><span class="p">)</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="p">(</span><span class="n">hda_get_clock_ns</span><span class="p">()</span> <span class="o">-</span>			\
+ 			<span class="n">sc</span><span class="o">-&gt;</span><span class="n">wall_clock_start</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">));</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">hda_write</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">value</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">old</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+ 	<span class="kt">uint32_t</span> <span class="n">masks</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x00000000</span><span class="p">,</span> <span class="mh">0x000000ff</span><span class="p">,</span> <span class="mh">0x0000ffff</span><span class="p">,</span>
+ 			<span class="mh">0x00ffffff</span><span class="p">,</span> <span class="mh">0xffffffff</span><span class="p">};</span>
+ 	<span class="n">hda_set_reg_handler</span> <span class="n">set_reg_handler</span> <span class="o">=</span> <span class="n">hda_set_reg_table</span><span class="p">[</span><span class="n">offset</span><span class="p">];</span>
+ 
+ 	<span class="n">hda_set_field_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">masks</span><span class="p">[</span><span class="n">size</span><span class="p">],</span> <span class="n">value</span><span class="p">);</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">set_reg_handler</span><span class="p">)</span>
+ 		<span class="n">set_reg_handler</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">old</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span>
+ <span class="n">hda_print_cmd_ctl_data</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_codec_cmd_ctl</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span>
+ <span class="p">{</span>
+ <span class="cp">#if DEBUG_HDA == 1
+</span> 	<span class="kt">char</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">;</span>
+ <span class="cp">#endif
+</span> 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"%s size: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"%s dma_vaddr: %p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">dma_vaddr</span><span class="p">);</span>
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"%s wp: 0x%x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">wp</span><span class="p">);</span>
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"%s rp: 0x%x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">rp</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">hda_corb_start</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_cmd_ctl</span> <span class="o">*</span><span class="n">corb</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">corb</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">corbsize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">corblbase</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">corbubase</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">corbpaddr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 
+ 	<span class="n">corb</span><span class="o">-&gt;</span><span class="n">name</span> <span class="o">=</span> <span class="s">"CORB"</span><span class="p">;</span>
+ 
+ 	<span class="n">corbsize</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_CORBSIZE</span><span class="p">)</span> <span class="o">&amp;</span>		\
+ 		   <span class="n">HDAC_CORBSIZE_CORBSIZE_MASK</span><span class="p">;</span>
+ 	<span class="n">corb</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">=</span> <span class="n">hda_corb_sizes</span><span class="p">[</span><span class="n">corbsize</span><span class="p">];</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">corb</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"Invalid corb size</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">corblbase</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_CORBLBASE</span><span class="p">);</span>
+ 	<span class="n">corbubase</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_CORBUBASE</span><span class="p">);</span>
+ 
+ 	<span class="n">corbpaddr</span> <span class="o">=</span> <span class="n">corblbase</span> <span class="o">|</span> <span class="p">(</span><span class="n">corbubase</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">);</span>
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"CORB dma_paddr: %p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">corbpaddr</span><span class="p">);</span>
+ 
+ 	<span class="n">corb</span><span class="o">-&gt;</span><span class="n">dma_vaddr</span> <span class="o">=</span> <span class="n">hda_dma_get_vaddr</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">corbpaddr</span><span class="p">,</span>
+ 			<span class="n">HDA_CORB_ENTRY_LEN</span> <span class="o">*</span> <span class="n">corb</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">corb</span><span class="o">-&gt;</span><span class="n">dma_vaddr</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"Fail to get the guest virtual address</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">corb</span><span class="o">-&gt;</span><span class="n">wp</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_CORBWP</span><span class="p">);</span>
+ 	<span class="n">corb</span><span class="o">-&gt;</span><span class="n">rp</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_CORBRP</span><span class="p">);</span>
+ 
+ 	<span class="n">corb</span><span class="o">-&gt;</span><span class="n">run</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+ 
+ 	<span class="n">hda_print_cmd_ctl_data</span><span class="p">(</span><span class="n">corb</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">hda_corb_run</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_cmd_ctl</span> <span class="o">*</span><span class="n">corb</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">corb</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">verb</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+ 
+ 	<span class="n">corb</span><span class="o">-&gt;</span><span class="n">wp</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_CORBWP</span><span class="p">);</span>
+ 
+ 	<span class="k">while</span> <span class="p">(</span><span class="n">corb</span><span class="o">-&gt;</span><span class="n">rp</span> <span class="o">!=</span> <span class="n">corb</span><span class="o">-&gt;</span><span class="n">wp</span> <span class="o">&amp;&amp;</span> <span class="n">corb</span><span class="o">-&gt;</span><span class="n">run</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">corb</span><span class="o">-&gt;</span><span class="n">rp</span><span class="o">++</span><span class="p">;</span>
+ 		<span class="n">corb</span><span class="o">-&gt;</span><span class="n">rp</span> <span class="o">%=</span> <span class="n">corb</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">;</span>
+ 
+ 		<span class="n">verb</span> <span class="o">=</span> <span class="n">hda_dma_ld_dword</span><span class="p">(</span><span class="n">corb</span><span class="o">-&gt;</span><span class="n">dma_vaddr</span> <span class="o">+</span>		\
+ 				<span class="n">HDA_CORB_ENTRY_LEN</span> <span class="o">*</span> <span class="n">corb</span><span class="o">-&gt;</span><span class="n">rp</span><span class="p">);</span>
+ 
+ 		<span class="n">err</span> <span class="o">=</span> <span class="n">hda_send_command</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">verb</span><span class="p">);</span>
+ 		<span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">err</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_CORBRP</span><span class="p">,</span> <span class="n">corb</span><span class="o">-&gt;</span><span class="n">rp</span><span class="p">);</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">corb</span><span class="o">-&gt;</span><span class="n">run</span><span class="p">)</span>
+ 		<span class="n">hda_response_interrupt</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">hda_rirb_start</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_cmd_ctl</span> <span class="o">*</span><span class="n">rirb</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">rirb</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">rirbsize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">rirblbase</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">rirbubase</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">rirbpaddr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 
+ 	<span class="n">rirb</span><span class="o">-&gt;</span><span class="n">name</span> <span class="o">=</span> <span class="s">"RIRB"</span><span class="p">;</span>
+ 
+ 	<span class="n">rirbsize</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_RIRBSIZE</span><span class="p">)</span> <span class="o">&amp;</span>		\
+ 		   <span class="n">HDAC_RIRBSIZE_RIRBSIZE_MASK</span><span class="p">;</span>
+ 	<span class="n">rirb</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">=</span> <span class="n">hda_rirb_sizes</span><span class="p">[</span><span class="n">rirbsize</span><span class="p">];</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">rirb</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"Invalid rirb size</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">rirblbase</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_RIRBLBASE</span><span class="p">);</span>
+ 	<span class="n">rirbubase</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_RIRBUBASE</span><span class="p">);</span>
+ 
+ 	<span class="n">rirbpaddr</span> <span class="o">=</span> <span class="n">rirblbase</span> <span class="o">|</span> <span class="p">(</span><span class="n">rirbubase</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">);</span>
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"RIRB dma_paddr: %p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">rirbpaddr</span><span class="p">);</span>
+ 
+ 	<span class="n">rirb</span><span class="o">-&gt;</span><span class="n">dma_vaddr</span> <span class="o">=</span> <span class="n">hda_dma_get_vaddr</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">rirbpaddr</span><span class="p">,</span>
+ 			<span class="n">HDA_RIRB_ENTRY_LEN</span> <span class="o">*</span> <span class="n">rirb</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">rirb</span><span class="o">-&gt;</span><span class="n">dma_vaddr</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"Fail to get the guest virtual address</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">rirb</span><span class="o">-&gt;</span><span class="n">wp</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_RIRBWP</span><span class="p">);</span>
+ 	<span class="n">rirb</span><span class="o">-&gt;</span><span class="n">rp</span> <span class="o">=</span> <span class="mh">0x0000</span><span class="p">;</span>
+ 
+ 	<span class="n">rirb</span><span class="o">-&gt;</span><span class="n">run</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+ 
+ 	<span class="n">hda_print_cmd_ctl_data</span><span class="p">(</span><span class="n">rirb</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span> <span class="o">*</span>
+ <span class="n">hda_dma_get_vaddr</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint64_t</span> <span class="n">dma_paddr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">len</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">pci_devinst</span> <span class="o">*</span><span class="n">pi</span> <span class="o">=</span> <span class="n">sc</span><span class="o">-&gt;</span><span class="n">pci_dev</span><span class="p">;</span>
+ 
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">pi</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="n">paddr_guest2host</span><span class="p">(</span><span class="n">pi</span><span class="o">-&gt;</span><span class="n">pi_vmctx</span><span class="p">,</span> <span class="p">(</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">dma_paddr</span><span class="p">,</span> <span class="n">len</span><span class="p">));</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_dma_st_dword</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">dma_vaddr</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">data</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="n">dma_vaddr</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">uint32_t</span>
+ <span class="n">hda_dma_ld_dword</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">dma_vaddr</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="n">dma_vaddr</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kr">inline</span> <span class="kt">uint8_t</span>
+ <span class="n">hda_get_stream_by_offsets</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">reg_offset</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint8_t</span> <span class="n">stream_ind</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="n">reg_offset</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">;</span>
+ 
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">stream_ind</span> <span class="o">&lt;</span> <span class="n">HDA_IOSS_NO</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="n">stream_ind</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kr">inline</span> <span class="kt">uint32_t</span>
+ <span class="n">hda_get_offset_stream</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">stream_ind</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">return</span> <span class="p">(</span><span class="n">stream_ind</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_set_gctl</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">value</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">value</span> <span class="o">&amp;</span> <span class="n">HDAC_GCTL_CRST</span><span class="p">))</span> <span class="p">{</span>
+ 		<span class="n">hda_reset</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_set_statests</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">value</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+ 
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">old</span><span class="p">);</span>
+ 
+ 	<span class="cm">/* clear the corresponding bits written by the software (guest) */</span>
+ 	<span class="n">hda_set_field_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">value</span> <span class="o">&amp;</span> <span class="n">HDA_STATESTS_IRQ_MASK</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+ 
+ 	<span class="n">hda_update_intr</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_set_corbwp</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="n">hda_corb_run</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_set_corbctl</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">value</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+ 	<span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_cmd_ctl</span> <span class="o">*</span><span class="n">corb</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">&amp;</span> <span class="n">HDAC_CORBCTL_CORBRUN</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">old</span> <span class="o">&amp;</span> <span class="n">HDAC_CORBCTL_CORBRUN</span><span class="p">))</span> <span class="p">{</span>
+ 			<span class="n">err</span> <span class="o">=</span> <span class="n">hda_corb_start</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 			<span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">err</span><span class="p">);</span>
+ 		<span class="p">}</span>
+ 	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+ 		<span class="n">corb</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">corb</span><span class="p">;</span>
+ 		<span class="n">memset</span><span class="p">(</span><span class="n">corb</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">corb</span><span class="p">));</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">hda_corb_run</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_set_rirbctl</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">value</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+ 	<span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_cmd_ctl</span> <span class="o">*</span><span class="n">rirb</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">&amp;</span> <span class="n">HDAC_RIRBCTL_RIRBDMAEN</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">err</span> <span class="o">=</span> <span class="n">hda_rirb_start</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 		<span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">err</span><span class="p">);</span>
+ 	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+ 		<span class="n">rirb</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">rirb</span><span class="p">;</span>
+ 		<span class="n">memset</span><span class="p">(</span><span class="n">rirb</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">rirb</span><span class="p">));</span>
+ 	<span class="p">}</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_set_rirbsts</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">value</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+ 
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">old</span><span class="p">);</span>
+ 
+ 	<span class="cm">/* clear the corresponding bits written by the software (guest) */</span>
+ 	<span class="n">hda_set_field_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">value</span> <span class="o">&amp;</span> <span class="n">HDA_RIRBSTS_IRQ_MASK</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+ 
+ 	<span class="n">hda_update_intr</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_set_dpiblbase</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">value</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+ 	<span class="kt">uint64_t</span> <span class="n">dpiblbase</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">dpibubase</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">dpibpaddr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 
+ 	<span class="k">if</span> <span class="p">((</span><span class="n">value</span> <span class="o">&amp;</span> <span class="n">HDAC_DPLBASE_DPLBASE_DMAPBE</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">old</span> <span class="o">&amp;</span>		\
+ 				<span class="n">HDAC_DPLBASE_DPLBASE_DMAPBE</span><span class="p">))</span> <span class="p">{</span>
+ 		<span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">&amp;</span> <span class="n">HDAC_DPLBASE_DPLBASE_DMAPBE</span><span class="p">)</span> <span class="p">{</span>
+ 			<span class="n">dpiblbase</span> <span class="o">=</span> <span class="n">value</span> <span class="o">&amp;</span> <span class="n">HDAC_DPLBASE_DPLBASE_MASK</span><span class="p">;</span>
+ 			<span class="n">dpibubase</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_DPIBUBASE</span><span class="p">);</span>
+ 
+ 			<span class="n">dpibpaddr</span> <span class="o">=</span> <span class="n">dpiblbase</span> <span class="o">|</span> <span class="p">(</span><span class="n">dpibubase</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">);</span>
+ 			<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"DMA Position In Buffer dma_paddr: %p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+ 			    <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">dpibpaddr</span><span class="p">);</span>
+ 
+ 			<span class="n">sc</span><span class="o">-&gt;</span><span class="n">dma_pib_vaddr</span> <span class="o">=</span> <span class="n">hda_dma_get_vaddr</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">dpibpaddr</span><span class="p">,</span>
+ 					<span class="n">HDA_DMA_PIB_ENTRY_LEN</span> <span class="o">*</span> <span class="n">HDA_IOSS_NO</span><span class="p">);</span>
+ 			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">dma_pib_vaddr</span><span class="p">)</span> <span class="p">{</span>
+ 				<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"Fail to get the guest \
+ 					 virtual address</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 				<span class="n">assert</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ 			<span class="p">}</span>
+ 		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+ 			<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"DMA Position In Buffer Reset</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 			<span class="n">sc</span><span class="o">-&gt;</span><span class="n">dma_pib_vaddr</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 		<span class="p">}</span>
+ 	<span class="p">}</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_set_sdctl</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint8_t</span> <span class="n">stream_ind</span> <span class="o">=</span> <span class="n">hda_get_stream_by_offsets</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">HDAC_SDCTL0</span><span class="p">);</span>
+ 	<span class="kt">uint32_t</span> <span class="n">value</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+ 	<span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+ 
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"stream_ind: 0x%x old: 0x%x value: 0x%x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+ 	    <span class="n">stream_ind</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">&amp;</span> <span class="n">HDAC_SDCTL_SRST</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">hda_stream_reset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">stream_ind</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="k">if</span> <span class="p">((</span><span class="n">value</span> <span class="o">&amp;</span> <span class="n">HDAC_SDCTL_RUN</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">old</span> <span class="o">&amp;</span> <span class="n">HDAC_SDCTL_RUN</span><span class="p">))</span> <span class="p">{</span>
+ 		<span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">&amp;</span> <span class="n">HDAC_SDCTL_RUN</span><span class="p">)</span> <span class="p">{</span>
+ 			<span class="n">err</span> <span class="o">=</span> <span class="n">hda_stream_start</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">stream_ind</span><span class="p">);</span>
+ 			<span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">err</span><span class="p">);</span>
+ 		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+ 			<span class="n">err</span> <span class="o">=</span> <span class="n">hda_stream_stop</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">stream_ind</span><span class="p">);</span>
+ 			<span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">err</span><span class="p">);</span>
+ 		<span class="p">}</span>
+ 	<span class="p">}</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_set_sdctl2</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">value</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+ 
+ 	<span class="n">hda_set_field_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="mh">0x00ff0000</span><span class="p">,</span> <span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_set_sdsts</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">old</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">value</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+ 
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">old</span><span class="p">);</span>
+ 
+ 	<span class="cm">/* clear the corresponding bits written by the software (guest) */</span>
+ 	<span class="n">hda_set_field_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">value</span> <span class="o">&amp;</span> <span class="n">HDA_SDSTS_IRQ_MASK</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+ 
+ 	<span class="n">hda_update_intr</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">hda_signal_state_change</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_codec_inst</span> <span class="o">*</span><span class="n">hci</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">sdiwake</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">hci</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">hci</span><span class="o">-&gt;</span><span class="n">hda</span><span class="p">);</span>
+ 
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"cad: 0x%x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">hci</span><span class="o">-&gt;</span><span class="n">cad</span><span class="p">);</span>
+ 
+ 	<span class="n">sc</span> <span class="o">=</span> <span class="n">hci</span><span class="o">-&gt;</span><span class="n">hda</span><span class="p">;</span>
+ 	<span class="n">sdiwake</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">hci</span><span class="o">-&gt;</span><span class="n">cad</span><span class="p">;</span>
+ 
+ 	<span class="n">hda_set_field_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_STATESTS</span><span class="p">,</span> <span class="n">sdiwake</span><span class="p">,</span> <span class="n">sdiwake</span><span class="p">);</span>
+ 	<span class="n">hda_update_intr</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">hda_response</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_codec_inst</span> <span class="o">*</span><span class="n">hci</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">response</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">unsol</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_codec_cmd_ctl</span> <span class="o">*</span><span class="n">rirb</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">response_ex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">rintcnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">hci</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">hci</span><span class="o">-&gt;</span><span class="n">cad</span> <span class="o">&lt;=</span> <span class="n">HDA_CODEC_MAX</span><span class="p">);</span>
+ 
+ 	<span class="n">response_ex</span> <span class="o">=</span> <span class="n">hci</span><span class="o">-&gt;</span><span class="n">cad</span> <span class="o">|</span> <span class="n">unsol</span><span class="p">;</span>
+ 
+ 	<span class="n">sc</span> <span class="o">=</span> <span class="n">hci</span><span class="o">-&gt;</span><span class="n">hda</span><span class="p">;</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 
+ 	<span class="n">rirb</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">rirb</span><span class="p">;</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">rirb</span><span class="o">-&gt;</span><span class="n">run</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">rirb</span><span class="o">-&gt;</span><span class="n">wp</span><span class="o">++</span><span class="p">;</span>
+ 		<span class="n">rirb</span><span class="o">-&gt;</span><span class="n">wp</span> <span class="o">%=</span> <span class="n">rirb</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">;</span>
+ 
+ 		<span class="n">hda_dma_st_dword</span><span class="p">(</span><span class="n">rirb</span><span class="o">-&gt;</span><span class="n">dma_vaddr</span> <span class="o">+</span> <span class="n">HDA_RIRB_ENTRY_LEN</span> <span class="o">*</span>	\
+ 				<span class="n">rirb</span><span class="o">-&gt;</span><span class="n">wp</span><span class="p">,</span> <span class="n">response</span><span class="p">);</span>
+ 		<span class="n">hda_dma_st_dword</span><span class="p">(</span><span class="n">rirb</span><span class="o">-&gt;</span><span class="n">dma_vaddr</span> <span class="o">+</span> <span class="n">HDA_RIRB_ENTRY_LEN</span> <span class="o">*</span>	\
+ 				<span class="n">rirb</span><span class="o">-&gt;</span><span class="n">wp</span> <span class="o">+</span> <span class="mh">0x04</span><span class="p">,</span> <span class="n">response_ex</span><span class="p">);</span>
+ 
+ 		<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_RIRBWP</span><span class="p">,</span> <span class="n">rirb</span><span class="o">-&gt;</span><span class="n">wp</span><span class="p">);</span>
+ 
+ 		<span class="n">sc</span><span class="o">-&gt;</span><span class="n">rirb_cnt</span><span class="o">++</span><span class="p">;</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">rintcnt</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">HDAC_RINTCNT</span><span class="p">);</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">rirb_cnt</span> <span class="o">==</span> <span class="n">rintcnt</span><span class="p">)</span>
+ 		<span class="n">hda_response_interrupt</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">hda_transfer</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_codec_inst</span> <span class="o">*</span><span class="n">hci</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">stream</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">dir</span><span class="p">,</span>
+     <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_stream_desc</span> <span class="o">*</span><span class="n">st</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_bdle_desc</span> <span class="o">*</span><span class="n">bdl</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="k">struct</span> <span class="n">hda_bdle_desc</span> <span class="o">*</span><span class="n">bdle_desc</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">stream_ind</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">lpib</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint32_t</span> <span class="n">off</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">size_t</span> <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 	<span class="kt">uint8_t</span> <span class="n">irq</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">hci</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">hci</span><span class="o">-&gt;</span><span class="n">hda</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">count</span> <span class="o">%</span> <span class="n">HDA_DMA_ACCESS_LEN</span><span class="p">));</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">stream</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"Invalid stream</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">sc</span> <span class="o">=</span> <span class="n">hci</span><span class="o">-&gt;</span><span class="n">hda</span><span class="p">;</span>
+ 
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">stream</span> <span class="o">&lt;</span> <span class="n">HDA_STREAM_TAGS_CNT</span><span class="p">);</span>
+ 	<span class="n">stream_ind</span> <span class="o">=</span> <span class="n">sc</span><span class="o">-&gt;</span><span class="n">stream_map</span><span class="p">[</span><span class="n">dir</span><span class="p">][</span><span class="n">stream</span><span class="p">];</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">dir</span><span class="p">)</span>
+ 		<span class="n">assert</span><span class="p">(</span><span class="n">stream_ind</span> <span class="o">&lt;</span> <span class="n">HDA_ISS_NO</span><span class="p">);</span>
+ 	<span class="k">else</span>
+ 		<span class="n">assert</span><span class="p">(</span><span class="n">stream_ind</span> <span class="o">&gt;=</span> <span class="n">HDA_ISS_NO</span> <span class="o">&amp;&amp;</span> <span class="n">stream_ind</span> <span class="o">&lt;</span> <span class="n">HDA_IOSS_NO</span><span class="p">);</span>
+ 
+ 	<span class="n">st</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">streams</span><span class="p">[</span><span class="n">stream_ind</span><span class="p">];</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">run</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"Stream 0x%x stopped</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">stream</span><span class="p">);</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">stream</span> <span class="o">==</span> <span class="n">stream</span><span class="p">);</span>
+ 
+ 	<span class="n">off</span> <span class="o">=</span> <span class="n">hda_get_offset_stream</span><span class="p">(</span><span class="n">stream_ind</span><span class="p">);</span>
+ 
+ 	<span class="n">lpib</span> <span class="o">=</span> <span class="n">hda_get_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">off</span> <span class="o">+</span> <span class="n">HDAC_SDLPIB</span><span class="p">);</span>
+ 
+ 	<span class="n">bdl</span> <span class="o">=</span> <span class="n">st</span><span class="o">-&gt;</span><span class="n">bdl</span><span class="p">;</span>
+ 
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">be</span> <span class="o">&lt;</span> <span class="n">st</span><span class="o">-&gt;</span><span class="n">bdl_cnt</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">bp</span> <span class="o">&lt;</span> <span class="n">bdl</span><span class="p">[</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">be</span><span class="p">].</span><span class="n">len</span><span class="p">);</span>
+ 
+ 	<span class="n">left</span> <span class="o">=</span> <span class="n">count</span><span class="p">;</span>
+ 	<span class="k">while</span> <span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">bdle_desc</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">bdl</span><span class="p">[</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">be</span><span class="p">];</span>
+ 
+ 		<span class="k">if</span> <span class="p">(</span><span class="n">dir</span><span class="p">)</span>
+ 			<span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="o">*</span><span class="p">)</span><span class="n">buf</span> <span class="o">=</span>				\
+ 			    <span class="n">hda_dma_ld_dword</span><span class="p">(</span><span class="n">bdle_desc</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">+</span> <span class="n">st</span><span class="o">-&gt;</span><span class="n">bp</span><span class="p">);</span>
+ 		<span class="k">else</span>
+ 			<span class="n">hda_dma_st_dword</span><span class="p">(</span><span class="n">bdle_desc</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">+</span> <span class="n">st</span><span class="o">-&gt;</span><span class="n">bp</span><span class="p">,</span>
+ 					<span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="o">*</span><span class="p">)</span><span class="n">buf</span><span class="p">);</span>
+ 
+ 		<span class="n">buf</span> <span class="o">+=</span> <span class="n">HDA_DMA_ACCESS_LEN</span><span class="p">;</span>
+ 		<span class="n">st</span><span class="o">-&gt;</span><span class="n">bp</span> <span class="o">+=</span> <span class="n">HDA_DMA_ACCESS_LEN</span><span class="p">;</span>
+ 		<span class="n">lpib</span> <span class="o">+=</span> <span class="n">HDA_DMA_ACCESS_LEN</span><span class="p">;</span>
+ 		<span class="n">left</span> <span class="o">-=</span> <span class="n">HDA_DMA_ACCESS_LEN</span><span class="p">;</span>
+ 
+ 		<span class="k">if</span> <span class="p">(</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">bp</span> <span class="o">==</span> <span class="n">bdle_desc</span><span class="o">-&gt;</span><span class="n">len</span><span class="p">)</span> <span class="p">{</span>
+ 			<span class="n">st</span><span class="o">-&gt;</span><span class="n">bp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 			<span class="k">if</span> <span class="p">(</span><span class="n">bdle_desc</span><span class="o">-&gt;</span><span class="n">ioc</span><span class="p">)</span>
+ 				<span class="n">irq</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+ 			<span class="n">st</span><span class="o">-&gt;</span><span class="n">be</span><span class="o">++</span><span class="p">;</span>
+ 			<span class="k">if</span> <span class="p">(</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">be</span> <span class="o">==</span> <span class="n">st</span><span class="o">-&gt;</span><span class="n">bdl_cnt</span><span class="p">)</span> <span class="p">{</span>
+ 				<span class="n">st</span><span class="o">-&gt;</span><span class="n">be</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 				<span class="n">lpib</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 			<span class="p">}</span>
+ 			<span class="n">bdle_desc</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">bdl</span><span class="p">[</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">be</span><span class="p">];</span>
+ 		<span class="p">}</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="n">hda_set_pib</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">stream_ind</span><span class="p">,</span> <span class="n">lpib</span><span class="p">);</span>
+ 
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">irq</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">hda_set_field_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">off</span> <span class="o">+</span> <span class="n">HDAC_SDSTS</span><span class="p">,</span>
+ 				<span class="n">HDAC_SDSTS_BCIS</span><span class="p">,</span> <span class="n">HDAC_SDSTS_BCIS</span><span class="p">);</span>
+ 		<span class="n">hda_update_intr</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 	<span class="p">}</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">hda_set_pib</span><span class="p">(</span><span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">stream_ind</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">pib</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="kt">uint32_t</span> <span class="n">off</span> <span class="o">=</span> <span class="n">hda_get_offset_stream</span><span class="p">(</span><span class="n">stream_ind</span><span class="p">);</span>
+ 
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">off</span> <span class="o">+</span> <span class="n">HDAC_SDLPIB</span><span class="p">,</span> <span class="n">pib</span><span class="p">);</span>
+ 	<span class="cm">/* LPIB Alias */</span>
+ 	<span class="n">hda_set_reg_by_offset</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="mh">0x2000</span> <span class="o">+</span> <span class="n">off</span> <span class="o">+</span> <span class="n">HDAC_SDLPIB</span><span class="p">,</span> <span class="n">pib</span><span class="p">);</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">dma_pib_vaddr</span><span class="p">)</span>
+ 		<span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="o">*</span><span class="p">)(</span><span class="n">sc</span><span class="o">-&gt;</span><span class="n">dma_pib_vaddr</span> <span class="o">+</span> <span class="n">stream_ind</span> <span class="o">*</span>	\
+ 				<span class="n">HDA_DMA_PIB_ENTRY_LEN</span><span class="p">)</span> <span class="o">=</span> <span class="n">pib</span><span class="p">;</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">uint64_t</span> <span class="n">hda_get_clock_ns</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">timespec</span> <span class="n">ts</span><span class="p">;</span>
+ 	<span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+ 
+ 	<span class="n">err</span> <span class="o">=</span> <span class="n">clock_gettime</span><span class="p">(</span><span class="n">CLOCK_MONOTONIC</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ts</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">err</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="n">ts</span><span class="p">.</span><span class="n">tv_sec</span> <span class="o">*</span> <span class="mi">1000000000LL</span> <span class="o">+</span> <span class="n">ts</span><span class="p">.</span><span class="n">tv_nsec</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="cm">/*
+  * PCI HDA function definitions
+  */</span>
+ <span class="k">static</span> <span class="kt">int</span>
+ <span class="n">pci_hda_init</span><span class="p">(</span><span class="k">struct</span> <span class="n">vmctx</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="k">struct</span> <span class="n">pci_devinst</span> <span class="o">*</span><span class="n">pi</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">opts</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ 
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">ctx</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">pi</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">);</span>
+ 
+ 	<span class="n">pci_set_cfgdata16</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">PCIR_VENDOR</span><span class="p">,</span> <span class="n">INTEL_VENDORID</span><span class="p">);</span>
+ 	<span class="n">pci_set_cfgdata16</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">PCIR_DEVICE</span><span class="p">,</span> <span class="n">HDA_INTEL_82801G</span><span class="p">);</span>
+ 
+ 	<span class="n">pci_set_cfgdata8</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">PCIR_SUBCLASS</span><span class="p">,</span> <span class="n">PCIS_MULTIMEDIA_HDA</span><span class="p">);</span>
+ 	<span class="n">pci_set_cfgdata8</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">PCIR_CLASS</span><span class="p">,</span> <span class="n">PCIC_MULTIMEDIA</span><span class="p">);</span>
+ 
+ 	<span class="cm">/* select the Intel HDA mode */</span>
+ 	<span class="n">pci_set_cfgdata8</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">PCIR_HDCTL</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">);</span>
+ 
+ 	<span class="cm">/* allocate one BAR register for the Memory address offsets */</span>
+ 	<span class="n">pci_emul_alloc_bar</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">PCIBAR_MEM32</span><span class="p">,</span> <span class="n">HDA_LAST_OFFSET</span><span class="p">);</span>
+ 
+ 	<span class="cm">/* allocate an IRQ pin for our slot */</span>
+ 	<span class="n">pci_lintr_request</span><span class="p">(</span><span class="n">pi</span><span class="p">);</span>
+ 
+ 	<span class="n">sc</span> <span class="o">=</span> <span class="n">hda_init</span><span class="p">(</span><span class="n">opts</span><span class="p">);</span>
+ 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">sc</span><span class="p">)</span>
+ 		<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+ 
+ 	<span class="n">sc</span><span class="o">-&gt;</span><span class="n">pci_dev</span> <span class="o">=</span> <span class="n">pi</span><span class="p">;</span>
+ 	<span class="n">pi</span><span class="o">-&gt;</span><span class="n">pi_arg</span> <span class="o">=</span> <span class="n">sc</span><span class="p">;</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">pci_hda_write</span><span class="p">(</span><span class="k">struct</span> <span class="n">vmctx</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">vcpu</span><span class="p">,</span> <span class="k">struct</span> <span class="n">pci_devinst</span> <span class="o">*</span><span class="n">pi</span><span class="p">,</span>
+     <span class="kt">int</span> <span class="n">baridx</span><span class="p">,</span> <span class="kt">uint64_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint64_t</span> <span class="n">value</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span> <span class="o">=</span> <span class="n">pi</span><span class="o">-&gt;</span><span class="n">pi_arg</span><span class="p">;</span>
+ 	<span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+ 
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">baridx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">size</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">);</span>
+ 
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"offset: 0x%lx value: 0x%lx</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+ 
+ 	<span class="n">err</span> <span class="o">=</span> <span class="n">hda_write</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">err</span><span class="p">);</span>
+ <span class="p">}</span>
+ 
+ <span class="k">static</span> <span class="kt">uint64_t</span>
+ <span class="n">pci_hda_read</span><span class="p">(</span><span class="k">struct</span> <span class="n">vmctx</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">vcpu</span><span class="p">,</span> <span class="k">struct</span> <span class="n">pci_devinst</span> <span class="o">*</span><span class="n">pi</span><span class="p">,</span>
+     <span class="kt">int</span> <span class="n">baridx</span><span class="p">,</span> <span class="kt">uint64_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
+ <span class="p">{</span>
+ 	<span class="k">struct</span> <span class="n">hda_softc</span> <span class="o">*</span><span class="n">sc</span> <span class="o">=</span> <span class="n">pi</span><span class="o">-&gt;</span><span class="n">pi_arg</span><span class="p">;</span>
+ 	<span class="kt">uint64_t</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ 
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">baridx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+ 	<span class="n">assert</span><span class="p">(</span><span class="n">size</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">);</span>
+ 
+ 	<span class="n">value</span> <span class="o">=</span> <span class="n">hda_read</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+ 
+ 	<span class="n">DPRINTF</span><span class="p">(</span><span class="s">"offset: 0x%lx value: 0x%lx</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+ 
+ 	<span class="k">return</span> <span class="p">(</span><span class="n">value</span><span class="p">);</span>
+ <span class="p">}</span></code></pre></figure>
+
+<h1 id="references">References</h1>
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p><a href="https://wiki.freebsd.org/SummerOfCode2016/HDAudioEmulationForBhyve">https://wiki.freebsd.org/SummerOfCode2016/HDAudioEmulationForBhyve</a> <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p><a href="https://svnweb.freebsd.org/base?view=revision&amp;revision=349335">https://svnweb.freebsd.org/base?view=revision&amp;revision=349335</a> <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p><a href="https://reviews.freebsd.org/rS349385">https://reviews.freebsd.org/rS349385</a> <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2019-06/bhyve_hda_bof" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2019-06/bhyve_hda_bof" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2019-06/bhyve_hda_bof" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2019-06/bhyve_hda_bof" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2019-06/bhyve_hda_bof" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+
+        <footer>
+  &copy; 2020 Fakhri Zulkifli. Made with <a href="http://github.com/renyuanz/leonids/"><i class="fa fa-heart heart-icon"></i></a>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>

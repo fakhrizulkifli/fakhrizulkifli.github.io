@@ -1,0 +1,9 @@
+<h1><span data-i18n="skills.my_skills">CVEs</span></h1>
+
+{% for cve in site.data.index.cves %}
+    <div class="row">
+            <div class="col">
+                <a href="{{ cve.link }}" target="_blank"><p style="margin: 0">{{ cve.name }}</p></a>
+            </div>
+    </div>
+{% endfor %}

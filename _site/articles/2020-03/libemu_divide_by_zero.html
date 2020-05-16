@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Dionaea remote denial of service.">
+  <meta name="keywords" content="blog, jekyll, software vulnerabilities, software bugs, and mem corruptions">
+  <meta name="author" content="Libemu - emu_shellcode_test Divide By Zero | Fakhri Zulkifli">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Libemu - emu_shellcode_test Divide By Zero | Fakhri Zulkifli">
+  <meta name="twitter:description" content="Dionaea remote denial of service.">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2020-03/libemu_divide_by_zero">
+  <meta property="og:title" content="Libemu - emu_shellcode_test Divide By Zero | Fakhri Zulkifli">
+  <meta property="og:description" content="Dionaea remote denial of service.">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>Libemu - emu_shellcode_test Divide By Zero | Fakhri Zulkifli</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2020-03/libemu_divide_by_zero">
+  <link rel="alternate" type="application/rss+xml" title="Fakhri Zulkifli" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/" class="author_name">Fakhri Zulkifli</a>
+  <span class="author_job">Looking for a job</span>
+  <span class="author_bio mbm">A fan of software bugs and vulnerabilities.</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+      <li>
+      <script>gen_mail_to_link('mohdfakhrizulkifli@gmail.com', 'Hello from website');</script>
+      </li>
+    
+    <li><a href="http://twitter.com/d0lph1n98" class="social-link-item" target="_blank"><i class="fa fa-fw fa-twitter"></i></a></li>
+    
+    
+    <li><a href="http://linkedin.com/in/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-linkedin"></i></a></li>
+    
+    
+    
+    
+    <li><a href="http://github.com/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-github"></i></a></li>
+    
+    <li><a href="http://stackoverflow.com/users/1334320/fakhri-zulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="Libemu - emu_shellcode_test Divide By Zero">Libemu - emu_shellcode_test Divide By Zero</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        24 MAR 2020
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    3 mins read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    <p>I found this bug some time ago when i was reading the code for GetPC heuristics mechanism. The bug can be triggered with just only one byte which can be translated to a <strong>CALL</strong> opcode. In normal cases, <strong>CALL</strong> opcode must be supplied with a relative offset to a new procedure but in this case if the offset is not supplied, it triggers the bug.</p>
+
+<h1 id="proof-of-concept">Proof-of-Concept</h1>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sctest <span class="nt">-gS</span> &lt; &lt;<span class="o">(</span><span class="nb">echo</span> <span class="s2">"</span><span class="se">\x</span><span class="s2">e8"</span><span class="o">)</span></code></pre></figure>
+
+<h1 id="bug-analysis">Bug Analysis</h1>
+<p>The root cause is when it detects a branching opcode it will attempt to create the instructions call graph by enumerating the relative offset for the next branch. However, there is no check whether the branching offset is supplied or not and thus leaving the <code class="language-plaintext highlighter-rouge">datasize</code> variable with value 0.</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="mo">041</span><span class="o">:</span> <span class="kt">uint32_t</span> <span class="nf">emu_source_instruction_graph_create</span><span class="p">(</span><span class="k">struct</span> <span class="n">emu</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span> <span class="k">struct</span> <span class="n">emu_track_and_source</span> <span class="o">*</span><span class="n">es</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">datastart</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">datasize</span><span class="p">)</span>
+<span class="mo">042</span><span class="o">:</span> <span class="p">{</span>
+<span class="mo">043</span><span class="o">:</span> <span class="c1">//	printf("tracking from %x to %x\n", datastart, datastart+datasize)</span><span class="p">;</span>
+<span class="mo">044</span><span class="o">:</span> 	<span class="k">struct</span> <span class="n">emu_cpu</span> <span class="o">*</span><span class="n">c</span> <span class="o">=</span> <span class="n">emu_cpu_get</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+<span class="mo">045</span><span class="o">:</span>
+<span class="mo">046</span><span class="o">:</span> 	<span class="n">es</span><span class="o">-&gt;</span><span class="n">static_instr_graph</span> <span class="o">=</span> <span class="n">emu_graph_new</span><span class="p">();</span>
+<span class="mo">047</span><span class="o">:</span> 	<span class="n">es</span><span class="o">-&gt;</span><span class="n">static_instr_table</span> <span class="o">=</span> <span class="n">emu_hashtable_new</span><span class="p">(</span><span class="n">datasize</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">emu_hashtable_ptr_hash</span><span class="p">,</span>  <span class="n">emu_hashtable_ptr_cmp</span><span class="p">);</span>     <span class="o">&lt;--</span> <span class="n">datasize</span><span class="o">=</span><span class="mi">0</span>
+<span class="mo">04</span><span class="mi">8</span><span class="o">:</span> 	<span class="n">es</span><span class="o">-&gt;</span><span class="n">static_instr_graph</span><span class="o">-&gt;</span><span class="n">vertex_destructor</span> <span class="o">=</span> <span class="n">emu_source_and_track_instr_info_free_void</span><span class="p">;</span>
+<span class="mo">04</span><span class="mi">9</span><span class="o">:</span>
+<span class="mo">050</span><span class="o">:</span> 	<span class="kt">uint32_t</span> <span class="n">i</span><span class="p">;</span>
+<span class="mo">051</span><span class="o">:</span> 	<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="n">datastart</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">datastart</span><span class="o">+</span><span class="n">datasize</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="mo">052</span><span class="o">:</span> 	<span class="p">{</span>
+<span class="mo">053</span><span class="o">:</span> 		<span class="n">emu_cpu_eip_set</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+<span class="mo">054</span><span class="o">:</span>
+<span class="mo">055</span><span class="o">:</span> 		<span class="k">if</span> <span class="p">(</span> <span class="n">emu_cpu_parse</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="mo">056</span><span class="o">:</span> 		<span class="p">{</span>
+<span class="mo">057</span><span class="o">:</span> <span class="c1">//			printf("parse error %s\n", emu_strerror(e));</span>
+<span class="mo">05</span><span class="mi">8</span><span class="o">:</span> 			<span class="k">continue</span><span class="p">;</span>
+<span class="mo">05</span><span class="mi">9</span><span class="o">:</span> 		<span class="p">}</span>
+<span class="mo">060</span><span class="o">:</span>
+<span class="mo">061</span><span class="o">:</span> 		<span class="k">if</span> <span class="p">(</span> <span class="n">emu_cpu_step</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="mo">062</span><span class="o">:</span> 		<span class="p">{</span>
+<span class="mo">063</span><span class="o">:</span> <span class="c1">//			printf("step error %s\n", emu_strerror(e));</span>
+<span class="mo">064</span><span class="o">:</span> <span class="c1">//			continue;</span>
+<span class="mo">065</span><span class="o">:</span> 		<span class="p">}</span>
+<span class="mo">066</span><span class="o">:</span>
+<span class="mo">067</span><span class="o">:</span>         <span class="k">struct</span> <span class="n">emu_source_and_track_instr_info</span> <span class="o">*</span><span class="n">etii</span> <span class="o">=</span> <span class="n">emu_source_and_track_instr_info_new</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+<span class="mo">06</span><span class="mi">8</span><span class="o">:</span> 		<span class="k">struct</span> <span class="n">emu_vertex</span> <span class="o">*</span><span class="n">ev</span> <span class="o">=</span> <span class="n">emu_vertex_new</span><span class="p">();</span>
+<span class="mo">06</span><span class="mi">9</span><span class="o">:</span> 		<span class="n">ev</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">etii</span><span class="p">;</span>
+<span class="mo">070</span><span class="o">:</span> 		<span class="n">emu_hashtable_insert</span><span class="p">(</span><span class="n">es</span><span class="o">-&gt;</span><span class="n">static_instr_table</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)(</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">i</span><span class="p">,</span> <span class="n">ev</span><span class="p">);</span>     <span class="o">&lt;--</span> <span class="n">insert</span> <span class="n">data</span>
+<span class="mo">071</span><span class="o">:</span> 		<span class="n">emu_graph_vertex_add</span><span class="p">(</span><span class="n">es</span><span class="o">-&gt;</span><span class="n">static_instr_graph</span><span class="p">,</span> <span class="n">ev</span><span class="p">);</span>
+<span class="mo">072</span><span class="o">:</span> 	<span class="p">}</span>
+<span class="mo">073</span><span class="o">:</span></code></pre></figure>
+
+<p><strong>emu_source_instruction_graph_create</strong> function is to stores the information about the instructions inside a hash table. At line 47, the hash table is created with the size of the instructions divided by 2. Then <code class="language-plaintext highlighter-rouge">datasize</code> is initialized to <code class="language-plaintext highlighter-rouge">eh-&gt;size</code>.</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="mi">094</span><span class="o">:</span> <span class="k">struct</span> <span class="n">emu_hashtable_item</span> <span class="o">*</span><span class="n">emu_hashtable_search</span><span class="p">(</span><span class="k">struct</span> <span class="n">emu_hashtable</span> <span class="o">*</span><span class="n">eh</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">)</span>
+<span class="mi">095</span><span class="o">:</span> <span class="p">{</span>
+<span class="mi">096</span><span class="o">:</span> 	<span class="kt">uint32_t</span> <span class="n">first_hash</span> <span class="o">=</span> <span class="n">eh</span><span class="o">-&gt;</span><span class="n">hash</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">%</span> <span class="n">eh</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">;</span>     <span class="o">&lt;--</span> <span class="n">triggered</span>
+<span class="mi">097</span><span class="o">:</span>
+<span class="mi">098</span><span class="o">:</span> 	<span class="k">struct</span> <span class="n">emu_hashtable_bucket</span> <span class="o">*</span><span class="n">ehb</span> <span class="o">=</span> 	<span class="n">eh</span><span class="o">-&gt;</span><span class="n">buckets</span><span class="p">[</span><span class="n">first_hash</span><span class="p">];</span>
+<span class="mi">099</span><span class="o">:</span> 	<span class="k">if</span> <span class="p">(</span><span class="n">ehb</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+<span class="mi">100</span><span class="o">:</span> 		<span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span></code></pre></figure>
+
+<p>Going down the rabbit hole right before the data is insert into the hash table through <strong>emu_hashtable_insert</strong> at line 70. <strong>emu_hashtable_search</strong> is called to check whether the data is already inserted or not. At line 96, the address of the key inside the hash table will be divided with <code class="language-plaintext highlighter-rouge">eh-&gt;size</code> and triggers the bug.</p>
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2020-03/libemu_divide_by_zero" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2020-03/libemu_divide_by_zero" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2020-03/libemu_divide_by_zero" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2020-03/libemu_divide_by_zero" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2020-03/libemu_divide_by_zero" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+
+        <footer>
+  &copy; 2020 Fakhri Zulkifli. Made with <a href="http://github.com/renyuanz/leonids/"><i class="fa fa-heart heart-icon"></i></a>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>

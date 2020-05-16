@@ -1,98 +1,851 @@
 <!DOCTYPE html>
-<html lang="pt">
-
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Fakhri Zulkifli</title>
-
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="/css/bootstrap-4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/fontawesome-5.13.0/css/fontawesome.css">
-    <link rel="stylesheet" href="/css/fontawesome-5.13.0/css/brands.css">
-    <link rel="stylesheet" href="/css/fontawesome-5.13.0/css/solid.css">
-    <link rel="stylesheet" href="/css/main.css">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-    <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-69613510-1', 'auto');
-    ga('send', 'pageview');
-
-</script>
+<html lang="en">
 
 
-    <link rel="shortcut icon" href="/images/favicon.jpg">
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="A fan of sofware bugs and vulnerabilities.">
+  <meta name="keywords" content="blog, jekyll, software vulnerabilities, software bugs, and mem corruptions">
+  <meta name="author" content="Fakhri Zulkifli">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Fakhri Zulkifli">
+  <meta name="twitter:description" content="A fan of sofware bugs and vulnerabilities.">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/">
+  <meta property="og:title" content="Fakhri Zulkifli">
+  <meta property="og:description" content="A fan of sofware bugs and vulnerabilities.">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>Fakhri Zulkifli</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/">
+  <link rel="alternate" type="application/rss+xml" title="Fakhri Zulkifli" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
 </head>
 
 
-    <body>
-      <div class="container">
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
 
-        <header class="row">
-  <div class="col-lg-8 col-lg-offset-2" style="margin: auto">
-    <h1 class="">Fakhri Zulkifli</h1>
-    <p>
-    <div style="margin: auto">
-    <a href="https://github.com/fakhrizulkifli" target="_blank"><span style="font-size: large" class="fab fa-github-square"></span></a>
-    <a href="https://twitter.com/d0lph1n98" target="_blank"><span style="font-size: large" class="fab fa-twitter-square"></span></a>
-    <a href="https://linkedin.com/in/fakhrizulkifli" target="_blank"><span style="font-size: large" class="fab fa-linkedin"></span></a>
-    </div>
-    </p>
-  </div>
-</header>
-
-<div class="row">
-  <div style="width:-webkit-fill-available">
-    <div class="menu">
-      <ul>
-          <li><a href="/blog/">/root</a></li>
-      </ul>
-    </div>
-  </div>
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/" class="author_name">Fakhri Zulkifli</a>
+  <span class="author_job">Looking for a job</span>
+  <span class="author_bio mbm">A fan of software bugs and vulnerabilities.</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+      <li>
+      <script>gen_mail_to_link('mohdfakhrizulkifli@gmail.com', 'Hello from website');</script>
+      </li>
+    
+    <li><a href="http://twitter.com/d0lph1n98" class="social-link-item" target="_blank"><i class="fa fa-fw fa-twitter"></i></a></li>
+    
+    
+    <li><a href="http://linkedin.com/in/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-linkedin"></i></a></li>
+    
+    
+    
+    
+    <li><a href="http://github.com/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-github"></i></a></li>
+    
+    <li><a href="http://stackoverflow.com/users/1334320/fakhri-zulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
 </div>
 
-
-
-        <div class="row">
-          <div style="width:-webkit-fill-available">
-            <main>
-            <div class="post">
-    <header class="post-header">
-        <h1></h1>
-    </header>
-
-    <article class="post-content" align="center">
-       <p>Hello World</p>
-
-    </article>
 </div>
-
-            </main>
-          </div>
-        </div>
-
-        <div class="row">
-  <div style="width:-webkit-fill-available">
-    <footer>
-      
-    </footer>
-  </div>
-</div>
-
 
       </div>
-    </body>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        3 APR 2020
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#blog">blog</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2020-04/suricata_stack_based_overflow" class="post-title" title="Suricata - ReadErfFile Stack-based Buffer Overflow">Suricata - ReadErfFile Stack-based Buffer Overflow</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A trivial local stack-based overflow.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        24 MAR 2020
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#blog">blog</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2020-03/libemu_divide_by_zero" class="post-title" title="Libemu - emu_shellcode_test Divide By Zero">Libemu - emu_shellcode_test Divide By Zero</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        Dionaea remote denial of service.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        18 AUG 2019
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#blog">blog</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement" class="post-title" title="IPv6 Local Neighbor Discovery Using Router Advertisement">IPv6 Local Neighbor Discovery Using Router Advertisement</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A coincidence.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        17 AUG 2019
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#blog">blog</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref" class="post-title" title="BSD Hypervisor - pci_fbuf NULL Pointer Dereference">BSD Hypervisor - pci_fbuf NULL Pointer Dereference</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A guest to host denial of service.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        15 JUL 2019
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2019-07/CVE-2019-13614" class="post-title" title="[CVE-2019-13614] tddp CMD_SET_CONFIG_COUNTRY Stack-based Buffer Overflow">[CVE-2019-13614] tddp CMD_SET_CONFIG_COUNTRY Stack-based Buffer Overflow</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A debug protocol overflow.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        15 JUL 2019
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2019-07/CVE-2019-13613" class="post-title" title="[CVE-2019-13613] tddp CMD_FTEST_CONFIG Stack-based Buffer Overflow">[CVE-2019-13613] tddp CMD_FTEST_CONFIG Stack-based Buffer Overflow</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A debug protocol overflow.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        25 JUN 2019
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#blog">blog</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2019-06/bhyve_hda_bof" class="post-title" title="BSD Hypervisor - Theoretical Stack-based Buffer Overflow">BSD Hypervisor - Theoretical Stack-based Buffer Overflow</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A trivial unchecked command line length.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        6 JUN 2019
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2019-06/CVE-2019-12929" class="post-title" title="[CVE-2019-12929] QEMU Guest Agent guest_exec Remote Command Execution">[CVE-2019-12929] QEMU Guest Agent guest_exec Remote Command Execution</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        Unsanitized command execution.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        5 JUN 2019
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2019-06/CVE-2019-12928" class="post-title" title="[CVE-2019-12928] QEMU Machine Protocol Migrate Remote Command Execution">[CVE-2019-12928] QEMU Machine Protocol Migrate Remote Command Execution</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        Unsanitized command execution.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        3 JAN 2019
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2019-01/CVE-2019-5008" class="post-title" title="[CVE-2019-5008] QEMU sun4u NULL Pointer Dereference">[CVE-2019-5008] QEMU sun4u NULL Pointer Dereference</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A guest to host denial of service.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        5 SEP 2018
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#blog">blog</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2018-09/CVE-2018-16517" class="post-title" title="[CVE-2018-16517] Netwide Assembler (NASM) 2.14rc15 NULL Pointer Dereference">[CVE-2018-16517] Netwide Assembler (NASM) 2.14rc15 NULL Pointer Dereference</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A bug in assembly instruction parser.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        2 AUG 2018
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#exploit">exploit</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2018-08/CVE-2018-15887" class="post-title" title="[CVE-2018-15887] ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution">[CVE-2018-15887] ASUS DSL-N12E_C1 1.1.2.3_345 - Remote Command Execution</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A post-authenticated remote command execution.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        9 JUL 2018
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2018-07/CVE-2018-13458" class="post-title" title="[CVE-2018-13458] Nagios Core qh_core NULL Pointer Dereference">[CVE-2018-13458] Nagios Core qh_core NULL Pointer Dereference</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A local service denial of service.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        9 JUL 2018
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2018-07/CVE-2018-13457" class="post-title" title="[CVE-2018-13457] Nagios Core qh_echo NULL Pointer Dereference">[CVE-2018-13457] Nagios Core qh_echo NULL Pointer Dereference</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A local service denial of service.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        9 JUL 2018
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2018-07/CVE-2018-13441" class="post-title" title="[CVE-2018-13441] Nagios Core qh_help NULL Pointer Dereference">[CVE-2018-13441] Nagios Core qh_help NULL Pointer Dereference</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A local service denial of service.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        30 JUN 2018
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2018-06/sipp_3.6" class="post-title" title="SIPp 3.6 - Stack-based Buffer Overflow (PoC)">SIPp 3.6 - Stack-based Buffer Overflow (PoC)</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A trivial stack-based buffer overflow
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        13 JUN 2018
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2018-06/CVE-2018-12453" class="post-title" title="[CVE-2018-12453] Redis 5.0 Type Confusion">[CVE-2018-12453] Redis 5.0 Type Confusion</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A post-authenticated denial of service.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        13 JUN 2018
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2018-06/CVE-2018-12326" class="post-title" title="[CVE-2018-12326] Redis-cli Stack-based Buffer Overflow">[CVE-2018-12326] Redis-cli Stack-based Buffer Overflow</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A trivial stack-based buffer overflow
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        7 JUN 2018
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2018-06/CVE-2018-12617" class="post-title" title="[CVE-2018-12617] QEMU Guest Agent Integer Overflow">[CVE-2018-12617] QEMU Guest Agent Integer Overflow</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A trivial integer overflow.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+<section class="post">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-date">
+        6 JUN 2018
+      </span>
+      
+      •
+      
+        <a class="post-cat" href="http://localhost:4000/categories/#proof-of-concept">proof-of-concept</a>
+        
+      
+      
+    </p>
+    <h4>
+      <a href="http://localhost:4000/articles/2018-06/CVE-2018-12327" class="post-title" title="[CVE-2018-12327] ntpq and ntpdc 4.2.8p11 Stack-based Buffer Overflow">[CVE-2018-12327] ntpq and ntpdc 4.2.8p11 Stack-based Buffer Overflow</a>
+      
+    </h4>
+
+    
+
+    </header>
+
+    
+    <div class="post-description">
+      <p>
+        A trivial stack-based buffer overflow.
+      </p>
+    </div>
+    
+
+    
+
+</section>
+
+
+        <footer>
+  &copy; 2020 Fakhri Zulkifli. Made with <a href="http://github.com/renyuanz/leonids/"><i class="fa fa-heart heart-icon"></i></a>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
 </html>
