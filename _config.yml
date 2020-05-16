@@ -6,7 +6,7 @@
 title: Fakhri Zulkifli
 email: mohdfakhrizulkifli@gmail.com
 description: A fan of sofware bugs and vulnerabilities.
-url: fakhrizulkifli.github.io # the base hostname & protocol for your site
+url: # the base hostname & protocol for your site
 keywords: ["blog", "jekyll", "software vulnerabilities", "software bugs", "mem corruptions"]
 
 #
