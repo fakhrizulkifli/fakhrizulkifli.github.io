@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="An info-leak in Windows graphics device interface (GDI).">
+  <meta name="keywords" content="blog, jekyll, software vulnerabilities, software bugs, and mem corruptions">
+  <meta name="author" content="Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read | Fakhri Zulkifli">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read | Fakhri Zulkifli">
+  <meta name="twitter:description" content="An info-leak in Windows graphics device interface (GDI).">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits">
+  <meta property="og:title" content="Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read | Fakhri Zulkifli">
+  <meta property="og:description" content="An info-leak in Windows graphics device interface (GDI).">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read | Fakhri Zulkifli</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits">
+  <link rel="alternate" type="application/rss+xml" title="Fakhri Zulkifli" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/" class="author_name">Fakhri Zulkifli</a>
+  <span class="author_job">Looking for a job</span>
+  <span class="author_bio mbm">A fan of software bugs and vulnerabilities.</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+      <li>
+      <script>gen_mail_to_link('mohdfakhrizulkifli@gmail.com', 'Hello from website');</script>
+      </li>
+    
+    <li><a href="http://twitter.com/d0lph1n98" class="social-link-item" target="_blank"><i class="fa fa-fw fa-twitter"></i></a></li>
+    
+    
+    <li><a href="http://linkedin.com/in/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-linkedin"></i></a></li>
+    
+    
+    
+    
+    <li><a href="http://github.com/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-github"></i></a></li>
+    
+    <li><a href="http://stackoverflow.com/users/1334320/fakhri-zulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read">Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        20 MAY 2020
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    5 mins read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    <h1 id="overview">Overview</h1>
+
+<p>One of my fuzzing harness triggered a crash in <strong>GDI32!SetEnhMetaFileBits</strong> function when it tries to copy a user-controlled data to a local dynamically allocated memory space. The crash was analyzed to be a <strong>Read Access Violation</strong> and marked as <strong>PROBABLY_NOT_EXPLOITABLE</strong>. After doing a bit of debugging I found out that it could be leveraged into an <strong>Information Leakage</strong>.</p>
+
+<h1 id="crash-analysis">Crash Analysis</h1>
+
+<p>Initial crash:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ModLoad: 75ff0000 7601b000   C:\Windows\SysWOW64\IMM32.DLL
+ModLoad: 77a10000 77b30000   C:\Windows\SysWOW64\MSCTF.dll
+ModLoad: 77bb0000 77c6e000   C:\Windows\SysWOW64\msvcrt.dll
+(4a4.1844): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+*** WARNING: Unable to verify checksum for SetEnhMetaFileBits.exe
+eax=800fdf70 ebx=00000000 ecx=00000000 edx=00000000 esi=77527e70 edi=800fdf70
+eip=775283dc esp=00b4f968 ebp=00b4f970 iopl=0         nv up ei ng nz ac pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010296
+GDI32!SetEnhMetaFileBits+0x1c:
+775283dc 8b4230          mov     eax,dword ptr [edx+30h] ds:002b:00000030=????????
+</code></pre></div></div>
+
+<p>Backtrace:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> # ChildEBP RetAddr  Args to Child              
+00 00b4f970 00c210cb 800fdf70 00000000 00d73fb8 GDI32!SetEnhMetaFileBits+0x1c (FPO: [2,0,0])
+01 00b4f98c 00c212b5 d646100c 00d73fb8 00d75108 SetEnhMetaFileBits!main+0x8b (FPO: [Non-Fpo]) (CONV: cdecl) [c:\users\user\desktop\harness\gdi32.dll\setenhmetafilebits\setenhmetafilebits\setenhmetafilebits.cpp @ 30] 
+02 (Inline) -------- -------- -------- -------- SetEnhMetaFileBits!invoke_main+0x1c (Inline Function @ 00c212b5) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 78] 
+03 00b4f9d4 75eb3744 7eabe000 75eb3720 cd66120d SetEnhMetaFileBits!__scrt_common_main_seh+0xfa (FPO: [Non-Fpo]) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 288] 
+04 00b4f9e8 77d79e54 7eabe000 d4b66b70 00000000 KERNEL32!BaseThreadInitThunk+0x24 (FPO: [Non-Fpo])
+05 00b4fa30 77d79e1f ffffffff 77d9d6e2 00000000 ntdll!__RtlUserThreadStart+0x2f (FPO: [Non-Fpo])
+06 00b4fa40 00000000 00c2133d 7eabe000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
+</code></pre></div></div>
+
+<p>Exploitability check:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!exploitable 1.6.0.0
+HostMachine\HostUser
+Executing Processor Architecture is x86
+Debuggee is in User Mode
+Debuggee is a live user mode debugging session on the local machine
+Event Type: Exception
+Exception Faulting Address: 0x30
+First Chance Exception Type: STATUS_ACCESS_VIOLATION (0xC0000005)
+Exception Sub-Type: Read Access Violation
+
+Faulting Instruction:775283dc mov eax,dword ptr [edx+30h]
+
+Basic Block:
+    775283dc mov eax,dword ptr [edx+30h]
+       Tainted Input operands: 'edx'
+    775283df cmp dword ptr [ebp+8],eax
+       Tainted Input operands: 'eax'
+    775283e2 jb gdi32!setenhmetafilebits+0x5a (7752841a)
+       Tainted Input operands: 'CarryFlag'
+
+Exception Hash (Major/Minor): 0x6871032f.0x4129c86e
+
+ Hash Usage : Stack Trace:
+Major+Minor : GDI32!SetEnhMetaFileBits+0x1c
+Major+Minor : SetEnhMetaFileBits!main+0x8b
+Major+Minor : SetEnhMetaFileBits!__scrt_common_main_seh+0xfa
+Major+Minor : KERNEL32!BaseThreadInitThunk+0x24
+Major+Minor : ntdll!__RtlUserThreadStart+0x2f
+Minor       : ntdll!_RtlUserThreadStart+0x1b
+Instruction Address: 0x00000000775283dc
+
+Description: Read Access Violation near NULL
+Short Description: ReadAVNearNull
+Exploitability Classification: PROBABLY_NOT_EXPLOITABLE
+Recommended Bug Title: Read Access Violation near NULL starting at GDI32!SetEnhMetaFileBits+0x000000000000001c (Hash=0x6871032f.0x4129c86e)
+
+This is a user mode read access violation near null, and is probably not exploitable.
+</code></pre></div></div>
+
+<h1 id="bug-analysis">Bug Analysis</h1>
+
+<p>This is how it was initially triggered by my harness. We can clearly see that the 2nd argument is NULL.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eax=800fdf70 ebx=00000000 ecx=00000000 edx=00ff8360 esi=77527e70 edi=800fdf70
+eip=775283c0 esp=00d2f730 ebp=00d2f748 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+GDI32!SetEnhMetaFileBits:
+775283c0 8bff            mov     edi,edi
+0:000&gt; dd esp
+00d2f730  00c210cb 800fdf70 00000000 00ff3fb8
+00d2f740  71fe2108 7eb77000 00d2f790 00c212b5
+00d2f750  1f460d5d 00ff3fb8 00ff5ed0 5b6e5a06
+00d2f760  00c2133d 00c2133d 7eb77000 00000000
+00d2f770  00000000 00000000 00d2f75c 00000000
+00d2f780  00d2f7dc 00c21a6b 5b7e88d6 00000000
+00d2f790  00d2f7a4 75eb3744 7eb77000 75eb3720
+00d2f7a0  33b18477 00d2f7ec 77d79e54 7eb77000
+</code></pre></div></div>
+
+<p>We can confirm with the disassembly code below that our tainted input will go down to this path.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.text:0000000180040089                 test    r13b, 1
+.text:000000018004008D                 jnz     loc_18004019F
+.text:0000000180040093                 mov     edx, [rsi+30h]  ; uBytes
+.text:0000000180040096                 xor     ecx, ecx        ; uFlags
+.text:0000000180040098                 call    cs:__imp_LocalAlloc
+.text:000000018004009E                 mov     [rbx+20h], rax
+.text:00000001800400A2                 test    rax, rax
+.text:00000001800400A5                 jz      loc_18006C72D
+.text:00000001800400AB                 mov     r8d, [rsi+30h]  ; Size
+.text:00000001800400AF                 mov     rdx, rsi        ; Src
+.text:00000001800400B2                 mov     rcx, rax        ; Dst
+.text:00000001800400B5                 call    memcpy_0
+.text:00000001800400BA                 mov     ecx, [rsi+30h]
+.text:00000001800400BD                 mov     rax, [rbx+20h]
+.text:00000001800400C1                 mov     [rbx+30h], rax
+.text:00000001800400C5                 mov     [rbx+38h], rcx
+</code></pre></div></div>
+
+<p>With a little bit of modification to the harness. It is now pointing to a buffer someplace where the user can control and if the buffer is crafted correctly the <strong>GDI32!pmfAllocMF</strong> will end up using part of the buffer as the <code class="language-plaintext highlighter-rouge">ntdll!memcpy</code> length. So from there we can find a way to achieve info-leak but it is trivial so I will leave it as an exercise to the readers :).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eax=00000000 ebx=00fd8fe8 ecx=00000001 edx=00fd8808 esi=77527e70 edi=800fdf70
+eip=775283c0 esp=00d7f7fc ebp=00d7f814 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+GDI32!SetEnhMetaFileBits:
+775283c0 8bff            mov     edi,edi
+0:000&gt; dd esp
+00d7f7fc  009c10d8 800fdf70 00fd8fe8 00fd3fb8
+00d7f80c  71fe2108 7f1c5000 00d7f85c 009c12cb
+00d7f81c  6b4610c4 00fd3fb8 00fd5108 42630ad1
+00d7f82c  009c1353 009c1353 7f1c5000 00000000
+00d7f83c  00000000 00000000 00d7f828 00000000
+00d7f84c  00d7f8a8 009c1aab 4228d595 00000000
+00d7f85c  00d7f870 75eb3744 7f1c5000 75eb3720
+00d7f86c  56109131 00d7f8b8 77d79e54 7f1c5000
+0:000&gt; g
+(d90.394): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+eax=00000000 ebx=00fd8fe8 ecx=006c6006 edx=00000000 esi=02af0ffc edi=04609034
+eip=77d8e8e3 esp=00d7f794 ebp=00d7f79c iopl=0         nv dn ei pl nz ac pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010616
+ntdll!memcpy+0x213:
+77d8e8e3 f3a5            rep movs dword ptr es:[edi],dword ptr [esi]
+0:000&gt; kv
+ # ChildEBP RetAddr  Args to Child              
+00 00d7f79c 774feed1 02af1020 00fd8fe8 41414141 ntdll!memcpy+0x213
+01 00d7f7d4 775283f7 00000000 00000000 00000000 GDI32!pmfAllocMF+0x36197
+02 00d7f7f8 009c10d8 800fdf70 00fd8fe8 00fd3fb8 GDI32!SetEnhMetaFileBits+0x37 (FPO: [2,0,0])
+03 00d7f814 009c12cb 6b4610c4 00fd3fb8 00fd5108 SetEnhMetaFileBits!main+0x98 (FPO: [Non-Fpo]) (CONV: cdecl) [c:\users\user\desktop\harness\gdi32.dll\setenhmetafilebits\setenhmetafilebits\setenhmetafilebits.cpp @ 31] 
+04 (Inline) -------- -------- -------- -------- SetEnhMetaFileBits!invoke_main+0x1c (Inline Function @ 009c12cb) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 78] 
+05 00d7f85c 75eb3744 7f1c5000 75eb3720 56109131 SetEnhMetaFileBits!__scrt_common_main_seh+0xfa (FPO: [Non-Fpo]) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 288] 
+06 00d7f870 77d79e54 7f1c5000 961a92d3 00000000 KERNEL32!BaseThreadInitThunk+0x24 (FPO: [Non-Fpo])
+07 00d7f8b8 77d79e1f ffffffff 77d9d6d2 00000000 ntdll!__RtlUserThreadStart+0x2f (FPO: [Non-Fpo])
+08 00d7f8c8 00000000 009c1353 7f1c5000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
+</code></pre></div></div>
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+
+        <footer>
+  &copy; 2020 Fakhri Zulkifli. Made with <a href="http://github.com/renyuanz/leonids/"><i class="fa fa-heart heart-icon"></i></a>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>

