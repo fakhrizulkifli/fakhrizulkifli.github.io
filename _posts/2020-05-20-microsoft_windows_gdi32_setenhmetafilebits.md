@@ -122,7 +122,7 @@ We can confirm with the disassembly code below that our tainted input will go do
 .text:00000001800400C5                 mov     [rbx+38h], rcx
 ```
 
-With a little bit of modification to the harness. It is now pointing to a buffer someplace where the user can control and if the buffer is crafted correctly the **GDI32!pmfAllocMF** will end up using part of the buffer as the `ntdll!memcpy` length. So from there we can find a way to achieve info-leak but it is trivial so I will leave it as an exercise to the readers :).
+With a little bit of modification to the harness. It is now pointing to a buffer someplace where the user can control and if the buffer is crafted correctly according to its data structure the **GDI32!pmfAllocMF** will end up using part of the buffer as the `ntdll!memcpy` length. So from there we can find a way to achieve info-leak but it is trivial so I will leave it as an exercise to the readers :).
 
 ```
 eax=00000000 ebx=00fd8fe8 ecx=00000001 edx=00fd8808 esi=77527e70 edi=800fdf70

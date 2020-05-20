@@ -6,7 +6,7 @@
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
     <pubDate>2020-05-20</pubDate>
-    <lastBuildDate>Wed, 20 May 2020 05:40:54 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 20 May 2020 19:08:28 +0000</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -121,7 +121,7 @@ GDI32!SetEnhMetaFileBits:
 .text:00000001800400C5                 mov     [rbx+38h], rcx
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;With a little bit of modification to the harness. It is now pointing to a buffer someplace where the user can control and if the buffer is crafted correctly the &lt;strong&gt;GDI32!pmfAllocMF&lt;/strong&gt; will end up using part of the buffer as the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ntdll!memcpy&lt;/code&gt; length. So from there we can find a way to achieve info-leak but it is trivial so I will leave it as an exercise to the readers :).&lt;/p&gt;
+&lt;p&gt;With a little bit of modification to the harness. It is now pointing to a buffer someplace where the user can control and if the buffer is crafted correctly according to its data structure the &lt;strong&gt;GDI32!pmfAllocMF&lt;/strong&gt; will end up using part of the buffer as the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ntdll!memcpy&lt;/code&gt; length. So from there we can find a way to achieve info-leak but it is trivial so I will leave it as an exercise to the readers :).&lt;/p&gt;
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;eax=00000000 ebx=00fd8fe8 ecx=00000001 edx=00fd8808 esi=77527e70 edi=800fdf70
 eip=775283c0 esp=00d7f7fc ebp=00d7f814 iopl=0         nv up ei pl zr na pe nc
