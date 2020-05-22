@@ -9,7 +9,7 @@ tags: ["Windows GDI"]
 
 # Overview
 
-One of my fuzzing harness triggered a crash in **GDI32!SetEnhMetaFileBits** function which turned out to be a vulnerability. The crash happens when it tries to copy a user-controlled data to a local dynamically allocated memory space. However, due to the lack of memory initialization the allocated buffer is left unfilled and allows the attacker to exploit this vulnerability to achieve **Information Leakage**.
+One of my fuzzing harness triggered a crash in **GDI32!SetEnhMetaFileBits** function which can be turned to a vulnerability. The crash happens when it tries to copy a user-controlled data to a local dynamically allocated memory space. However, due to the lack of memory initialization the allocated buffer is left unfilled and allowed the attacker to leverage it to achieve **Information Leakage**.
 
 # Crash Analysis
 

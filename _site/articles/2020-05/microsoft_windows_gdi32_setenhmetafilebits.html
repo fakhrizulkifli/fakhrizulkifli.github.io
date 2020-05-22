@@ -162,7 +162,7 @@
   <article class="post-content">
     <h1 id="overview">Overview</h1>
 
-<p>One of my fuzzing harness triggered a crash in <strong>GDI32!SetEnhMetaFileBits</strong> function which turned out to be a vulnerability. The crash happens when it tries to copy a user-controlled data to a local dynamically allocated memory space. However, due to the lack of memory initialization the allocated buffer is left unfilled and allows the attacker to exploit this vulnerability to achieve <strong>Information Leakage</strong>.</p>
+<p>One of my fuzzing harness triggered a crash in <strong>GDI32!SetEnhMetaFileBits</strong> function which can be turned to a vulnerability. The crash happens when it tries to copy a user-controlled data to a local dynamically allocated memory space. However, due to the lack of memory initialization the allocated buffer is left unfilled and allowed the attacker to leverage it to achieve <strong>Information Leakage</strong>.</p>
 
 <h1 id="crash-analysis">Crash Analysis</h1>
 
