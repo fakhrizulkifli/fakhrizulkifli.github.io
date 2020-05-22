@@ -123,7 +123,9 @@ We can confirm with the disassembly code below that there is no initialization t
 .text:00000001800400C5                 mov     [rbx+38h], rcx
 ```
 
-With a little bit of modification to the harness. The user can control the `Size` passed to the `ntdll!memcpy` and thus control how much bytes to be leaked. So from here we can find a way to leak the uninitialized data but it is trivial so I will leave it as an exercise to the readers :). Here is how it looks like once everything is set in the right way. Have fun!
+With a little bit of modification to the harness. The user can control the `Size` passed to the `ntdll!memcpy` and thus control how much bytes to be leaked. So from here we can find a way to leak the uninitialized data but it is trivial so I will leave it as an exercise to the readers :).
+
+Here is how it looks like once everything is set in the right way. Have fun!
 
 ```
 eax=00000000 ebx=00fd8fe8 ecx=00000001 edx=00fd8808 esi=77527e70 edi=800fdf70
