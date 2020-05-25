@@ -29,59 +29,6 @@ GDI32!SetEnhMetaFileBits+0x1c:
 775283dc 8b4230          mov     eax,dword ptr [edx+30h] ds:002b:00000030=????????
 ```
 
-Backtrace:
-```
- # ChildEBP RetAddr  Args to Child              
-00 00b4f970 00c210cb 800fdf70 00000000 00d73fb8 GDI32!SetEnhMetaFileBits+0x1c (FPO: [2,0,0])
-01 00b4f98c 00c212b5 d646100c 00d73fb8 00d75108 SetEnhMetaFileBits!main+0x8b (FPO: [Non-Fpo]) (CONV: cdecl) [c:\users\user\desktop\harness\gdi32.dll\setenhmetafilebits\setenhmetafilebits\setenhmetafilebits.cpp @ 30] 
-02 (Inline) -------- -------- -------- -------- SetEnhMetaFileBits!invoke_main+0x1c (Inline Function @ 00c212b5) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 78] 
-03 00b4f9d4 75eb3744 7eabe000 75eb3720 cd66120d SetEnhMetaFileBits!__scrt_common_main_seh+0xfa (FPO: [Non-Fpo]) (CONV: cdecl) [d:\agent\_work\3\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 288] 
-04 00b4f9e8 77d79e54 7eabe000 d4b66b70 00000000 KERNEL32!BaseThreadInitThunk+0x24 (FPO: [Non-Fpo])
-05 00b4fa30 77d79e1f ffffffff 77d9d6e2 00000000 ntdll!__RtlUserThreadStart+0x2f (FPO: [Non-Fpo])
-06 00b4fa40 00000000 00c2133d 7eabe000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
-```
-
-Exploitability check:
-```
-!exploitable 1.6.0.0
-HostMachine\HostUser
-Executing Processor Architecture is x86
-Debuggee is in User Mode
-Debuggee is a live user mode debugging session on the local machine
-Event Type: Exception
-Exception Faulting Address: 0x30
-First Chance Exception Type: STATUS_ACCESS_VIOLATION (0xC0000005)
-Exception Sub-Type: Read Access Violation
-
-Faulting Instruction:775283dc mov eax,dword ptr [edx+30h]
-
-Basic Block:
-    775283dc mov eax,dword ptr [edx+30h]
-       Tainted Input operands: 'edx'
-    775283df cmp dword ptr [ebp+8],eax
-       Tainted Input operands: 'eax'
-    775283e2 jb gdi32!setenhmetafilebits+0x5a (7752841a)
-       Tainted Input operands: 'CarryFlag'
-
-Exception Hash (Major/Minor): 0x6871032f.0x4129c86e
-
- Hash Usage : Stack Trace:
-Major+Minor : GDI32!SetEnhMetaFileBits+0x1c
-Major+Minor : SetEnhMetaFileBits!main+0x8b
-Major+Minor : SetEnhMetaFileBits!__scrt_common_main_seh+0xfa
-Major+Minor : KERNEL32!BaseThreadInitThunk+0x24
-Major+Minor : ntdll!__RtlUserThreadStart+0x2f
-Minor       : ntdll!_RtlUserThreadStart+0x1b
-Instruction Address: 0x00000000775283dc
-
-Description: Read Access Violation near NULL
-Short Description: ReadAVNearNull
-Exploitability Classification: PROBABLY_NOT_EXPLOITABLE
-Recommended Bug Title: Read Access Violation near NULL starting at GDI32!SetEnhMetaFileBits+0x000000000000001c (Hash=0x6871032f.0x4129c86e)
-
-This is a user mode read access violation near null, and is probably not exploitable.
-```
-
 # Bug Analysis
 
 This is how it was initially triggered by my harness. We can clearly see that the 2nd argument is NULL.
