@@ -151,7 +151,7 @@
       <span class="read-time" title="Estimated read time">
   
   
-    4 mins read
+    3 mins read
   
 </span>
 
@@ -168,45 +168,45 @@
 <h1 id="patch-analysis">Patch Analysis</h1>
 <p>Patch diff:</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">From</span> <span class="n">b1e9f44ca26072ba9594ef7d034e47283f220b2f</span> <span class="no">Mon</span> <span class="no">Sep</span> <span class="mi">17</span> <span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span> <span class="mi">2001</span>
-<span class="no">From</span><span class="p">:</span> <span class="no">Fakhri</span> <span class="no">Zulkifli</span> <span class="o">&lt;</span><span class="n">d0lph1n98</span><span class="vi">@yahoo</span><span class="p">.</span><span class="nf">com</span><span class="o">&gt;</span>
-<span class="no">Date</span><span class="p">:</span> <span class="no">Sun</span><span class="p">,</span> <span class="mi">6</span> <span class="no">Mar</span> <span class="mi">2016</span> <span class="mo">03</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">37</span> <span class="o">+</span><span class="mi">0800</span>
-<span class="no">Subject</span><span class="p">:</span> <span class="p">[</span><span class="no">PATCH</span><span class="p">]</span> <span class="no">IPv6</span> <span class="no">Neighbor</span> <span class="no">Advertisement</span> <span class="no">Enhancement</span>
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">From b1e9f44ca26072ba9594ef7d034e47283f220b2f Mon Sep 17 00:00:00 2001
+From: Fakhri Zulkifli &lt;d0lph1n98@yahoo.com&gt;
+Date: Sun, 6 Mar 2016 03:23:37 +0800
+Subject: <span class="o">[</span>PATCH] IPv6 Neighbor Advertisement Enhancement
 
-<span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="n">seclists</span><span class="p">.</span><span class="nf">org</span><span class="o">/</span><span class="n">nmap</span><span class="o">-</span><span class="n">dev</span><span class="o">/</span><span class="mi">2011</span><span class="o">/</span><span class="n">q2</span><span class="o">/</span><span class="mi">79</span>
+http://seclists.org/nmap-dev/2011/q2/79
 
-<span class="mi">1</span><span class="o">.</span> <span class="no">Shorten</span> <span class="n">router</span> <span class="n">advertisement</span> <span class="n">payload</span> <span class="n">lifetime</span><span class="o">.</span>
-<span class="mi">2</span><span class="o">.</span> <span class="no">Randomize</span> <span class="n">address</span> <span class="n">prefix</span><span class="o">.</span>
-<span class="mi">3</span><span class="o">.</span> <span class="no">Prevent</span> <span class="n">from</span> <span class="n">getting</span> <span class="n">into</span> <span class="n">default</span> <span class="n">router</span> <span class="n">list</span><span class="p">.</span>
-<span class="nf">-</span><span class="o">--</span>
- <span class="o">...</span><span class="sr">/ipv6_neighbor_router_advertisement.rb     | 25 +++++++++++--------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+1. Shorten router advertisement payload lifetime.
+2. Randomize address prefix.
+3. Prevent from getting into default router list.
+<span class="nt">---</span>
+ .../ipv6_neighbor_router_advertisement.rb     | 25 +++++++++++--------
+ 1 file changed, 14 insertions<span class="o">(</span>+<span class="o">)</span>, 11 deletions<span class="o">(</span>-<span class="o">)</span>
 
-diff --git a/mo</span><span class="n">dules</span><span class="o">/</span><span class="n">auxiliary</span><span class="o">/</span><span class="n">scanner</span><span class="o">/</span><span class="n">discovery</span><span class="o">/</span><span class="n">ipv6_neighbor_router_advertisement</span><span class="p">.</span><span class="nf">rb</span> <span class="n">b</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">auxiliary</span><span class="o">/</span><span class="n">scanner</span><span class="o">/</span><span class="n">discovery</span><span class="o">/</span><span class="n">ipv6_neighbor_router_advertisement</span><span class="p">.</span><span class="nf">rb</span>
-<span class="n">index</span> <span class="mi">08</span><span class="n">e6967dfe1</span><span class="o">..</span><span class="mi">4</span><span class="n">b1d988dce2</span> <span class="mi">100644</span>
-<span class="o">---</span> <span class="n">a</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">auxiliary</span><span class="o">/</span><span class="n">scanner</span><span class="o">/</span><span class="n">discovery</span><span class="o">/</span><span class="n">ipv6_neighbor_router_advertisement</span><span class="p">.</span><span class="nf">rb</span>
-<span class="o">+++</span> <span class="n">b</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">auxiliary</span><span class="o">/</span><span class="n">scanner</span><span class="o">/</span><span class="n">discovery</span><span class="o">/</span><span class="n">ipv6_neighbor_router_advertisement</span><span class="p">.</span><span class="nf">rb</span>
-<span class="err">@@</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">7</span> <span class="o">+</span><span class="mi">20</span><span class="p">,</span><span class="mi">7</span> <span class="err">@@</span> <span class="k">def</span> <span class="nf">initialize</span>
-         <span class="n">the</span> <span class="n">host</span> <span class="n">portion</span> <span class="n">of</span> <span class="n">the</span> <span class="no">IPv6</span> <span class="n">address</span><span class="o">.</span>  <span class="no">Use</span> <span class="no">NDP</span> <span class="n">host</span> <span class="n">solicitation</span> <span class="n">to</span>
-         <span class="n">determine</span> <span class="k">if</span> <span class="n">the</span> <span class="no">IP</span> <span class="n">address</span> <span class="n">is</span> <span class="n">valid</span><span class="s1">'
+diff <span class="nt">--git</span> a/modules/auxiliary/scanner/discovery/ipv6_neighbor_router_advertisement.rb b/modules/auxiliary/scanner/discovery/ipv6_neighbor_router_advertisement.rb
+index 08e6967dfe1..4b1d988dce2 100644
+<span class="nt">---</span> a/modules/auxiliary/scanner/discovery/ipv6_neighbor_router_advertisement.rb
++++ b/modules/auxiliary/scanner/discovery/ipv6_neighbor_router_advertisement.rb
+@@ <span class="nt">-20</span>,7 +20,7 @@ def initialize
+         the host portion of the IPv6 address.  Use NDP host solicitation to
+         determine <span class="k">if </span>the IP address is valid<span class="s1">'
      },
--    '</span><span class="no">Author</span><span class="s1">'      =&gt; '</span><span class="n">wuntee</span><span class="s1">',
-+    '</span><span class="no">Author</span><span class="s1">'      =&gt; '</span><span class="n">wuntee</span><span class="p">,</span> <span class="n">d0lph1n98</span><span class="s1">',
-     '</span><span class="no">License</span><span class="s1">'     =&gt; MSF_LICENSE,
-     '</span><span class="no">References</span><span class="s1">'    =&gt;
+-    '</span>Author<span class="s1">'      =&gt; '</span>wuntee<span class="s1">',
++    '</span>Author<span class="s1">'      =&gt; '</span>wuntee, d0lph1n98<span class="s1">',
+     '</span>License<span class="s1">'     =&gt; MSF_LICENSE,
+     '</span>References<span class="s1">'    =&gt;
      [
 @@ -33,20 +33,22 @@ def initialize
-       OptInt.new('</span><span class="no">TIMEOUT_NEIGHBOR</span><span class="s1">', [true, "Time (seconds) to listen for a solicitation response.", 1])
+       OptInt.new('</span>TIMEOUT_NEIGHBOR<span class="s1">', [true, "Time (seconds) to listen for a solicitation response.", 1])
      ], self.class)
  
 -    register_advanced_options(
 -      [
--        OptString.new('</span><span class="no">PREFIX</span><span class="s1">', [true, "Prefix that each host should get an IPv6 address from",
+-        OptString.new('</span>PREFIX<span class="s1">', [true, "Prefix that each host should get an IPv6 address from",
 -          "2001:1234:DEAD:BEEF::"]
 -        )
 -      ], self.class)
 -
-     deregister_options('</span><span class="no">SNAPLEN</span><span class="s1">', '</span><span class="no">FILTER</span><span class="s1">', '</span><span class="no">RHOST</span><span class="s1">', '</span><span class="no">PCAPFILE</span><span class="s1">')
+     deregister_options('</span>SNAPLEN<span class="s1">', '</span>FILTER<span class="s1">', '</span>RHOST<span class="s1">', '</span>PCAPFILE<span class="s1">')
    end
  
 +  def generate_prefix()
@@ -220,17 +220,17 @@ diff --git a/mo</span><span class="n">dules</span><span class="o">/</span><span 
 +
    def listen_for_neighbor_solicitation(opts = {})
      hosts = []
-     timeout = opts['</span><span class="no">TIMEOUT</span><span class="s1">'] || datastore['</span><span class="no">TIMEOUT</span><span class="s1">']
--    prefix = opts['</span><span class="no">PREFIX</span><span class="s1">'] || datastore['</span><span class="no">PREFIX</span><span class="s1">']
+     timeout = opts['</span>TIMEOUT<span class="s1">'] || datastore['</span>TIMEOUT<span class="s1">']
+-    prefix = opts['</span>PREFIX<span class="s1">'] || datastore['</span>PREFIX<span class="s1">']
 +    prefix = @prefix
  
      max_epoch = ::Time.now.to_i + timeout
      autoconf_prefix = IPAddr.new(prefix).to_string().slice(0..19)
 @@ -94,7 +96,7 @@ def create_router_advertisment(opts={})
      smac = @smac
-     shost = opts['</span><span class="no">SHOST</span><span class="s1">'] || datastore['</span><span class="no">SHOST</span><span class="s1">'] || ipv6_link_address
-     lifetime = opts['</span><span class="no">LIFETIME</span><span class="s1">'] || datastore['</span><span class="no">TIMEOUT</span><span class="s1">']
--    prefix = opts['</span><span class="no">PREFIX</span><span class="s1">'] || datastore['</span><span class="no">PREFIX</span><span class="s1">']
+     shost = opts['</span>SHOST<span class="s1">'] || datastore['</span>SHOST<span class="s1">'] || ipv6_link_address
+     lifetime = opts['</span>LIFETIME<span class="s1">'] || datastore['</span>TIMEOUT<span class="s1">']
+-    prefix = opts['</span>PREFIX<span class="s1">'] || datastore['</span>PREFIX<span class="s1">']
 +    prefix = @prefix
      plen = 64
      dmac = "33:33:00:00:00:01"
@@ -246,12 +246,12 @@ diff --git a/mo</span><span class="n">dules</span><span class="o">/</span><span 
      [type, code, checksum, hop_limit, flags,
 @@ -152,6 +154,7 @@ def run
      # Start capture
-     open_pcap({'</span><span class="no">FILTER</span><span class="err">'</span> <span class="o">=&gt;</span> <span class="s2">"icmp6"</span><span class="p">})</span>
+     open_pcap({'</span>FILTER<span class="s1">' =&gt; "icmp6"})
  
-<span class="o">+</span>    <span class="vi">@prefix</span> <span class="o">=</span> <span class="n">generate_prefix</span><span class="p">()</span>
-     <span class="vi">@netifaces</span> <span class="o">=</span> <span class="kp">true</span>
-     <span class="k">if</span> <span class="n">not</span> <span class="n">netifaces_implemented?</span>
-       <span class="n">print_error</span><span class="p">(</span><span class="s2">"WARNING : Pcaprub is not uptodate, some functionality will not be available"</span><span class="p">)</span></code></pre></figure>
++    @prefix = generate_prefix()
+     @netifaces = true
+     if not netifaces_implemented?
+       print_error("WARNING : Pcaprub is not uptodate, some functionality will not be available")</span></code></pre></figure>
 
 <h1 id="references">References</h1>
 <div class="footnotes">

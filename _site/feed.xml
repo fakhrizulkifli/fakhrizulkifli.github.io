@@ -6,7 +6,7 @@
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
     <pubDate>2020-06-03</pubDate>
-    <lastBuildDate>Wed, 03 Jun 2020 07:16:59 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 03 Jun 2020 07:22:19 +0000</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -390,45 +390,45 @@ ntdll!memcpy+0x213:
 &lt;h1 id=&quot;patch-analysis&quot;&gt;Patch Analysis&lt;/h1&gt;
 &lt;p&gt;Patch diff:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;From&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b1e9f44ca26072ba9594ef7d034e47283f220b2f&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mon&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Sep&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;17&lt;/span&gt; &lt;span class=&quot;mo&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2001&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;From&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Fakhri&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Zulkifli&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d0lph1n98&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@yahoo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Sun&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mar&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2016&lt;/span&gt; &lt;span class=&quot;mo&quot;&gt;03&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;37&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0800&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;Subject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PATCH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IPv6&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Neighbor&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Advertisement&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Enhancement&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;From b1e9f44ca26072ba9594ef7d034e47283f220b2f Mon Sep 17 00:00:00 2001
+From: Fakhri Zulkifli &amp;lt;d0lph1n98@yahoo.com&amp;gt;
+Date: Sun, 6 Mar 2016 03:23:37 +0800
+Subject: &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;PATCH] IPv6 Neighbor Advertisement Enhancement
 
-&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:/&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;seclists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;org&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nmap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dev&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2011&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;q2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;79&lt;/span&gt;
+http://seclists.org/nmap-dev/2011/q2/79
 
-&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Shorten&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;router&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;advertisement&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lifetime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Randomize&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prefix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Prevent&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getting&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;into&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;router&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;
- &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/ipv6_neighbor_router_advertisement.rb     | 25 +++++++++++--------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+1. Shorten router advertisement payload lifetime.
+2. Randomize address prefix.
+3. Prevent from getting into default router list.
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+ .../ipv6_neighbor_router_advertisement.rb     | 25 +++++++++++--------
+ 1 file changed, 14 insertions&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 11 deletions&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 
-diff --git a/mo&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dules&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;auxiliary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scanner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;discovery&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ipv6_neighbor_router_advertisement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rb&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;modules&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;auxiliary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scanner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;discovery&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ipv6_neighbor_router_advertisement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rb&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;08&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e6967dfe1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b1d988dce2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100644&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;---&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;modules&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;auxiliary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scanner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;discovery&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ipv6_neighbor_router_advertisement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rb&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;+++&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;modules&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;auxiliary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scanner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;discovery&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ipv6_neighbor_router_advertisement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rb&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;@@&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;@@&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;
-         &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;host&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;portion&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IPv6&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;Use&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;NDP&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;host&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;solicitation&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt;
-         &lt;span class=&quot;n&quot;&gt;determine&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IP&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;valid&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'
+diff &lt;span class=&quot;nt&quot;&gt;--git&lt;/span&gt; a/modules/auxiliary/scanner/discovery/ipv6_neighbor_router_advertisement.rb b/modules/auxiliary/scanner/discovery/ipv6_neighbor_router_advertisement.rb
+index 08e6967dfe1..4b1d988dce2 100644
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; a/modules/auxiliary/scanner/discovery/ipv6_neighbor_router_advertisement.rb
++++ b/modules/auxiliary/scanner/discovery/ipv6_neighbor_router_advertisement.rb
+@@ &lt;span class=&quot;nt&quot;&gt;-20&lt;/span&gt;,7 +20,7 @@ def initialize
+         the host portion of the IPv6 address.  Use NDP host solicitation to
+         determine &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;the IP address is valid&lt;span class=&quot;s1&quot;&gt;'
      },
--    '&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Author&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'      =&amp;gt; '&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wuntee&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;',
-+    '&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Author&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'      =&amp;gt; '&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wuntee&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d0lph1n98&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;',
-     '&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;License&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'     =&amp;gt; MSF_LICENSE,
-     '&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;References&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'    =&amp;gt;
+-    '&lt;/span&gt;Author&lt;span class=&quot;s1&quot;&gt;'      =&amp;gt; '&lt;/span&gt;wuntee&lt;span class=&quot;s1&quot;&gt;',
++    '&lt;/span&gt;Author&lt;span class=&quot;s1&quot;&gt;'      =&amp;gt; '&lt;/span&gt;wuntee, d0lph1n98&lt;span class=&quot;s1&quot;&gt;',
+     '&lt;/span&gt;License&lt;span class=&quot;s1&quot;&gt;'     =&amp;gt; MSF_LICENSE,
+     '&lt;/span&gt;References&lt;span class=&quot;s1&quot;&gt;'    =&amp;gt;
      [
 @@ -33,20 +33,22 @@ def initialize
-       OptInt.new('&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;TIMEOUT_NEIGHBOR&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;', [true, &quot;Time (seconds) to listen for a solicitation response.&quot;, 1])
+       OptInt.new('&lt;/span&gt;TIMEOUT_NEIGHBOR&lt;span class=&quot;s1&quot;&gt;', [true, &quot;Time (seconds) to listen for a solicitation response.&quot;, 1])
      ], self.class)
  
 -    register_advanced_options(
 -      [
--        OptString.new('&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PREFIX&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;', [true, &quot;Prefix that each host should get an IPv6 address from&quot;,
+-        OptString.new('&lt;/span&gt;PREFIX&lt;span class=&quot;s1&quot;&gt;', [true, &quot;Prefix that each host should get an IPv6 address from&quot;,
 -          &quot;2001:1234:DEAD:BEEF::&quot;]
 -        )
 -      ], self.class)
 -
-     deregister_options('&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SNAPLEN&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;', '&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;FILTER&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;', '&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;RHOST&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;', '&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PCAPFILE&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;')
+     deregister_options('&lt;/span&gt;SNAPLEN&lt;span class=&quot;s1&quot;&gt;', '&lt;/span&gt;FILTER&lt;span class=&quot;s1&quot;&gt;', '&lt;/span&gt;RHOST&lt;span class=&quot;s1&quot;&gt;', '&lt;/span&gt;PCAPFILE&lt;span class=&quot;s1&quot;&gt;')
    end
  
 +  def generate_prefix()
@@ -442,17 +442,17 @@ diff --git a/mo&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dules&lt;/span&gt;&l
 +
    def listen_for_neighbor_solicitation(opts = {})
      hosts = []
-     timeout = opts['&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;TIMEOUT&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'] || datastore['&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;TIMEOUT&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;']
--    prefix = opts['&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PREFIX&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'] || datastore['&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PREFIX&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;']
+     timeout = opts['&lt;/span&gt;TIMEOUT&lt;span class=&quot;s1&quot;&gt;'] || datastore['&lt;/span&gt;TIMEOUT&lt;span class=&quot;s1&quot;&gt;']
+-    prefix = opts['&lt;/span&gt;PREFIX&lt;span class=&quot;s1&quot;&gt;'] || datastore['&lt;/span&gt;PREFIX&lt;span class=&quot;s1&quot;&gt;']
 +    prefix = @prefix
  
      max_epoch = ::Time.now.to_i + timeout
      autoconf_prefix = IPAddr.new(prefix).to_string().slice(0..19)
 @@ -94,7 +96,7 @@ def create_router_advertisment(opts={})
      smac = @smac
-     shost = opts['&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SHOST&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'] || datastore['&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SHOST&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'] || ipv6_link_address
-     lifetime = opts['&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;LIFETIME&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'] || datastore['&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;TIMEOUT&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;']
--    prefix = opts['&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PREFIX&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'] || datastore['&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PREFIX&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;']
+     shost = opts['&lt;/span&gt;SHOST&lt;span class=&quot;s1&quot;&gt;'] || datastore['&lt;/span&gt;SHOST&lt;span class=&quot;s1&quot;&gt;'] || ipv6_link_address
+     lifetime = opts['&lt;/span&gt;LIFETIME&lt;span class=&quot;s1&quot;&gt;'] || datastore['&lt;/span&gt;TIMEOUT&lt;span class=&quot;s1&quot;&gt;']
+-    prefix = opts['&lt;/span&gt;PREFIX&lt;span class=&quot;s1&quot;&gt;'] || datastore['&lt;/span&gt;PREFIX&lt;span class=&quot;s1&quot;&gt;']
 +    prefix = @prefix
      plen = 64
      dmac = &quot;33:33:00:00:00:01&quot;
@@ -468,12 +468,12 @@ diff --git a/mo&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dules&lt;/span&gt;&l
      [type, code, checksum, hop_limit, flags,
 @@ -152,6 +154,7 @@ def run
      # Start capture
-     open_pcap({'&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;FILTER&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;icmp6&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+     open_pcap({'&lt;/span&gt;FILTER&lt;span class=&quot;s1&quot;&gt;' =&amp;gt; &quot;icmp6&quot;})
  
-&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;    &lt;span class=&quot;vi&quot;&gt;@prefix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;generate_prefix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-     &lt;span class=&quot;vi&quot;&gt;@netifaces&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
-     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;netifaces_implemented?&lt;/span&gt;
-       &lt;span class=&quot;n&quot;&gt;print_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;WARNING : Pcaprub is not uptodate, some functionality will not be available&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
++    @prefix = generate_prefix()
+     @netifaces = true
+     if not netifaces_implemented?
+       print_error(&quot;WARNING : Pcaprub is not uptodate, some functionality will not be available&quot;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
 &lt;div class=&quot;footnotes&quot;&gt;

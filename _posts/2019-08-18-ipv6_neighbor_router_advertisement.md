@@ -18,7 +18,7 @@ So the idea was to send a Router Advertisement message to the multicast address 
 
 # Patch Analysis
 Patch diff:
-{% highlight ruby %}
+{% highlight shell %}
 From b1e9f44ca26072ba9594ef7d034e47283f220b2f Mon Sep 17 00:00:00 2001
 From: Fakhri Zulkifli <d0lph1n98@yahoo.com>
 Date: Sun, 6 Mar 2016 03:23:37 +0800
