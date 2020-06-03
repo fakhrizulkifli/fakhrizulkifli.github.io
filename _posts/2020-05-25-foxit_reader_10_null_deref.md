@@ -9,7 +9,7 @@ tags: ["Foxit Reader 10"]
 
 # Overview
 
-A **NULL Pointer Dereference** can be triggered by opening a specially crafted PDF file using **Foxit Reader** version 10.0.0.35798. The issue was caused by an unchecked pointer in **FoxitReader!safe_vsnprintf** function. An attacker can trigger a read from address zero which could leads to a code execution or a denial of service.
+A **NULL Pointer Dereference** can be triggered by opening a specially crafted PDF file using **Foxit Reader** version 10.0.0.35798. The issue was caused by an unchecked pointer in **FoxitReader!safe_vsnprintf** function. An attacker can trigger a read from address zero which could lead to a code execution or a denial of service.
 
 # Crash Analysis
 

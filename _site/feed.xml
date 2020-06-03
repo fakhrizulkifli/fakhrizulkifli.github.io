@@ -6,14 +6,14 @@
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
     <pubDate>2020-06-03</pubDate>
-    <lastBuildDate>Wed, 03 Jun 2020 07:05:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 03 Jun 2020 07:16:59 +0000</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
         <title>Foxit Reader 10 - NULL Pointer Dereference Remote Code Execution</title>
         <description>&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
 
-&lt;p&gt;A &lt;strong&gt;NULL Pointer Dereference&lt;/strong&gt; can be triggered by opening a specially crafted PDF file using &lt;strong&gt;Foxit Reader&lt;/strong&gt; version 10.0.0.35798. The issue was caused by an unchecked pointer in &lt;strong&gt;FoxitReader!safe_vsnprintf&lt;/strong&gt; function. An attacker can trigger a read from address zero which could leads to a code execution or a denial of service.&lt;/p&gt;
+&lt;p&gt;A &lt;strong&gt;NULL Pointer Dereference&lt;/strong&gt; can be triggered by opening a specially crafted PDF file using &lt;strong&gt;Foxit Reader&lt;/strong&gt; version 10.0.0.35798. The issue was caused by an unchecked pointer in &lt;strong&gt;FoxitReader!safe_vsnprintf&lt;/strong&gt; function. An attacker can trigger a read from address zero which could lead to a code execution or a denial of service.&lt;/p&gt;
 
 &lt;h1 id=&quot;crash-analysis&quot;&gt;Crash Analysis&lt;/h1&gt;
 
@@ -151,10 +151,10 @@ FoxitReader!safe_vsnprintf+0x9c4ffe:
       </item>
     
       <item>
-        <title>Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read</title>
+        <title>Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read Information Disclosure</title>
         <description>&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
 
-&lt;p&gt;An &lt;strong&gt;Out-of-Bounds Read&lt;/strong&gt; can triggered by running a specially crafted program. The issue was caused by a lack of bounds check and initialization in the &lt;strong&gt;GDI32!SetEnhMetaFileBits&lt;/strong&gt; function. An attacker can trigger an uninitialized memory read within the allocated address.&lt;/p&gt;
+&lt;p&gt;An &lt;strong&gt;Out-of-Bounds Read&lt;/strong&gt; can be triggered by running a specially crafted program. The issue was caused by a lack of bounds check and initialization in the &lt;strong&gt;GDI32!SetEnhMetaFileBits&lt;/strong&gt; function. An attacker can force an out-of-bounds read in the uninitialized memory address which leads to a sensitive information disclosure.&lt;/p&gt;
 
 &lt;h1 id=&quot;crash-analysis&quot;&gt;Crash Analysis&lt;/h1&gt;
 
