@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Fakhri Zulkifli</title>
-    <description>A fan of sofware bugs and vulnerabilities.</description>
+    <description>Interested in RE and vulnerability research.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
     <pubDate>2020-06-03</pubDate>
-    <lastBuildDate>Wed, 03 Jun 2020 06:36:58 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 03 Jun 2020 06:42:08 +0000</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
