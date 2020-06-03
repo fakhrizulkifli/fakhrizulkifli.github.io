@@ -8,16 +8,16 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="A trivial pdf reader denial of service.">
+  <meta name="description" content="A non-trivial pdf reader pointer reference leads to a possible RCE.">
   <meta name="keywords" content="blog, jekyll, software vulnerabilities, software bugs, and mem corruptions">
-  <meta name="author" content="Foxit Reader 10 - NULL Pointer Dereference | Fakhri Zulkifli">
+  <meta name="author" content="Foxit Reader 10 - NULL Pointer Dereference Remote Code Execution | Fakhri Zulkifli">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f5f5f5">
 
   <!-- Twitter Tags -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Foxit Reader 10 - NULL Pointer Dereference | Fakhri Zulkifli">
-  <meta name="twitter:description" content="A trivial pdf reader denial of service.">
+  <meta name="twitter:title" content="Foxit Reader 10 - NULL Pointer Dereference Remote Code Execution | Fakhri Zulkifli">
+  <meta name="twitter:description" content="A non-trivial pdf reader pointer reference leads to a possible RCE.">
   
     <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
   
@@ -25,12 +25,12 @@
   <!-- Open Graph Tags -->
   <meta property="og:type" content="blog">
   <meta property="og:url" content="http://localhost:4000/articles/2020-05/foxit_reader_10_null_deref">
-  <meta property="og:title" content="Foxit Reader 10 - NULL Pointer Dereference | Fakhri Zulkifli">
-  <meta property="og:description" content="A trivial pdf reader denial of service.">
+  <meta property="og:title" content="Foxit Reader 10 - NULL Pointer Dereference Remote Code Execution | Fakhri Zulkifli">
+  <meta property="og:description" content="A non-trivial pdf reader pointer reference leads to a possible RCE.">
   
     <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
   
-  <title>Foxit Reader 10 - NULL Pointer Dereference | Fakhri Zulkifli</title>
+  <title>Foxit Reader 10 - NULL Pointer Dereference Remote Code Execution | Fakhri Zulkifli</title>
 
   <!-- CSS files -->
   <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
@@ -142,7 +142,7 @@
 
 <div id="post">
   <header class="post-header">
-    <h1 title="Foxit Reader 10 - NULL Pointer Dereference">Foxit Reader 10 - NULL Pointer Dereference</h1>
+    <h1 title="Foxit Reader 10 - NULL Pointer Dereference Remote Code Execution">Foxit Reader 10 - NULL Pointer Dereference Remote Code Execution</h1>
     <span class="post-meta">
       <span class="post-date">
         25 MAY 2020
@@ -162,7 +162,7 @@
   <article class="post-content">
     <h1 id="overview">Overview</h1>
 
-<p>A <strong>NULL Pointer Dereference</strong> can be triggered when opening a specially crafted PDF file using <strong>Foxit Reader</strong> version 10.0.0.35798. The vulnerability was caused by an unchecked NULL pointer in <strong>FoxitReader!safe_vsnprintf</strong> function which could leads to a process termination or a denial of service.</p>
+<p>A <strong>NULL Pointer Dereference</strong> can be triggered by opening a specially crafted PDF file using <strong>Foxit Reader</strong> version 10.0.0.35798. The issue was caused by an unchecked pointer in <strong>FoxitReader!safe_vsnprintf</strong> function. An attacker can trigger a read from address zero which could leads to a code execution or a denial of service.</p>
 
 <h1 id="crash-analysis">Crash Analysis</h1>
 
@@ -192,6 +192,8 @@ FoxitReader!safe_vsnprintf+0x9c4ffe:
 027fed2b 51              push    ecx
 027fed2c 6a00            push    0
 027fed2e 8b10            mov     edx,dword ptr [eax]  ds:002b:00000000=????????
+0216ed30 8bc8            mov     ecx,eax
+0216ed32 ff5208          call    dword ptr [edx+8]
 </code></pre></div></div>
 
 <p>The <code class="language-plaintext highlighter-rouge">eax</code> was a returned value from a call to a function pointer. The function was referenced at a fixed memory address which is <strong>0x04372174</strong>.</p>
@@ -244,7 +246,7 @@ FoxitReader!safe_vsnprintf+0x9c4ffe:
 0281d465 c20400          ret     4
 </code></pre></div></div>
 
-<p>There is a small possibility to gain control of the memory address at <code class="language-plaintext highlighter-rouge">edx+10h</code> by manipulating the allocated heap but I have not found any tricks to do that yet. So I will just leave it here for the readers.</p>
+<p>There is also a small possibility to gain control of the memory address at <code class="language-plaintext highlighter-rouge">edx+10h</code> by manipulating the allocated heap but I have not found any tricks to do that yet. So I will just leave it here for the readers.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0:000&gt; !heap -p -a eax
     address 2f448fc0 found in

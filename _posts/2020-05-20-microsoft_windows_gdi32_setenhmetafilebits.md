@@ -9,7 +9,7 @@ tags: ["Windows GDI"]
 
 # Overview
 
-One of my fuzzing harness triggered a crash in **GDI32!SetEnhMetaFileBits** function which can be turned to a vulnerability. The crash happens when it tries to copy a user-controlled data to a local dynamically allocated memory space. However, due to the lack of memory initialization the allocated buffer is left unfilled and allowed the attacker to leverage it to achieve **Information Leakage**.
+An **Out-of-Bounds Read** can triggered by running a specially crafted program. The issue was caused by a lack of bounds check and initialization in the **GDI32!SetEnhMetaFileBits** function. An attacker can trigger an uninitialized memory read within the allocated address.
 
 # Crash Analysis
 

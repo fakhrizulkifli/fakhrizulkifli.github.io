@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Foxit Reader 10 - NULL Pointer Dereference"
-excerpt: "A trivial pdf reader denial of service."
+title: "Foxit Reader 10 - NULL Pointer Dereference Remote Code Execution"
+excerpt: "A non-trivial pdf reader pointer reference leads to a possible RCE."
 modified: 2020-05-25
 categories: blog
 tags: ["Foxit Reader 10"]
@@ -9,7 +9,7 @@ tags: ["Foxit Reader 10"]
 
 # Overview
 
-A **NULL Pointer Dereference** can be triggered when opening a specially crafted PDF file using **Foxit Reader** version 10.0.0.35798. The vulnerability was caused by an unchecked NULL pointer in **FoxitReader!safe_vsnprintf** function which could leads to a process termination or a denial of service.
+A **NULL Pointer Dereference** can be triggered by opening a specially crafted PDF file using **Foxit Reader** version 10.0.0.35798. The issue was caused by an unchecked pointer in **FoxitReader!safe_vsnprintf** function. An attacker can trigger a read from address zero which could leads to a code execution or a denial of service.
 
 # Crash Analysis
 
@@ -41,6 +41,8 @@ So this is where the bug was initially triggered. The `eax` is directly obtained
 027fed2b 51              push    ecx
 027fed2c 6a00            push    0
 027fed2e 8b10            mov     edx,dword ptr [eax]  ds:002b:00000000=????????
+0216ed30 8bc8            mov     ecx,eax
+0216ed32 ff5208          call    dword ptr [edx+8]
 ```
 
 The `eax` was a returned value from a call to a function pointer. The function was referenced at a fixed memory address which is **0x04372174**.
@@ -95,7 +97,7 @@ Inside the **FoxitReader!safe_vsnprintf+0x9e3610**, we can see that the `eax` re
 0281d465 c20400          ret     4
 ```
 
-There is a small possibility to gain control of the memory address at `edx+10h` by manipulating the allocated heap but I have not found any tricks to do that yet. So I will just leave it here for the readers.
+There is also a small possibility to gain control of the memory address at `edx+10h` by manipulating the allocated heap but I have not found any tricks to do that yet. So I will just leave it here for the readers.
 
 ```
 0:000> !heap -p -a eax

