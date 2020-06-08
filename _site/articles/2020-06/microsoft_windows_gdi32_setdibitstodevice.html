@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="An info-leak in Windows graphics device interface (GDI).">
+  <meta name="keywords" content="blog, jekyll, software vulnerabilities, software bugs, and mem corruptions">
+  <meta name="author" content="Windows GDI SetDIBitsToDevice - Untrusted Pointer Dereference Information Disclosure | Fakhri Zulkifli">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Windows GDI SetDIBitsToDevice - Untrusted Pointer Dereference Information Disclosure | Fakhri Zulkifli">
+  <meta name="twitter:description" content="An info-leak in Windows graphics device interface (GDI).">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_setdibitstodevice">
+  <meta property="og:title" content="Windows GDI SetDIBitsToDevice - Untrusted Pointer Dereference Information Disclosure | Fakhri Zulkifli">
+  <meta property="og:description" content="An info-leak in Windows graphics device interface (GDI).">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>Windows GDI SetDIBitsToDevice - Untrusted Pointer Dereference Information Disclosure | Fakhri Zulkifli</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_setdibitstodevice">
+  <link rel="alternate" type="application/rss+xml" title="Fakhri Zulkifli" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/" class="author_name">Fakhri Zulkifli</a>
+  <span class="author_job"></span>
+  <span class="author_bio mbm">Interested in RE and vulnerability research.</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+      <li>
+      <script>gen_mail_to_link('mohdfakhrizulkifli@gmail.com', 'Hello from website');</script>
+      </li>
+    
+    <li><a href="http://twitter.com/d0lph1n98" class="social-link-item" target="_blank"><i class="fa fa-fw fa-twitter"></i></a></li>
+    
+    
+    <li><a href="http://linkedin.com/in/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-linkedin"></i></a></li>
+    
+    
+    
+    
+    <li><a href="http://github.com/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-github"></i></a></li>
+    
+    <li><a href="http://stackoverflow.com/users/1334320/fakhri-zulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="Windows GDI SetDIBitsToDevice - Untrusted Pointer Dereference Information Disclosure">Windows GDI SetDIBitsToDevice - Untrusted Pointer Dereference Information Disclosure</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        8 JUN 2020
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    3 mins read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    <h1 id="overview">Overview</h1>
+
+<p>An <strong>Information Disclosure</strong> can be triggered by running a specially crafted program. The issue was caused by the lack of user-supplied value check before dereferencing it as a pointer in the <strong>GDI32!SetDIBitsToDevice</strong> function. An attacker can exploit this vulnerability to achieve a sensitive information disclosure.</p>
+
+<h1 id="crash-analysis">Crash Analysis</h1>
+
+<p>Initial crash:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0:000&gt; g
+ModLoad: 742a0000 742cb000   C:\Windows\SysWOW64\IMM32.DLL
+ModLoad: 768d0000 769f0000   C:\Windows\SysWOW64\MSCTF.dll
+ModLoad: 74060000 7411e000   C:\Windows\SysWOW64\msvcrt.dll
+(2570.2010): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+eax=00808276 ebx=00000001 ecx=00000080 edx=00000000 esi=00808076 edi=00828db8
+eip=76f9e7e3 esp=007cf31c ebp=007cf324 iopl=0         nv up ei pl nz ac pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010216
+ntdll!memcpy+0x33:
+76f9e7e3 f3a5            rep movs dword ptr es:[edi],dword ptr [esi]
+</code></pre></div></div>
+
+<h1 id="bug-analysis">Bug Analysis</h1>
+
+<p>Before the user-supplied pointer is dereferenced, a chunk of memory of user-controlled size is allocated by the <strong>RtlAllocateHeap</strong> function. However, there is a bit check to ensure that certain flag is enabled but this can be easily bypassed by masking the address of the user pointer with <code class="language-plaintext highlighter-rouge">0x3</code>. Thus shifted the address which may not be suitable in some conditions.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.text:000000018001CC8A                 mov     rax, gs:30h
+.text:000000018001CC93                 and     dword ptr [rax+808h], 0
+.text:000000018001CC9A                 lea     r8, [rsp+158h+Size]
+.text:000000018001CCA2                 mov     edx, r12d
+.text:000000018001CCA5                 mov     rcx, r14
+.text:000000018001CCA8                 call    hrBitmapScanSize
+.text:000000018001CCAD                 test    eax, eax
+.text:000000018001CCAF                 js      loc_180054B9B
+.text:000000018001CCB5                 mov     r14d, 1
+.text:000000018001CCBB                 mov     esi, r14d
+.text:000000018001CCBE                 test    byte ptr [rsp+158h+lpvBits], 3   &lt;-- bit check
+.text:000000018001CCC6                 jnz     loc_18001CDFC
+
+.text:000000018001CDFC loc_18001CDFC:                          ; CODE XREF: SetDIBitsToDevice+146↑j
+.text:000000018001CDFC                 mov     edi, dword ptr [rsp+158h+Size]
+.text:000000018001CE03                 mov     rcx, gs:60h
+.text:000000018001CE0C                 mov     r8d, edi
+.text:000000018001CE0F                 xor     edx, edx
+.text:000000018001CE11                 mov     rcx, [rcx+30h]
+.text:000000018001CE15                 call    cs:__imp_RtlAllocateHeap
+.text:000000018001CE1B                 mov     [rsp+158h+var_70], rax
+.text:000000018001CE23                 mov     [rsp+158h+var_78], rax
+.text:000000018001CE2B                 test    rax, rax
+.text:000000018001CE2E                 jz      loc_18001CCCC
+.text:000000018001CE34
+.text:000000018001CE34 loc_18001CE34:                          ; DATA XREF: .rdata:0000000180150574↓o
+.text:000000018001CE34 ;   __try { // __except at loc_18001CE5C ; Size
+.text:000000018001CE34                 mov     r8d, edi
+.text:000000018001CE37                 mov     rdx, [rsp+158h+lpvBits] ; Src
+.text:000000018001CE3F                 mov     rcx, rax        ; Dst
+.text:000000018001CE42                 call    memcpy_0
+.text:000000018001CE47                 mov     rax, [rsp+158h+var_70]
+.text:000000018001CE4F                 mov     [rsp+158h+lpvBits], rax
+.text:000000018001CE57                 jmp     loc_18001CCCC
+</code></pre></div></div>
+
+<p>This is how it looks like once the <strong>GDI32!SetDIBitsToDevice</strong> is hit, all the arguments passed can be found on the stack.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0:000&gt; g
+ModLoad: 742a0000 742cb000   C:\Windows\SysWOW64\IMM32.DLL
+ModLoad: 768d0000 769f0000   C:\Windows\SysWOW64\MSCTF.dll
+ModLoad: 74060000 7411e000   C:\Windows\SysWOW64\msvcrt.dll
+Breakpoint 0 hit
+*** WARNING: Unable to verify checksum for SetDIBitsToDevice.exe
+eax=00e7fe18 ebx=7faac000 ecx=00000000 edx=99010a8d esi=0758efdb edi=99010a8d
+eip=76e91f50 esp=00e7fddc ebp=00e7fe48 iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+GDI32!SetDIBitsToDevice:
+76e91f50 6a68            push    68h
+0:000&gt; dd esp L13
+00e7fddc  002c10e6 99010a8d 00000000 00000000   &lt;-- *(00e7fddc+4) is the starting of the arguments
+00e7fdec  00000020 00000020 00000000 00000000
+00e7fdfc  00000000 00000020 0758efdb 00e7fe18   &lt;-- these two addresses is lpvBits and a pointer to BITMAPINFO structure
+00e7fe0c  00000000 07589de8 73f92108 00000028   &lt;-- *(00e7fe0c) is DIR_RGB_COLORS
+00e7fe1c  00000020 00000020 00040001
+0:000&gt; dd 00e7fe18
+00e7fe18  00000028 00000020 00000020 00040001   &lt;-- BITMAPINFO structure
+00e7fe28  00000000 00000b12 00000b12 00000010
+00e7fe38  00000010 0066cccc 00ffffff 8a3557da   &lt;-- 0x00ffffff is the BITMAPINFO.RGBQUAD array
+00e7fe48  00e7fe90 002c12ea 00000001 07589de8
+00e7fe58  07584370 8a355702 002c1372 002c1372
+00e7fe68  7faac000 00000000 00000000 00000000
+00e7fe78  00e7fe5c 00000000 00e7fedc 002c1acb
+00e7fe88  8afe8f62 00000000 00e7fea4 74773744
+</code></pre></div></div>
+
+<p>The memory right after the <strong>BITMAPINFO.RGBQUAD</strong> is where the color table data is stored and we can use <code class="language-plaintext highlighter-rouge">lpvBits</code> pointer to leak any address within this address space. There are many methods to achieve info-leak and one of them is by using <strong>COLORREF</strong>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>00e7fe38                             8a3557da
+00e7fe48  00e7fe90 002c12ea 00000001 07589de8
+00e7fe58  07584370 8a355702 002c1372 002c1372
+00e7fe68  7faac000 00000000 00000000 00000000
+00e7fe78  00e7fe5c 00000000 00e7fedc 002c1acb
+00e7fe88  8afe8f62 00000000 00e7fea4 74773744
+</code></pre></div></div>
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_setdibitstodevice" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_setdibitstodevice" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_setdibitstodevice" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_setdibitstodevice" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_setdibitstodevice" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+
+        <footer>
+  &copy; 2020 Fakhri Zulkifli. Made with <a href="http://github.com/renyuanz/leonids/"><i class="fa fa-heart heart-icon"></i></a>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>

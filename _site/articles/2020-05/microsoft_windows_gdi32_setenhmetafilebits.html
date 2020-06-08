@@ -162,7 +162,7 @@
   <article class="post-content">
     <h1 id="overview">Overview</h1>
 
-<p>An <strong>Out-of-Bounds Read</strong> can be triggered by running a specially crafted program. The issue was caused by a lack of bounds check and initialization in the <strong>GDI32!SetEnhMetaFileBits</strong> function. An attacker can force an out-of-bounds read in the uninitialized memory address which leads to a sensitive information disclosure.</p>
+<p>An <strong>Out-of-Bounds Read</strong> can be triggered by running a specially crafted program. The issue was caused by the lack of bounds check and initialization in the <strong>GDI32!SetEnhMetaFileBits</strong> function. An attacker can force an out-of-bounds read in the uninitialized memory address which leads to a sensitive information disclosure.</p>
 
 <h1 id="crash-analysis">Crash Analysis</h1>
 

