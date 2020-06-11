@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="An info-leak in Windows graphics device interface (GDI).">
+  <meta name="keywords" content="blog, jekyll, software vulnerabilities, software bugs, and mem corruptions">
+  <meta name="author" content="Windows GDI CreateDIBitmap - Information Disclosure | Fakhri Zulkifli">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f5f5">
+
+  <!-- Twitter Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Windows GDI CreateDIBitmap - Information Disclosure | Fakhri Zulkifli">
+  <meta name="twitter:description" content="An info-leak in Windows graphics device interface (GDI).">
+  
+    <meta property="twitter:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+
+  <!-- Open Graph Tags -->
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_createdibitmap">
+  <meta property="og:title" content="Windows GDI CreateDIBitmap - Information Disclosure | Fakhri Zulkifli">
+  <meta property="og:description" content="An info-leak in Windows graphics device interface (GDI).">
+  
+    <meta property="og:image" content="http://localhost:4000/img/leonids-logo.png">
+  
+  <title>Windows GDI CreateDIBitmap - Information Disclosure | Fakhri Zulkifli</title>
+
+  <!-- CSS files -->
+  <link rel="stylesheet" href="http://localhost:4000/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+
+  <link rel="canonical" href="http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_createdibitmap">
+  <link rel="alternate" type="application/rss+xml" title="Fakhri Zulkifli" href="http://localhost:4000/feed.xml" />
+
+  <!-- Icons -->
+  <!-- 16x16 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+  <!-- 32x32 -->
+  <link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+</head>
+
+
+<body>
+  <div class="row">
+    <div class="col s12 m3">
+      <div class="table cover">
+        
+
+<div class="cover-card table-cell table-middle">
+  
+  <a href="http://localhost:4000/" class="author_name">Fakhri Zulkifli</a>
+  <span class="author_job"></span>
+  <span class="author_bio mbm">Interested in RE and vulnerability research.</span>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="http://localhost:4000/">home</a>
+      </li>
+       
+      <li class="nav-item">
+        <a href="http://localhost:4000/archive/">Archive</a>
+      </li>
+          
+      <li class="nav-item">
+        <a href="http://localhost:4000/categories/">Categories</a>
+      </li>
+            
+      <li class="nav-item">
+        <a href="http://localhost:4000/resume/">Resume</a>
+      </li>
+        
+      <li class="nav-item">
+        <a href="http://localhost:4000/tags/">Tags</a>
+      </li>
+         
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  // based on http://stackoverflow.com/a/10300743/280842
+  function gen_mail_to_link(hs, subject) {
+    var lhs,rhs;
+    var p = hs.split('@');
+    lhs = p[0];
+    rhs = p[1];
+    document.write("<a class=\"social-link-item\" target=\"_blank\" href=\"mailto");
+    document.write(":" + lhs + "@");
+    document.write(rhs + "?subject=" + subject + "\"><i class=\"fa fa-fw fa-envelope\"></i><\/a>");
+  }
+</script>
+<div class="social-links">
+  <ul>
+    
+      <li>
+      <script>gen_mail_to_link('mohdfakhrizulkifli@gmail.com', 'Hello from website');</script>
+      </li>
+    
+    <li><a href="http://twitter.com/d0lph1n98" class="social-link-item" target="_blank"><i class="fa fa-fw fa-twitter"></i></a></li>
+    
+    
+    <li><a href="http://linkedin.com/in/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-linkedin"></i></a></li>
+    
+    
+    
+    
+    <li><a href="http://github.com/fakhrizulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-github"></i></a></li>
+    
+    <li><a href="http://stackoverflow.com/users/1334320/fakhri-zulkifli" class="social-link-item" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</div>
+
+</div>
+
+      </div>
+    </div>
+    <div class="col s12 m9">
+      <div class="post-listing">
+        <a class="btn" href= "http://localhost:4000/" >
+  Home
+</a>
+
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="Windows GDI CreateDIBitmap - Information Disclosure">Windows GDI CreateDIBitmap - Information Disclosure</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        11 JUN 2020
+      </span>
+      •
+      <span class="read-time" title="Estimated read time">
+  
+  
+    4 mins read
+  
+</span>
+
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    <h1 id="overview">Overview</h1>
+
+<p>An <strong>Information Disclosure</strong> can be triggered by running a specially crafted program. The issue was caused by the lack of user-supplied value check before dereferencing it as a pointer in the <strong>GDI32!CreateDIBitmap</strong> function. An attacker can exploit this vulnerability to achieve a sensitive information disclosure.</p>
+
+<h1 id="crash-analysis">Crash Analysis</h1>
+
+<p>Initial crash:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ModLoad: 75ff0000 7601b000   C:\Windows\SysWOW64\IMM32.DLL
+ModLoad: 77a10000 77b30000   C:\Windows\SysWOW64\MSCTF.dll
+ModLoad: 77bb0000 77c6e000   C:\Windows\SysWOW64\msvcrt.dll
+(19f0.1370): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+eax=005b6d7e ebx=005b6b7e ecx=00000080 edx=00000000 esi=005b6b7e edi=005afdb8
+eip=77d8e703 esp=0044fb14 ebp=0044fb1c iopl=0         nv up ei pl nz ac pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010216
+ntdll!memcpy+0x33:
+77d8e703 f3a5            rep movs dword ptr es:[edi],dword ptr [esi]
+</code></pre></div></div>
+
+<h1 id="bug-analysis">Bug Analysis</h1>
+
+<p>The 4th argument is initially passed as a pointer to an array of uninitialized data which later passed as the source for <code class="language-plaintext highlighter-rouge">memcpy</code> to an allocated heap of fixed size.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eax=06fd67ae ebx=00000276 ecx=06fce746 edx=00000000 esi=40010c5f edi=06fce738
+eip=774c1c40 esp=0090f7d0 ebp=0090f804 iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000202
+GDI32!CreateDIBitmap:
+774c1c40 8bff            mov     edi,edi
+0:000&gt; dd esp
+0090f7d0  0012113c 40010c5f 06fce746 00000004
+0090f7e0  06fd67ae 06fce746 00000000 06fc3f78   &lt;-- 06fd67ae is 4th arg
+0090f7f0  71fe2108 7f1c7000 40010c5f 00000276
+0090f800  00000020 0090f84c 00121341 00000000
+0090f810  06fc3f78 06fc47f0 09ff0d71 001213c9
+0090f820  001213c9 7f1c7000 00000000 00000000
+0090f830  00000000 0090f818 00000000 0090f898
+0090f840  00121afb 097dd075 00000000 0090f860
+0:000&gt; dd 06fd67ae
+06fd67ae  ???????? ???????? ???????? ????????
+06fd67be  ???????? ???????? ???????? ????????
+06fd67ce  ???????? ???????? ???????? ????????
+06fd67de  ???????? ???????? ???????? ????????
+06fd67ee  ???????? ???????? ???????? ????????
+06fd67fe  ???????? ???????? ???????? ????????
+06fd680e  ???????? ???????? ???????? ????????
+06fd681e  ???????? ???????? ???????? ????????
+</code></pre></div></div>
+
+<p>However, before reaching to the part where the input is copied. There is a check to test if the 3rd bit of the pointer address is set or not.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.text:000000018001BBBA loc_18001BBBA:                          ; CODE XREF: CreateDIBitmap+F0↑j
+.text:000000018001BBBA                                         ; CreateDIBitmap+38A78↓j
+.text:000000018001BBBA                 cmp     r14, 0FFFFFFFFFFFFFFFFh
+.text:000000018001BBBE                 jnz     loc_18001BC49
+.text:000000018001BBC4                 test    r13b, 3
+.text:000000018001BBC8                 jnz     loc_18005451D
+.text:000000018001BBCE                 mov     r14d, dword ptr [rbp+47h+Size]
+.text:000000018001BBD2                 mov     r15, rbx
+</code></pre></div></div>
+
+<p>Once the check is satisfied, the <strong>CreateDIBitmap</strong> copies the uninitialized data to the allocated heap of size <code class="language-plaintext highlighter-rouge">0x200</code> and then triggers the <strong>Invalid Pointer Read</strong> error.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eax=06fcfdb8 ebx=06fd67ae ecx=06fcfdb8 edx=00000000 esi=06fcfdb8 edi=06fce746
+eip=77d8e6d0 esp=0090f77c ebp=0090f7cc iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+ntdll!memcpy:
+77d8e6d0 55              push    ebp
+0:000&gt; dd esp
+0090f77c  774fb352 06fcfdb8 06fd67ae 00000200
+0090f78c  06fce738 40010c5f 00000276 00000000
+0090f79c  03bd09c0 00000000 00000020 00000020
+0090f7ac  e22d07cf 06fcfdb8 00000068 06fd67ae
+0090f7bc  00000200 00000000 00000000 ffffffff
+0090f7cc  0090f804 0012113c 40010c5f 06fce746
+0090f7dc  00000004 06fd67ae 06fce746 00000000
+0090f7ec  06fc3f78 71fe2108 7f1c7000 40010c5f
+0:000&gt; dd 06fcfdb8
+06fcfdb8  003f005c 005c003f 003a0043 0055005c
+06fcfdc8  00650073 00730072 0075005c 00650073
+06fcfdd8  005c0072 00650044 006b0073 006f0074
+06fcfde8  005c0070 00610068 006e0072 00730065
+06fcfdf8  005c0073 00640067 00330069 002e0032
+06fcfe08  006c0064 005c006c 00720043 00610065
+06fcfe18  00650074 00490044 00690042 006d0074
+06fcfe28  00700061 0052005c 006c0065 00610065
+0:000&gt; dd 06fd67ae
+06fd67ae  ???????? ???????? ???????? ????????
+06fd67be  ???????? ???????? ???????? ????????
+06fd67ce  ???????? ???????? ???????? ????????
+06fd67de  ???????? ???????? ???????? ????????
+06fd67ee  ???????? ???????? ???????? ????????
+06fd67fe  ???????? ???????? ???????? ????????
+06fd680e  ???????? ???????? ???????? ????????
+06fd681e  ???????? ???????? ???????? ????????
+</code></pre></div></div>
+
+<h1 id="proof-of-concept">Proof-of-Concept</h1>
+
+<p>To achieve infoleak, <strong>CBM_INIT</strong> must be set so that the system would use the data pointed by the 4th argument because we are going to fill it with the index of the color table data and the color table must not be initialized. The heap allocation must be large enough to make sure the masked pointer still points to our filled data.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HBITMAP hbmp = CreateDIBitmap(hdc,
+	&amp;(bmi.bmiHeader),
+	CBM_INIT,
+	lpBits,
+	&amp;bmi,
+	DIB_RGB_COLORS);
+</code></pre></div></div>
+
+<p>Here is how it looks like on the stack:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eax=007efdf0 ebx=7fb69000 ecx=00000000 edx=83010c69 esi=0095fc9b edi=83010c69
+eip=774c1c40 esp=007efdc8 ebp=007efe20 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+GDI32!CreateDIBitmap:
+774c1c40 8bff            mov     edi,edi
+0:000&gt; dd esp
+007efdc8  013610d9 83010c69 007efdf0 00000004   &lt;-- 6 arguments
+007efdd8  0095fc9b 007efdf0 00000000 0095a1b8
+007efde8  71fe2108 71f3c42d 00000028 00000020   &lt;-- *(007efde8+8) is the BITMAPINFO structure
+007efdf8  00000020 00040001 00000000 00000b12
+007efe08  00000b12 00000010 00000010 0066cccc
+007efe18  00ffffff 846be04d 007efe68 013612f2   &lt;-- *(007efe18+4) is the color table
+007efe28  00000001 0095a1b8 00954790 846be005
+007efe38  0136137a 0136137a 7fb69000 00000000
+</code></pre></div></div>
+
+  </article>
+</div>
+
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_createdibitmap" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_createdibitmap" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_createdibitmap" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u=http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_createdibitmap" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url=http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_createdibitmap" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
+
+
+
+        <footer>
+  &copy; 2020 Fakhri Zulkifli. Made with <a href="http://github.com/renyuanz/leonids/"><i class="fa fa-heart heart-icon"></i></a>
+</footer>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="http://localhost:4000/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/js/main.js"></script>
+
+
+</body>
+</html>

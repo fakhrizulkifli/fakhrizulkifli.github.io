@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Windows GDI SetDIBitsToDevice - Untrusted Pointer Dereference Information Disclosure"
+title: "Windows GDI SetDIBitsToDevice - Information Disclosure"
 excerpt: "An info-leak in Windows graphics device interface (GDI)."
 modified: 2020-06-08
 categories: blog

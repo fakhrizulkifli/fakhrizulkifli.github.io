@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Windows GDI SetEnhMetaFileBits - Out-of-Bounds Read Information Disclosure"
+title: "Windows GDI SetEnhMetaFileBits - Information Disclosure"
 excerpt: "An info-leak in Windows graphics device interface (GDI)."
 modified: 2020-05-20
 categories: blog
@@ -9,7 +9,7 @@ tags: ["Windows GDI"]
 
 # Overview
 
-An **Out-of-Bounds Read** can be triggered by running a specially crafted program. The issue was caused by the lack of bounds check and initialization in the **GDI32!SetEnhMetaFileBits** function. An attacker can force an out-of-bounds read in the uninitialized memory address which leads to a sensitive information disclosure.
+An **Information Disclosure** can be triggered by running a specially crafted program. The issue was caused by the lack of bounds check and initialization in the **GDI32!SetEnhMetaFileBits** function. An attacker can force an out-of-bounds read in the uninitialized memory address which leads to a sensitive information disclosure.
 
 # Crash Analysis
 
