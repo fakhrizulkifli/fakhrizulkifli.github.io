@@ -162,25 +162,25 @@
   <article class="post-content">
     
 <h1 id="overview">Overview</h1>
-<p>The bug is inside the <strong>fbuf</strong> PCI device. There is no check if the pointer to a softc structure is NULL. However, this bug requires root privilege to load the kernel driver and attach it to the device in order to crash the hypervisor. <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+<p>The bug is inside the <strong>fbuf</strong> PCI device. There is no check if the pointer to a softc structure is NULL. However, this bug requires root privilege to load the kernel driver and attach it to the device in order to crash the hypervisor. <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup></p>
 
 <p>NOTE: This also works in <a href="https://github.com/machyve/xhyve">xhyve hypervisor</a>.</p>
 
 <h1 id="bug-analysis">Bug Analysis</h1>
 <p>Affected code:</p>
 
-<figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"> <span class="mh">0x00000000002317ec</span> <span class="o">&lt;+</span><span class="mi">108</span><span class="o">&gt;:</span>	<span class="k">mov</span> <span class="err">$</span><span class="mh">0x206519</span><span class="p">,</span><span class="err">%</span><span class="n">edi</span>
- <span class="mh">0x00000000002317f1</span> <span class="o">&lt;+</span><span class="mi">113</span><span class="o">&gt;:</span>	<span class="k">xor</span> <span class="err">%</span><span class="n">eax</span><span class="p">,</span><span class="err">%</span><span class="n">eax</span>
- <span class="mh">0x00000000002317f3</span> <span class="o">&lt;+</span><span class="mi">115</span><span class="o">&gt;:</span>	<span class="k">mov</span> <span class="err">%</span><span class="n">r9d</span><span class="p">,</span><span class="err">%</span><span class="n">esi</span>
- <span class="mh">0x00000000002317f6</span> <span class="o">&lt;+</span><span class="mi">118</span><span class="o">&gt;:</span>	<span class="n">callq</span> <span class="mh">0x24aa00</span> <span class="o">&lt;</span><span class="n">printf</span><span class="err">@</span><span class="n">plt</span><span class="o">&gt;</span>
- <span class="mh">0x00000000002317fb</span> <span class="o">&lt;+</span><span class="mi">123</span><span class="o">&gt;:</span>	<span class="k">mov</span> <span class="mh">0xc8</span><span class="p">(</span><span class="err">%</span><span class="n">rbx</span><span class="p">),</span><span class="err">%</span><span class="n">rax</span>
-<span class="o">=&gt;</span> <span class="mh">0x0000000000231802</span> <span class="o">&lt;+</span><span class="mi">130</span><span class="o">&gt;:</span>	<span class="n">cmpl</span> <span class="err">$</span><span class="mh">0x0</span><span class="p">,(</span><span class="err">%</span><span class="n">rax</span><span class="p">)</span>
- <span class="mh">0x0000000000231805</span> <span class="o">&lt;+</span><span class="mi">133</span><span class="o">&gt;:</span>	<span class="n">movzwl</span> <span class="mh">0xc</span><span class="p">(</span><span class="err">%</span><span class="n">rbx</span><span class="p">),</span><span class="err">%</span><span class="n">eax</span>
- <span class="mh">0x0000000000231809</span> <span class="o">&lt;+</span><span class="mi">137</span><span class="o">&gt;:</span>	<span class="k">je</span> <span class="mh">0x231830</span> <span class="o">&lt;</span><span class="n">pci_fbuf_write</span><span class="o">+</span><span class="mi">176</span><span class="o">&gt;</span>
- <span class="mh">0x000000000023180b</span> <span class="o">&lt;+</span><span class="mi">139</span><span class="o">&gt;:</span>	<span class="k">test</span> <span class="err">%</span><span class="n">ax</span><span class="p">,</span><span class="err">%</span><span class="n">ax</span>
- <span class="mh">0x000000000023180e</span> <span class="o">&lt;+</span><span class="mi">142</span><span class="o">&gt;:</span>	<span class="k">je</span> <span class="mh">0x23185d</span> <span class="o">&lt;</span><span class="n">pci_fbuf_write</span><span class="o">+</span><span class="mi">221</span><span class="o">&gt;</span>
- <span class="mh">0x0000000000231810</span> <span class="o">&lt;+</span><span class="mi">144</span><span class="o">&gt;:</span>	<span class="n">cmpw</span> <span class="err">$</span><span class="mh">0x0</span><span class="p">,</span><span class="mh">0xe</span><span class="p">(</span><span class="err">%</span><span class="n">rbx</span><span class="p">)</span>
- <span class="mh">0x0000000000231815</span> <span class="o">&lt;+</span><span class="mi">149</span><span class="o">&gt;:</span>	<span class="k">je</span> <span class="mh">0x23185d</span> <span class="o">&lt;</span><span class="n">pci_fbuf_write</span><span class="o">+</span><span class="mi">221</span><span class="o">&gt;</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-nasm" data-lang="nasm"> <span class="err">0</span><span class="nf">x00000000002317ec</span> <span class="o">&lt;+</span><span class="mi">108</span><span class="o">&gt;</span><span class="p">:</span>	<span class="nv">mov</span> <span class="kc">$</span><span class="mh">0x206519</span><span class="p">,</span><span class="o">%</span><span class="nb">edi</span>
+ <span class="err">0</span><span class="nf">x00000000002317f1</span> <span class="o">&lt;+</span><span class="mi">113</span><span class="o">&gt;</span><span class="p">:</span>	<span class="nv">xor</span> <span class="o">%</span><span class="nb">eax</span><span class="p">,</span><span class="o">%</span><span class="nb">eax</span>
+ <span class="err">0</span><span class="nf">x00000000002317f3</span> <span class="o">&lt;+</span><span class="mi">115</span><span class="o">&gt;</span><span class="p">:</span>	<span class="nv">mov</span> <span class="o">%</span><span class="nb">r9d</span><span class="p">,</span><span class="o">%</span><span class="nb">esi</span>
+ <span class="err">0</span><span class="nf">x00000000002317f6</span> <span class="o">&lt;+</span><span class="mi">118</span><span class="o">&gt;</span><span class="p">:</span>	<span class="nv">callq</span> <span class="mh">0x24aa00</span> <span class="o">&lt;</span><span class="nv">printf@plt</span><span class="o">&gt;</span>
+ <span class="err">0</span><span class="nf">x00000000002317fb</span> <span class="o">&lt;+</span><span class="mi">123</span><span class="o">&gt;</span><span class="p">:</span>	<span class="nv">mov</span> <span class="mh">0xc8</span><span class="p">(</span><span class="o">%</span><span class="nb">rbx</span><span class="p">),</span><span class="o">%</span><span class="nb">rax</span>
+<span class="err">=&gt;</span> <span class="err">0</span><span class="nf">x0000000000231802</span> <span class="o">&lt;+</span><span class="mi">130</span><span class="o">&gt;</span><span class="p">:</span>	<span class="nv">cmpl</span> <span class="kc">$</span><span class="mh">0x0</span><span class="p">,(</span><span class="o">%</span><span class="nb">rax</span><span class="p">)</span>
+ <span class="err">0</span><span class="nf">x0000000000231805</span> <span class="o">&lt;+</span><span class="mi">133</span><span class="o">&gt;</span><span class="p">:</span>	<span class="nv">movzwl</span> <span class="mh">0xc</span><span class="p">(</span><span class="o">%</span><span class="nb">rbx</span><span class="p">),</span><span class="o">%</span><span class="nb">eax</span>
+ <span class="err">0</span><span class="nf">x0000000000231809</span> <span class="o">&lt;+</span><span class="mi">137</span><span class="o">&gt;</span><span class="p">:</span>	<span class="nv">je</span> <span class="mh">0x231830</span> <span class="o">&lt;</span><span class="nv">pci_fbuf_write</span><span class="o">+</span><span class="mi">176</span><span class="o">&gt;</span>
+ <span class="err">0</span><span class="nf">x000000000023180b</span> <span class="o">&lt;+</span><span class="mi">139</span><span class="o">&gt;</span><span class="p">:</span>	<span class="nv">test</span> <span class="o">%</span><span class="nb">ax</span><span class="p">,</span><span class="o">%</span><span class="nb">ax</span>
+ <span class="err">0</span><span class="nf">x000000000023180e</span> <span class="o">&lt;+</span><span class="mi">142</span><span class="o">&gt;</span><span class="p">:</span>	<span class="nv">je</span> <span class="mh">0x23185d</span> <span class="o">&lt;</span><span class="nv">pci_fbuf_write</span><span class="o">+</span><span class="mi">221</span><span class="o">&gt;</span>
+ <span class="err">0</span><span class="nf">x0000000000231810</span> <span class="o">&lt;+</span><span class="mi">144</span><span class="o">&gt;</span><span class="p">:</span>	<span class="nv">cmpw</span> <span class="kc">$</span><span class="mh">0x0</span><span class="p">,</span><span class="mh">0xe</span><span class="p">(</span><span class="o">%</span><span class="nb">rbx</span><span class="p">)</span>
+ <span class="err">0</span><span class="nf">x0000000000231815</span> <span class="o">&lt;+</span><span class="mi">149</span><span class="o">&gt;</span><span class="p">:</span>	<span class="nv">je</span> <span class="mh">0x23185d</span> <span class="o">&lt;</span><span class="nv">pci_fbuf_write</span><span class="o">+</span><span class="mi">221</span><span class="o">&gt;</span></code></pre></figure>
 
 <h1 id="crash-analysis">Crash Analysis</h1>
 
@@ -240,10 +240,10 @@ fs_base 0x800ac98d0 34371049680
 gs_base 0x0 0</code></pre></figure>
 
 <h1 id="references">References</h1>
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p><a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=240272">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=240272</a> <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p><a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=240272">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=240272</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

@@ -161,7 +161,7 @@
 
   <article class="post-content">
     
-<p>On Jun 24, a new PCI HDAudio device model from the Google Summer of Code 2016 project was added into the BSD Hypervisor (bhyve) as part of its sound card emulation. I took a chance to look at the source code and found a trivial stack-based buffer overflow but unfortunately it is not exploitable in practice due to the limitation of bhyve’s arguments length. However, the code is patched just in case it is still going to be an issue in the future.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup><sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup><sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup></p>
+<p>On Jun 24, a new PCI HDAudio device model from the Google Summer of Code 2016 project was added into the BSD Hypervisor (bhyve) as part of its sound card emulation. I took a chance to look at the source code and found a trivial stack-based buffer overflow but unfortunately it is not exploitable in practice due to the limitation of bhyve’s arguments length. However, the code is patched just in case it is still going to be an issue in the future.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup><sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote">2</a></sup><sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote">3</a></sup></p>
 
 <h1 id="patch-analysis">Patch Analysis</h1>
 <p>Patch diff:</p>
@@ -1507,16 +1507,16 @@
  <span class="p">}</span></code></pre></figure>
 
 <h1 id="references">References</h1>
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p><a href="https://wiki.freebsd.org/SummerOfCode2016/HDAudioEmulationForBhyve">https://wiki.freebsd.org/SummerOfCode2016/HDAudioEmulationForBhyve</a> <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p><a href="https://wiki.freebsd.org/SummerOfCode2016/HDAudioEmulationForBhyve">https://wiki.freebsd.org/SummerOfCode2016/HDAudioEmulationForBhyve</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2">
-      <p><a href="https://svnweb.freebsd.org/base?view=revision&amp;revision=349335">https://svnweb.freebsd.org/base?view=revision&amp;revision=349335</a> <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:2" role="doc-endnote">
+      <p><a href="https://svnweb.freebsd.org/base?view=revision&amp;revision=349335">https://svnweb.freebsd.org/base?view=revision&amp;revision=349335</a> <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3">
-      <p><a href="https://reviews.freebsd.org/rS349385">https://reviews.freebsd.org/rS349385</a> <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:3" role="doc-endnote">
+      <p><a href="https://reviews.freebsd.org/rS349385">https://reviews.freebsd.org/rS349385</a> <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>
