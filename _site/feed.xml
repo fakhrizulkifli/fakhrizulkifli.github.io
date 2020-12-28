@@ -5,8 +5,8 @@
     <description>Interested in RE and vulnerability research.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>2020-09-09</pubDate>
-    <lastBuildDate>Wed, 09 Sep 2020 12:13:21 +0000</lastBuildDate>
+    <pubDate>2020-12-28</pubDate>
+    <lastBuildDate>Mon, 28 Dec 2020 10:35:15 +0000</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
@@ -138,7 +138,7 @@ GDI32!CreateDIBitmap:
 007efe38  0136137a 0136137a 7fb69000 00000000
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
-        <pubDate>2020-09-09</pubDate>
+        <pubDate>2020-12-28</pubDate>
         <link>http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_createdibitmap</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_createdibitmap</guid>
         
@@ -252,7 +252,7 @@ GDI32!SetDIBitsToDevice:
 00e7fe88  8afe8f62 00000000 00e7fea4 74773744
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
-        <pubDate>2020-09-09</pubDate>
+        <pubDate>2020-12-28</pubDate>
         <link>http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_setdibitstodevice</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-06/microsoft_windows_gdi32_setdibitstodevice</guid>
         
@@ -393,7 +393,7 @@ FoxitReader!safe_vsnprintf+0x9c4ffe:
     0369a6f4 FoxitReader!CFXJSE_Arguments::GetValue+0x00d27824
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
-        <pubDate>2020-09-09</pubDate>
+        <pubDate>2020-12-28</pubDate>
         <link>http://localhost:4000/articles/2020-05/foxit_reader_10_null_deref</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-05/foxit_reader_10_null_deref</guid>
         
@@ -506,7 +506,7 @@ ntdll!memcpy+0x213:
 08 00d7f8c8 00000000 009c1353 7f1c5000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
-        <pubDate>2020-09-09</pubDate>
+        <pubDate>2020-12-28</pubDate>
         <link>http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-05/microsoft_windows_gdi32_setenhmetafilebits</guid>
         
@@ -555,7 +555,7 @@ ntdll!memcpy+0x213:
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-09-09</pubDate>
+        <pubDate>2020-12-28</pubDate>
         <link>http://localhost:4000/articles/2020-04/suricata_stack_based_overflow</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-04/suricata_stack_based_overflow</guid>
         
@@ -623,7 +623,7 @@ ntdll!memcpy+0x213:
 
 &lt;p&gt;Going down the rabbit hole right before the data is insert into the hash table through &lt;strong&gt;emu_hashtable_insert&lt;/strong&gt; at line 70. &lt;strong&gt;emu_hashtable_search&lt;/strong&gt; is called to check whether the data is already inserted or not. At line 96, the address of the key inside the hash table will be divided with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eh-&amp;gt;size&lt;/code&gt; and triggers the bug.&lt;/p&gt;
 </description>
-        <pubDate>2020-09-09</pubDate>
+        <pubDate>2020-12-28</pubDate>
         <link>http://localhost:4000/articles/2020-03/libemu_divide_by_zero</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2020-03/libemu_divide_by_zero</guid>
         
@@ -744,7 +744,7 @@ index 08e6967dfe1..4b1d988dce2 100644
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-09-09</pubDate>
+        <pubDate>2020-12-28</pubDate>
         <link>http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-08/ipv6_neighbor_router_advertisement</guid>
         
@@ -845,7 +845,7 @@ gs_base 0x0 0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-09-09</pubDate>
+        <pubDate>2020-12-28</pubDate>
         <link>http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-08/bhyve_fbuf_null_deref</guid>
         
@@ -900,7 +900,7 @@ gs_base 0x0 0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;corrupt stack?&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
-        <pubDate>2020-09-09</pubDate>
+        <pubDate>2020-12-28</pubDate>
         <link>http://localhost:4000/articles/2019-07/CVE-2019-13614</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-07/CVE-2019-13614</guid>
         
@@ -965,7 +965,7 @@ Backtrace stopped: previous frame identical to this frame &lt;span class=&quot;o
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>2020-09-09</pubDate>
+        <pubDate>2020-12-28</pubDate>
         <link>http://localhost:4000/articles/2019-07/CVE-2019-13613</link>
         <guid isPermaLink="true">http://localhost:4000/articles/2019-07/CVE-2019-13613</guid>
         
